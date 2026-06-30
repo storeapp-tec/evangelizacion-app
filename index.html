@@ -1156,7 +1156,7 @@
 // ============================================
 // CONFIGURACIÓN
 // ============================================
-const API_URL = 'https://script.google.com/macros/s/AKfycbxsWMrFnpUAvAHVE-CQtwUqZeCeUYvGL7DWe3yZoI9tCcpkru2-VKe6uCfPvh2FsBIo/exec';
+const API_URL = 'https://script.google.com/macros/s/AKfycbwJ6jxr4IijBZuTA3AltrSjffgiMCCwbzw785O53lf6gUZdFreaKshW5FIHSQVtHKRZ/exec';
 
 let data = null;
 let filtroFinanzas = 'todos';
@@ -1168,13 +1168,10 @@ let participanteEditando = null;
 // ============================================
 async function callAPI(action, payload = {}) {
     try {
+        // Para obtener datos, usar GET
         if (action === 'getData') {
             const response = await fetch(`${API_URL}?action=${action}`, {
-                method: 'GET',
-                mode: 'cors',
-                headers: {
-                    'Content-Type': 'application/json',
-                }
+                method: 'GET'
             });
 
             if (!response.ok) {
@@ -1185,6 +1182,7 @@ async function callAPI(action, payload = {}) {
             return result;
         }
 
+        // Para las demás acciones, usar POST
         const response = await fetch(API_URL, {
             method: 'POST',
             mode: 'cors',
