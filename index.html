@@ -16,6 +16,9 @@
     <link rel="icon" type="image/png" sizes="512x512" href="icon-512.png">
 
     <style>
+        /* ============================================
+           CONFIGURACIÓN GENERAL
+           ============================================ */
         * {
             margin: 0;
             padding: 0;
@@ -29,6 +32,9 @@
             padding-bottom: 20px;
         }
 
+        /* ============================================
+           HEADER
+           ============================================ */
         .header {
             background: linear-gradient(135deg, #2d3748 0%, #4a5568 100%);
             color: white;
@@ -80,6 +86,9 @@
             background: #fc8181;
         }
 
+        /* ============================================
+           TABS
+           ============================================ */
         .tabs {
             display: flex;
             background: white;
@@ -133,6 +142,9 @@
             margin-bottom: 2px;
         }
 
+        /* ============================================
+           CONTENIDO
+           ============================================ */
         .content {
             display: none;
             padding: 14px;
@@ -150,6 +162,9 @@
             to { opacity: 1; transform: translateY(0); }
         }
 
+        /* ============================================
+           TARJETAS
+           ============================================ */
         .card {
             background: white;
             border-radius: 16px;
@@ -174,6 +189,9 @@
             font-size: 18px;
         }
 
+        /* ============================================
+           RESUMEN DE FLUJO (Finanzas)
+           ============================================ */
         .resumen-flujo {
             background: linear-gradient(135deg, #2d3748 0%, #4a5568 100%);
             border-radius: 16px;
@@ -323,6 +341,9 @@
             opacity: 1;
         }
 
+        /* ============================================
+           PARTICIPANTES
+           ============================================ */
         .participant-list {
             max-height: 400px;
             overflow-y: auto;
@@ -408,6 +429,9 @@
             font-size: 11px;
         }
 
+        /* ============================================
+           FORMULARIOS
+           ============================================ */
         .form-group {
             margin-bottom: 10px;
         }
@@ -454,6 +478,9 @@
             padding-right: 36px;
         }
 
+        /* ============================================
+           BOTONES
+           ============================================ */
         .btn {
             padding: 10px 18px;
             border: none;
@@ -532,6 +559,9 @@
             color: #2b6cb0;
         }
 
+        /* ============================================
+           RESUMEN DE COBROS (Pantalla principal)
+           ============================================ */
         .summary {
             background: linear-gradient(135deg, #2d3748 0%, #4a5568 100%);
             color: white;
@@ -566,6 +596,9 @@
             font-weight: 700;
         }
 
+        /* ============================================
+           HISTORIAL DE FINANZAS
+           ============================================ */
         .historial-list {
             max-height: 300px;
             overflow-y: auto;
@@ -654,6 +687,9 @@
         .btn-editar { color: #4299e1; }
         .btn-eliminar { color: #fc8181; }
 
+        /* ============================================
+           MODALES
+           ============================================ */
         .modal-overlay {
             display: none;
             position: fixed;
@@ -779,6 +815,9 @@
             color: #4a5568;
         }
 
+        /* ============================================
+           ADMIN
+           ============================================ */
         .resumen-linea {
             display: flex;
             justify-content: space-between;
@@ -865,6 +904,9 @@
             100% { transform: rotate(360deg); }
         }
 
+        /* ============================================
+           RESPONSIVE
+           ============================================ */
         @media (max-width: 480px) {
             .summary-grid {
                 grid-template-columns: 1fr;
@@ -1156,7 +1198,7 @@
 // ============================================
 // CONFIGURACIÓN
 // ============================================
-const API_URL = 'https://script.google.com/macros/s/AKfycbwJ6jxr4IijBZuTA3AltrSjffgiMCCwbzw785O53lf6gUZdFreaKshW5FIHSQVtHKRZ/exec';
+const API_URL = 'https://script.google.com/macros/s/AKfycbybcNlZfmqCxbVAc0ij7GILQymPWRZF4D01p09MRAY1oVtfpJqtJ8jAcaZr7MvT2-4c/exec';
 
 let data = null;
 let filtroFinanzas = 'todos';
@@ -1164,14 +1206,17 @@ let movimientoEditando = null;
 let participanteEditando = null;
 
 // ============================================
-// LLAMADAS A LA API
+// LLAMADAS A LA API (VERSIÓN DEFINITIVA)
 // ============================================
 async function callAPI(action, payload = {}) {
     try {
-        // Para obtener datos, usar GET
+        // Caso 1: Obtener datos (GET)
         if (action === 'getData') {
             const response = await fetch(`${API_URL}?action=${action}`, {
-                method: 'GET'
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                }
             });
 
             if (!response.ok) {
@@ -1182,10 +1227,9 @@ async function callAPI(action, payload = {}) {
             return result;
         }
 
-        // Para las demás acciones, usar POST
+        // Caso 2: Modificar datos (POST)
         const response = await fetch(API_URL, {
             method: 'POST',
-            mode: 'cors',
             headers: {
                 'Content-Type': 'application/json',
             },
@@ -1198,6 +1242,7 @@ async function callAPI(action, payload = {}) {
 
         const result = await response.json();
         return result;
+
     } catch (error) {
         console.error('Error en API:', error);
         throw error;
