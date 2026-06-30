@@ -16,9 +16,6 @@
     <link rel="icon" type="image/png" sizes="512x512" href="icon-512.png">
 
     <style>
-        /* ============================================
-           CONFIGURACIÓN GENERAL
-           ============================================ */
         * {
             margin: 0;
             padding: 0;
@@ -32,9 +29,6 @@
             padding-bottom: 20px;
         }
 
-        /* ============================================
-           HEADER
-           ============================================ */
         .header {
             background: linear-gradient(135deg, #2d3748 0%, #4a5568 100%);
             color: white;
@@ -86,9 +80,6 @@
             background: #fc8181;
         }
 
-        /* ============================================
-           TABS
-           ============================================ */
         .tabs {
             display: flex;
             background: white;
@@ -142,9 +133,6 @@
             margin-bottom: 2px;
         }
 
-        /* ============================================
-           CONTENIDO
-           ============================================ */
         .content {
             display: none;
             padding: 14px;
@@ -162,9 +150,6 @@
             to { opacity: 1; transform: translateY(0); }
         }
 
-        /* ============================================
-           TARJETAS
-           ============================================ */
         .card {
             background: white;
             border-radius: 16px;
@@ -189,9 +174,6 @@
             font-size: 18px;
         }
 
-        /* ============================================
-           RESUMEN DE FLUJO (Finanzas)
-           ============================================ */
         .resumen-flujo {
             background: linear-gradient(135deg, #2d3748 0%, #4a5568 100%);
             border-radius: 16px;
@@ -341,9 +323,6 @@
             opacity: 1;
         }
 
-        /* ============================================
-           PARTICIPANTES
-           ============================================ */
         .participant-list {
             max-height: 400px;
             overflow-y: auto;
@@ -429,9 +408,6 @@
             font-size: 11px;
         }
 
-        /* ============================================
-           FORMULARIOS
-           ============================================ */
         .form-group {
             margin-bottom: 10px;
         }
@@ -478,9 +454,6 @@
             padding-right: 36px;
         }
 
-        /* ============================================
-           BOTONES
-           ============================================ */
         .btn {
             padding: 10px 18px;
             border: none;
@@ -559,9 +532,6 @@
             color: #2b6cb0;
         }
 
-        /* ============================================
-           RESUMEN DE COBROS (Pantalla principal)
-           ============================================ */
         .summary {
             background: linear-gradient(135deg, #2d3748 0%, #4a5568 100%);
             color: white;
@@ -596,9 +566,6 @@
             font-weight: 700;
         }
 
-        /* ============================================
-           HISTORIAL DE FINANZAS
-           ============================================ */
         .historial-list {
             max-height: 300px;
             overflow-y: auto;
@@ -687,40 +654,6 @@
         .btn-editar { color: #4299e1; }
         .btn-eliminar { color: #fc8181; }
 
-        /* ============================================
-           FILTROS FINANZAS
-           ============================================ */
-        .filtros-finanzas {
-            display: flex;
-            gap: 6px;
-            flex-wrap: wrap;
-            margin-bottom: 8px;
-        }
-
-        .filtro-btn {
-            padding: 5px 14px;
-            border: 2px solid #e2e8f0;
-            border-radius: 20px;
-            background: white;
-            font-size: 11px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-
-        .filtro-btn.active {
-            border-color: #4299e1;
-            background: #4299e1;
-            color: white;
-        }
-
-        .filtro-btn:hover {
-            border-color: #4299e1;
-        }
-
-        /* ============================================
-           MODALES
-           ============================================ */
         .modal-overlay {
             display: none;
             position: fixed;
@@ -846,9 +779,6 @@
             color: #4a5568;
         }
 
-        /* ============================================
-           ADMIN
-           ============================================ */
         .resumen-linea {
             display: flex;
             justify-content: space-between;
@@ -935,9 +865,6 @@
             100% { transform: rotate(360deg); }
         }
 
-        /* ============================================
-           RESPONSIVE
-           ============================================ */
         @media (max-width: 480px) {
             .summary-grid {
                 grid-template-columns: 1fr;
@@ -1019,9 +946,6 @@
 </head>
 <body>
 
-<!-- ============================================ -->
-<!-- HEADER -->
-<!-- ============================================ -->
 <div class="header">
     <div class="header-left">
         <h1>✝️ Evangelización</h1>
@@ -1033,9 +957,6 @@
     </div>
 </div>
 
-<!-- ============================================ -->
-<!-- TABS -->
-<!-- ============================================ -->
 <div class="tabs">
     <button class="tab active" data-tab="cobros">
         <span class="icon">👥</span> Cobros
@@ -1048,9 +969,7 @@
     </button>
 </div>
 
-<!-- ============================================ -->
-<!-- PANTALLA 1: COBROS -->
-<!-- ============================================ -->
+<!-- COBROS -->
 <div id="cobros" class="content active">
     <div class="card">
         <div class="card-title"><span class="icon">🔍</span> Buscar</div>
@@ -1077,11 +996,8 @@
     </div>
 </div>
 
-<!-- ============================================ -->
-<!-- PANTALLA 2: FINANZAS -->
-<!-- ============================================ -->
+<!-- FINANZAS -->
 <div id="finanzas" class="content">
-    <!-- Resumen de flujo (siempre visible) -->
     <div class="resumen-flujo" id="resumenFlujo">
         <div class="grid-3">
             <div class="stat-box" onclick="aplicarFiltroFinanzas('cobro')">
@@ -1127,7 +1043,6 @@
         </div>
     </div>
 
-    <!-- Agregar movimiento -->
     <div class="card">
         <div class="card-title"><span class="icon">➕</span> Agregar movimiento</div>
         <div class="form-group">
@@ -1154,7 +1069,6 @@
         <button class="btn btn-success" onclick="agregarMovimiento()">✅ Agregar</button>
     </div>
 
-    <!-- Historial -->
     <div class="card" style="padding:8px 0 4px 0;">
         <div class="card-title" style="padding:0 12px;"><span class="icon">📋</span> Historial</div>
         <div id="finanzasList" class="historial-list" style="padding:0 8px;">
@@ -1163,9 +1077,7 @@
     </div>
 </div>
 
-<!-- ============================================ -->
-<!-- PANTALLA 3: ADMINISTRACIÓN -->
-<!-- ============================================ -->
+<!-- ADMIN -->
 <div id="admin" class="content">
     <div class="card">
         <div class="card-title"><span class="icon">📊</span> Resumen del periodo</div>
@@ -1191,11 +1103,7 @@
     </div>
 </div>
 
-<!-- ============================================ -->
 <!-- MODALES -->
-<!-- ============================================ -->
-
-<!-- Modal Editar Participante -->
 <div id="modalParticipante" class="modal-overlay">
     <div class="modal">
         <button class="modal-close" onclick="cerrarModal()">✕</button>
@@ -1204,7 +1112,6 @@
     </div>
 </div>
 
-<!-- Modal Agregar Participante -->
 <div id="modalAgregar" class="modal-overlay">
     <div class="modal">
         <button class="modal-close" onclick="cerrarModalAgregar()">✕</button>
@@ -1217,7 +1124,6 @@
     </div>
 </div>
 
-<!-- Modal Editar Movimiento -->
 <div id="modalEditarMovimiento" class="modal-overlay">
     <div class="modal">
         <button class="modal-close" onclick="cerrarModalEditarMovimiento()">✕</button>
@@ -1226,7 +1132,6 @@
     </div>
 </div>
 
-<!-- Modal Montos -->
 <div id="modalMontos" class="modal-overlay">
     <div class="modal">
         <button class="modal-close" onclick="cerrarModalMontos()">✕</button>
@@ -1247,9 +1152,6 @@
     </div>
 </div>
 
-<!-- ============================================ -->
-<!-- JAVASCRIPT -->
-<!-- ============================================ -->
 <script>
 // ============================================
 // CONFIGURACIÓN
@@ -1266,6 +1168,23 @@ let participanteEditando = null;
 // ============================================
 async function callAPI(action, payload = {}) {
     try {
+        if (action === 'getData') {
+            const response = await fetch(`${API_URL}?action=${action}`, {
+                method: 'GET',
+                mode: 'cors',
+                headers: {
+                    'Content-Type': 'application/json',
+                }
+            });
+
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+
+            const result = await response.json();
+            return result;
+        }
+
         const response = await fetch(API_URL, {
             method: 'POST',
             mode: 'cors',
@@ -1420,7 +1339,6 @@ function renderizarResumenFlujo() {
     const totalCruc = pagadosCruc * montoCruc;
     const totalGeneral = totalInsc + totalComp + totalCruc;
 
-    // Calcular cobros y gastos de finanzas
     const totalCobros = data.finanzas
         .filter(m => m.tipo === 'cobro')
         .reduce((sum, m) => sum + m.monto, 0);
@@ -1431,7 +1349,6 @@ function renderizarResumenFlujo() {
 
     const saldo = totalCobros - totalGastos;
 
-    // Actualizar valores
     document.getElementById('totalCobros').textContent = `$${totalCobros.toFixed(2)}`;
     document.getElementById('totalGastosFlujo').textContent = `$${totalGastos.toFixed(2)}`;
     document.getElementById('totalSaldoFlujo').textContent = `$${saldo.toFixed(2)}`;
@@ -1455,14 +1372,12 @@ function renderizarFinanzas() {
 
     let movimientos = data.finanzas;
 
-    // Aplicar filtro
     if (filtroFinanzas !== 'todos') {
         if (filtroFinanzas === 'cobro') {
             movimientos = movimientos.filter(m => m.tipo === 'cobro');
         } else if (filtroFinanzas === 'gasto') {
             movimientos = movimientos.filter(m => m.tipo === 'gasto');
         } else {
-            // Filtrar por concepto (inscripcion, compendio, crucifijo)
             const conceptoMap = {
                 'inscripcion': 'Inscripción',
                 'compendio': 'Compendio',
@@ -1477,10 +1392,8 @@ function renderizarFinanzas() {
         }
     }
 
-    // Ordenar por fecha (más reciente primero)
     movimientos.sort((a, b) => b.fecha.localeCompare(a.fecha));
 
-    // Mostrar filtro activo
     const filtroActivo = document.getElementById('filtroActivo');
     const filtroTexto = document.getElementById('filtroActivoTexto');
     if (filtroFinanzas !== 'todos') {
@@ -1509,7 +1422,6 @@ function renderizarFinanzas() {
         const badge = m.tipo === 'cobro' ? 'badge-ingreso' : 'badge-gasto';
         const label = m.tipo === 'cobro' ? 'Cobro' : 'Gasto';
 
-        // Verificar si es saldo inicial (no editable)
         const esSaldoInicial = m.concepto && m.concepto === 'Saldo del periodo anterior';
         const acciones = esSaldoInicial ? '' : `
             <button class="btn-accion btn-editar" onclick="abrirModalEditarMovimiento(${m.id})">✏️</button>
@@ -1528,9 +1440,6 @@ function renderizarFinanzas() {
     }).join('');
 }
 
-// ============================================
-// FILTROS DE FINANZAS
-// ============================================
 function aplicarFiltroFinanzas(tipo) {
     filtroFinanzas = tipo;
     renderizarFinanzas();
@@ -1602,7 +1511,6 @@ function abrirModalEditarMovimiento(id) {
     const m = data.finanzas.find(f => f.id === id);
     if (!m) return;
 
-    // No permitir editar saldo inicial
     if (m.concepto === 'Saldo del periodo anterior') {
         alert('El saldo inicial no se puede editar.');
         return;
@@ -1767,7 +1675,6 @@ async function toggleActivo(nombre) {
 }
 
 async function eliminarParticipante(nombre) {
-    // No hay función de eliminar en la API, solo se puede desactivar
     alert('Para eliminar un participante, ve al Excel y elimínalo manualmente.');
 }
 
@@ -1868,7 +1775,6 @@ function renderizarResumenPeriodo() {
     const totalCruc = pagadosCruc * montoCruc;
     const totalGeneral = totalInsc + totalComp + totalCruc;
 
-    // Calcular saldo anterior del historial
     let saldoAnterior = 0;
     if (data.historial && data.historial.length > 0) {
         const ultimo = data.historial[data.historial.length - 1];
@@ -1933,7 +1839,6 @@ function renderizarHistorial() {
         return;
     }
 
-    // Mostrar más reciente primero
     const historial = [...data.historial].reverse();
 
     list.innerHTML = historial.map(h => `
@@ -2050,7 +1955,6 @@ function configurarTabs() {
             this.classList.add('active');
             document.getElementById(this.dataset.tab).classList.add('active');
 
-            // Resetear filtro de finanzas al cambiar de pestaña
             if (this.dataset.tab !== 'finanzas') {
                 quitarFiltroFinanzas();
             }
@@ -2080,7 +1984,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
     document.getElementById('searchInput').addEventListener('input', renderizarParticipantes);
 
-    // Cargar datos
     recargarDatos();
 });
 </script>
