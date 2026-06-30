@@ -4,15 +4,16 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <meta name="theme-color" content="#2d3748">
-    <title>✝️ Evangelización</title>
-
-    <!-- ========== PWA ========== -->
-    <link rel="manifest" href="manifest.json">
-    <link rel="apple-touch-icon" href="icon-192.png">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="Evangelización">
-    <meta name="theme-color" content="#2d3748">
+    <title>✝️ Evangelización</title>
+
+    <!-- PWA -->
+    <link rel="manifest" href="manifest.json">
+    <link rel="apple-touch-icon" href="icon-192.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
+    <link rel="icon" type="image/png" sizes="512x512" href="icon-512.png">
 
     <style>
         /* ============================================
@@ -1265,7 +1266,7 @@ let participanteEditando = null;
 // ============================================
 async function callAPI(action, payload = {}) {
     try {
-        const response = await fetch(1vHH-F8sBY5TGUswyqXjri8J2ViA11hUqpdMnZ6g_hPo, {
+        const response = await fetch(API_URL, {
             method: 'POST',
             mode: 'cors',
             headers: {
@@ -1964,8 +1965,7 @@ async function descargarExcel(nombrePeriodo) {
 }
 
 function abrirExcelActual() {
-    // Abre el Google Sheets actual - Reemplaza con tu URL
-    const url = 'https://docs.google.com/spreadsheets/d/TU_ID_DE_SHEETS/edit';
+    const url = 'https://docs.google.com/spreadsheets/d/1vHH-F8sBY5TGUswyqXjri8J2ViA11hUqpdMnZ6g_hPo/edit';
     window.open(url, '_blank');
 }
 
