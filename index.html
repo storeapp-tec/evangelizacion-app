@@ -240,7 +240,7 @@
 // ============================================
 // CONFIGURACIÓN
 // ============================================
-const API_URL = 'https://script.google.com/macros/s/AKfycbx0o9NOIJwRzOQHxeUcfgT6Pwqv_IooGNSNjkr8_UcLTsonGkbOR9EQ0ajkCZIgnG21/exec';
+const API_URL = 'https://script.google.com/macros/s/AKfycbzOUU2f43_W0isGXO5HlGNHBtuAyaPL5VWKaby2hIP4pgbOfCqE2iPf36yxnpWPtCUV/exec';
 
 let data = null;
 let filtroFinanzas = 'todos';
@@ -248,13 +248,12 @@ let movimientoEditando = null;
 let participanteEditando = null;
 
 // ============================================
-// FUNCIÓN DE LLAMADA A LA API (USANDO PARÁMETRO obtener)
+// FUNCIÓN DE LLAMADA A LA API (COMO LA OTRA APP)
 // ============================================
 async function callAPI(action, payload = {}) {
     try {
-        // CASO 1: Obtener datos (GET) - Usamos el parámetro obtener como en la otra app
+        // CASO 1: Obtener datos - usando GET con el parámetro "obtener"
         if (action === 'getData') {
-            // Usamos fetch normal con el parámetro obtener
             const response = await fetch(`${API_URL}?obtener=getData`, {
                 method: 'GET',
                 headers: {
@@ -270,7 +269,7 @@ async function callAPI(action, payload = {}) {
             return result;
         }
 
-        // CASO 2: Modificar datos (POST)
+        // CASO 2: Modificar datos - usando POST
         const response = await fetch(API_URL, {
             method: 'POST',
             headers: {
