@@ -240,7 +240,7 @@
 // ============================================
 // CONFIGURACIÓN
 // ============================================
-const API_URL = 'https://script.google.com/macros/s/AKfycbyvKVEtJskQ9kk6O3mk68WO8CXm_dyrWJTv28WidFnQjJk0x4hiEJcj1Cm5jOuSlOWs/exec';
+const API_URL = 'https://script.google.com/macros/s/AKfycbx0o9NOIJwRzOQHxeUcfgT6Pwqv_IooGNSNjkr8_UcLTsonGkbOR9EQ0ajkCZIgnG21/exec';
 
 let data = null;
 let filtroFinanzas = 'todos';
@@ -248,38 +248,26 @@ let movimientoEditando = null;
 let participanteEditando = null;
 
 // ============================================
-// FUNCIÓN DE LLAMADA A LA API CON JSONP (SIN CORS)
+// FUNCIÓN DE LLAMADA A LA API (USANDO PARÁMETRO obtener)
 // ============================================
 async function callAPI(action, payload = {}) {
     try {
-        // CASO 1: Obtener datos (GET) - Usamos JSONP para evitar CORS
+        // CASO 1: Obtener datos (GET) - Usamos el parámetro obtener como en la otra app
         if (action === 'getData') {
-            return new Promise((resolve, reject) => {
-                // Crear un nombre único para el callback
-                const callbackName = 'jsonp_callback_' + Date.now();
-                
-                // Definir la función global que recibirá la respuesta
-                window[callbackName] = function(data) {
-                    delete window[callbackName];
-                    document.body.removeChild(script);
-                    resolve(data);
-                };
-                
-                // Crear el script con la URL y el callback
-                const url = `${API_URL}?action=${action}&callback=${callbackName}`;
-                const script = document.createElement('script');
-                script.src = url;
-                
-                // Manejar errores
-                script.onerror = function() {
-                    delete window[callbackName];
-                    document.body.removeChild(script);
-                    reject(new Error('Error al cargar los datos'));
-                };
-                
-                // Agregar el script al DOM
-                document.body.appendChild(script);
+            // Usamos fetch normal con el parámetro obtener
+            const response = await fetch(`${API_URL}?obtener=getData`, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                }
             });
+
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+
+            const result = await response.json();
+            return result;
         }
 
         // CASO 2: Modificar datos (POST)
