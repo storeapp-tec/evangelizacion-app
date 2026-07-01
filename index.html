@@ -12,34 +12,35 @@
             background: #f0f2f5;
             padding-bottom: 70px;
             color: #333;
+            font-size: 14px;
         }
         .header {
             background: #1a2634;
             color: white;
-            padding: 15px;
+            padding: 12px;
             text-align: center;
             position: sticky;
             top: 0;
             z-index: 100;
         }
-        .header h1 { font-size: 18px; font-weight: 600; }
+        .header h1 { font-size: 17px; font-weight: 600; }
 
         /* ===== TABS ===== */
         .tabs {
             display: flex;
             background: #2c3e50;
             position: sticky;
-            top: 55px;
+            top: 49px;
             z-index: 99;
         }
         .tab {
             flex: 1;
-            padding: 12px;
+            padding: 10px;
             text-align: center;
             color: #bdc3c7;
             background: transparent;
             border: none;
-            font-size: 14px;
+            font-size: 13px;
             font-weight: 600;
             cursor: pointer;
             border-bottom: 3px solid transparent;
@@ -52,7 +53,7 @@
         /* ===== CONTENIDO ===== */
         .content {
             display: none;
-            padding: 15px;
+            padding: 12px;
             max-width: 600px;
             margin: 0 auto;
         }
@@ -61,26 +62,26 @@
         /* ===== TARJETAS ===== */
         .card {
             background: white;
-            border-radius: 12px;
-            padding: 15px;
-            margin-bottom: 15px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            border-radius: 10px;
+            padding: 12px;
+            margin-bottom: 12px;
+            box-shadow: 0 1px 4px rgba(0,0,0,0.08);
         }
         .card-title {
-            font-size: 15px;
+            font-size: 14px;
             font-weight: 600;
-            margin-bottom: 10px;
+            margin-bottom: 8px;
             color: #2c3e50;
         }
 
         /* ===== BUSCADOR ===== */
         .search-box {
             width: 100%;
-            padding: 10px 12px;
+            padding: 8px 10px;
             border: 1px solid #ddd;
-            border-radius: 8px;
-            font-size: 15px;
-            margin-bottom: 10px;
+            border-radius: 6px;
+            font-size: 14px;
+            margin-bottom: 8px;
         }
         .search-box:focus { outline: none; border-color: #3498db; }
 
@@ -89,68 +90,68 @@
         .participant-item {
             display: flex;
             align-items: center;
-            padding: 10px 8px;
+            padding: 8px 6px;
             border-bottom: 1px solid #f0f0f0;
             cursor: pointer;
         }
         .participant-item:hover { background: #f8f9fa; }
         .participant-item.inactive { opacity: 0.5; background: #f5f5f5; }
-        .participant-name { flex: 1; font-size: 14px; font-weight: 500; }
-        .participant-status { display: flex; gap: 6px; margin-left: 8px; }
+        .participant-name { flex: 1; font-size: 13px; font-weight: 500; }
+        .participant-status { display: flex; gap: 5px; margin-left: 6px; }
 
         /* ===== INDICADORES DE PAGO ===== */
         .status-icon {
-            width: 26px;
-            height: 26px;
+            width: 22px;
+            height: 22px;
             display: flex;
             align-items: center;
             justify-content: center;
             border-radius: 50%;
-            font-size: 13px;
+            font-size: 11px;
             font-weight: bold;
             color: white;
         }
         .status-icon.pagado { background: #27ae60; }
         .status-icon.pendiente { background: #e74c3c; }
-        .status-icon.inactivo-icon { background: #95a5a6; font-size: 11px; }
+        .status-icon.inactivo-icon { background: #95a5a6; font-size: 10px; }
 
         /* ===== RESUMEN ===== */
         .summary {
             background: #1a2634;
             color: white;
-            padding: 15px;
-            border-radius: 12px;
+            padding: 12px;
+            border-radius: 10px;
             position: sticky;
             bottom: 0;
-            margin-top: 10px;
+            margin-top: 8px;
         }
         .summary-grid {
             display: grid;
             grid-template-columns: 1fr 1fr 1fr;
-            gap: 8px;
-            margin-top: 6px;
+            gap: 6px;
+            margin-top: 4px;
         }
         .summary-item { text-align: center; }
-        .summary-item .label { font-size: 11px; opacity: 0.8; }
-        .summary-item .value { font-size: 16px; font-weight: bold; }
+        .summary-item .label { font-size: 10px; opacity: 0.8; }
+        .summary-item .value { font-size: 14px; font-weight: bold; }
 
         /* ===== BOTONES ===== */
         .btn {
-            padding: 8px 16px;
+            padding: 6px 14px;
             border: none;
-            border-radius: 8px;
-            font-size: 13px;
+            border-radius: 6px;
+            font-size: 12px;
             font-weight: 600;
             cursor: pointer;
             transition: all 0.2s;
         }
-        .btn-sm { padding: 5px 12px; font-size: 12px; width: auto; }
+        .btn-sm { padding: 4px 10px; font-size: 11px; width: auto; }
         .btn-primary { background: #3498db; color: white; }
         .btn-success { background: #27ae60; color: white; }
         .btn-danger { background: #e74c3c; color: white; }
         .btn-warning { background: #f39c12; color: white; }
         .btn-secondary { background: #95a5a6; color: white; }
-        .btn-group { display: flex; gap: 8px; flex-wrap: wrap; }
+        .btn-group { display: flex; gap: 6px; flex-wrap: wrap; }
 
         /* ===== MODALES ===== */
         .modal-overlay {
@@ -166,19 +167,19 @@
         .modal-overlay.active { display: flex; }
         .modal {
             background: white;
-            border-radius: 16px;
-            padding: 25px;
+            border-radius: 14px;
+            padding: 20px;
             max-width: 400px;
             width: 100%;
             max-height: 90vh;
             overflow-y: auto;
         }
-        .modal h2 { font-size: 18px; margin-bottom: 15px; color: #2c3e50; }
+        .modal h2 { font-size: 16px; margin-bottom: 12px; color: #2c3e50; }
         .modal-close {
             float: right;
             background: none;
             border: none;
-            font-size: 24px;
+            font-size: 22px;
             cursor: pointer;
             color: #999;
         }
@@ -188,18 +189,18 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
-            padding: 10px 0;
+            padding: 8px 0;
             border-bottom: 1px solid #eee;
         }
         .pago-item:last-child { border-bottom: none; }
-        .pago-label { font-weight: 500; flex: 1; }
-        .pago-fecha { font-size: 12px; color: #666; margin: 0 8px; }
+        .pago-label { font-weight: 500; flex: 1; font-size: 13px; }
+        .pago-fecha { font-size: 11px; color: #666; margin: 0 6px; }
 
         .btn-toggle {
-            padding: 4px 14px;
+            padding: 3px 12px;
             border: none;
-            border-radius: 20px;
-            font-size: 13px;
+            border-radius: 16px;
+            font-size: 12px;
             font-weight: 600;
             cursor: pointer;
         }
@@ -212,30 +213,35 @@
         .finanzas-resumen {
             display: grid;
             grid-template-columns: 1fr 1fr 1fr;
-            gap: 10px;
-            margin-bottom: 15px;
+            gap: 8px;
+            margin-bottom: 10px;
             text-align: center;
         }
         .finanzas-resumen .item {
             background: #f8f9fa;
-            padding: 10px;
-            border-radius: 10px;
+            padding: 8px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
         }
-        .finanzas-resumen .label { font-size: 11px; color: #666; }
-        .finanzas-resumen .value { font-size: 18px; font-weight: bold; }
+        .finanzas-resumen .item:hover { background: #e9ecef; }
+        .finanzas-resumen .item.active { background: #3498db; color: white; }
+        .finanzas-resumen .item.active .label { color: rgba(255,255,255,0.8); }
+        .finanzas-resumen .label { font-size: 10px; color: #666; }
+        .finanzas-resumen .value { font-size: 16px; font-weight: bold; }
 
         .filtros-rapidos {
             display: flex;
-            gap: 8px;
+            gap: 5px;
             flex-wrap: wrap;
-            margin: 10px 0;
+            margin: 8px 0;
         }
         .filtro-btn {
-            padding: 5px 14px;
+            padding: 4px 12px;
             border: 1px solid #ddd;
-            border-radius: 20px;
+            border-radius: 16px;
             background: white;
-            font-size: 12px;
+            font-size: 11px;
             cursor: pointer;
             transition: all 0.2s;
         }
@@ -248,39 +254,39 @@
         .movimiento-item {
             display: flex;
             align-items: center;
-            padding: 8px 10px;
+            padding: 6px 8px;
             border-bottom: 1px solid #f0f0f0;
-            gap: 8px;
-            font-size: 13px;
+            gap: 6px;
+            font-size: 12px;
         }
-        .movimiento-item .fecha { color: #666; min-width: 75px; }
+        .movimiento-item .fecha { color: #666; min-width: 65px; }
         .movimiento-item .concepto { flex: 1; }
-        .movimiento-item .monto { font-weight: bold; min-width: 60px; text-align: right; }
+        .movimiento-item .monto { font-weight: bold; min-width: 50px; text-align: right; }
         .movimiento-item .monto.ingreso { color: #27ae60; }
         .movimiento-item .monto.gasto { color: #e74c3c; }
 
         .btn-accion {
             background: none;
             border: none;
-            font-size: 15px;
+            font-size: 13px;
             cursor: pointer;
-            padding: 0 4px;
+            padding: 0 3px;
         }
         .btn-editar { color: #3498db; }
         .btn-eliminar { color: #e74c3c; }
 
         /* ===== FORMULARIOS ===== */
-        .form-group { margin-bottom: 10px; }
-        .form-group label { display: block; font-size: 13px; font-weight: 600; color: #555; margin-bottom: 3px; }
+        .form-group { margin-bottom: 6px; }
+        .form-group label { display: block; font-size: 11px; font-weight: 600; color: #555; margin-bottom: 2px; }
         .form-control {
             width: 100%;
-            padding: 8px 12px;
+            padding: 6px 10px;
             border: 1px solid #ddd;
-            border-radius: 8px;
-            font-size: 14px;
+            border-radius: 6px;
+            font-size: 13px;
         }
         .form-control:focus { outline: none; border-color: #3498db; }
-        .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+        .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
 
         /* ===== LOADING ===== */
         .loading-overlay {
@@ -295,24 +301,24 @@
         }
         .loading-overlay.active { display: flex; }
         .loading-spinner {
-            width: 40px;
-            height: 40px;
-            border: 4px solid #f3f3f3;
-            border-top: 4px solid #3498db;
+            width: 36px;
+            height: 36px;
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid #3498db;
             border-radius: 50%;
             animation: spin 1s linear infinite;
         }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-        .loading-text { color: white; margin-top: 12px; font-size: 14px; }
+        .loading-text { color: white; margin-top: 10px; font-size: 13px; }
 
         /* ===== EMPTY STATE ===== */
-        .empty-state { text-align: center; padding: 30px 0; color: #999; font-size: 14px; }
+        .empty-state { text-align: center; padding: 20px 0; color: #999; font-size: 13px; }
 
         /* ===== RESPONSIVE ===== */
         @media (max-width: 480px) {
-            .summary-grid { grid-template-columns: 1fr; gap: 4px; }
+            .summary-grid { grid-template-columns: 1fr; gap: 3px; }
             .form-row { grid-template-columns: 1fr; }
-            .finanzas-resumen { grid-template-columns: 1fr; gap: 6px; }
+            .finanzas-resumen { grid-template-columns: 1fr 1fr 1fr; gap: 4px; }
         }
     </style>
 </head>
@@ -354,7 +360,7 @@
         </div>
 
         <div class="summary" id="summary">
-            <div style="text-align:center; font-weight:bold; margin-bottom:4px;">📊 Resumen</div>
+            <div style="text-align:center; font-weight:bold; margin-bottom:3px; font-size:13px;">📊 Resumen</div>
             <div id="summaryContent"></div>
         </div>
     </div>
@@ -364,27 +370,25 @@
     <!-- ============================================================ -->
     <div id="finanzas" class="content">
         <!-- RESUMEN FINANZAS (siempre visible) -->
-        <div class="card">
+        <div class="card" style="padding: 10px;">
             <div class="finanzas-resumen">
-                <div class="item">
+                <div class="item" data-filtro="ingreso" onclick="filtrarFinanzas('ingreso')">
                     <div class="label">💰 Ingresos</div>
                     <div class="value" id="totalIngresos" style="color:#27ae60;">$0</div>
                 </div>
-                <div class="item">
+                <div class="item" data-filtro="gasto" onclick="filtrarFinanzas('gasto')">
                     <div class="label">💸 Gastos</div>
                     <div class="value" id="totalGastos" style="color:#e74c3c;">$0</div>
                 </div>
-                <div class="item">
+                <div class="item" style="cursor:default;">
                     <div class="label">📊 Saldo</div>
                     <div class="value" id="totalSaldo" style="color:#3498db;">$0</div>
                 </div>
             </div>
 
-            <!-- Botones de filtro -->
+            <!-- Botones de filtro adicionales -->
             <div class="filtros-rapidos">
                 <button class="filtro-btn active" data-filtro="todos" onclick="filtrarFinanzas('todos')">📋 Todos</button>
-                <button class="filtro-btn" data-filtro="ingreso" onclick="filtrarFinanzas('ingreso')">💰 Ingresos</button>
-                <button class="filtro-btn" data-filtro="gasto" onclick="filtrarFinanzas('gasto')">💸 Gastos</button>
                 <button class="filtro-btn" data-filtro="inscripcion" onclick="filtrarFinanzas('inscripcion')">📝 Inscripción</button>
                 <button class="filtro-btn" data-filtro="compendio" onclick="filtrarFinanzas('compendio')">📚 Compendio</button>
                 <button class="filtro-btn" data-filtro="crucifijo" onclick="filtrarFinanzas('crucifijo')">✝️ Crucifijo</button>
@@ -392,35 +396,31 @@
         </div>
 
         <!-- LISTA DE MOVIMIENTOS (scroll) -->
-        <div class="card">
-            <div id="finanzasList" class="historial-list" style="max-height:300px; overflow-y:auto;"></div>
+        <div class="card" style="padding: 8px;">
+            <div id="finanzasList" class="historial-list" style="max-height:280px; overflow-y:auto;"></div>
         </div>
 
-        <!-- AGREGAR MOVIMIENTO (abajo) -->
-        <div class="card">
-            <div class="card-title">➕ Agregar movimiento</div>
+        <!-- AGREGAR MOVIMIENTO (compacto) -->
+        <div class="card" style="padding: 10px;">
+            <div style="font-size:13px; font-weight:600; margin-bottom:6px; color:#2c3e50;">➕ Agregar movimiento</div>
             <div class="form-group">
-                <label>Tipo</label>
-                <select id="finTipo" class="form-control">
+                <select id="finTipo" class="form-control" style="font-size:13px; padding:5px 8px;">
                     <option value="ingreso">💰 Ingreso</option>
                     <option value="gasto">💸 Gasto</option>
                 </select>
             </div>
             <div class="form-group">
-                <label>Concepto</label>
-                <input type="text" id="finConcepto" class="form-control" placeholder="Ej: Donativo, Transporte...">
+                <input type="text" id="finConcepto" class="form-control" placeholder="Ej: Donativo, Transporte..." style="font-size:13px; padding:5px 8px;">
             </div>
             <div class="form-row">
                 <div class="form-group">
-                    <label>Monto ($)</label>
-                    <input type="number" id="finMonto" class="form-control" placeholder="0.00" step="0.01">
+                    <input type="number" id="finMonto" class="form-control" placeholder="Monto" step="0.01" style="font-size:13px; padding:5px 8px;">
                 </div>
                 <div class="form-group">
-                    <label>Fecha</label>
-                    <input type="date" id="finFecha" class="form-control">
+                    <input type="date" id="finFecha" class="form-control" style="font-size:13px; padding:5px 8px;">
                 </div>
             </div>
-            <button class="btn btn-success" onclick="agregarMovimiento()" style="width:100%;">✅ Agregar movimiento</button>
+            <button class="btn btn-success" onclick="agregarMovimiento()" style="width:100%; font-size:13px; padding:6px;">✅ Agregar</button>
         </div>
     </div>
 
@@ -431,8 +431,8 @@
         <div class="card">
             <div class="card-title">📊 Resumen del periodo</div>
             <div id="resumenPeriodo" class="resumen-periodo"></div>
-            <button class="btn btn-danger" onclick="cerrarPeriodo()" style="width:100%;">🔒 CERRAR PERIODO</button>
-            <p style="font-size:12px; color:#666; margin-top:8px; text-align:center;">⚠️ Se guardará el resumen y se creará uno nuevo en blanco.</p>
+            <button class="btn btn-danger" onclick="cerrarPeriodo()" style="width:100%; font-size:13px; padding:8px;">🔒 CERRAR PERIODO</button>
+            <p style="font-size:11px; color:#666; margin-top:6px; text-align:center;">⚠️ Se guardará el resumen y se creará uno nuevo en blanco.</p>
         </div>
         <div class="card">
             <div class="card-title">📂 Períodos anteriores</div>
@@ -503,7 +503,7 @@
         // ============================================
         // CONFIGURACIÓN - URL DE LA API
         // ============================================
-        const API_URL = 'https://script.google.com/macros/s/AKfycbx40Ai6LprcUdbzU_h8pyhWNQwKXGBed0nxAeVJZHmZFL6jSvzxH-FzXy8SniKq2WLI/exec';
+        const API_URL = 'https://script.google.com/macros/s/AKfycbymawc912uxgtXS2ouMZtehisdxLb_8JIc0zUxMUEzONn5Hjp75awhwKrj_cl7ixxey/exec';
 
         // ============================================
         // ESTADO GLOBAL
@@ -629,7 +629,7 @@
             const pagadosCruc = activos.filter(p => p.pagos.crucifijo.pagado).length;
 
             document.getElementById('summaryContent').innerHTML = `
-                <div style="text-align:center; font-size:13px; margin-bottom:4px;">
+                <div style="text-align:center; font-size:12px; margin-bottom:3px;">
                     👥 Total: ${data.participantes.length} (${inactivos.length} inactivos)
                 </div>
                 <div class="summary-grid">
@@ -656,8 +656,7 @@
             const list = document.getElementById('finanzasList');
             
             let movimientos = [];
-            
-            // Filtro por tipo (todos, ingresos, gastos)
+
             if (filtroFinanzasActual === 'todos') {
                 movimientos = data.finanzas || [];
             } else if (filtroFinanzasActual === 'ingreso') {
@@ -666,7 +665,6 @@
                 movimientos = (data.finanzas || []).filter(m => m.tipo === 'gasto');
             } else {
                 // Filtro por concepto (inscripcion, compendio, crucifijo)
-                // Buscar en los pagos de los participantes
                 movimientos = [];
                 data.participantes.forEach(p => {
                     const conceptos = ['inscripcion', 'compendio', 'crucifijo'];
@@ -689,7 +687,6 @@
                 });
             }
             
-            // Ordenar por fecha (más reciente primero)
             movimientos.sort((a, b) => b.fecha.localeCompare(a.fecha));
 
             if (movimientos.length === 0) {
@@ -700,9 +697,7 @@
             list.innerHTML = movimientos.map(m => {
                 const signo = m.tipo === 'ingreso' ? '+' : '-';
                 const clase = m.tipo === 'ingreso' ? 'ingreso' : 'gasto';
-                const label = m.tipo === 'ingreso' ? 'Ingreso' : 'Gasto';
                 
-                // Si es un pago de participante, no mostrar botones de editar/eliminar
                 const acciones = m.esPago ? '' : `
                     <button class="btn-accion btn-editar" onclick="abrirModalEditarMovimiento('${m.id}')" title="Editar">✏️</button>
                     <button class="btn-accion btn-eliminar" onclick="eliminarMovimiento('${m.id}')" title="Eliminar">🗑️</button>
@@ -720,7 +715,6 @@
         }
 
         function renderizarResumenFinanzas() {
-            // Totales de finanzas (ingresos/gastos registrados manualmente)
             const finanzas = data.finanzas || [];
             const totalIngresos = finanzas.filter(m => m.tipo === 'ingreso').reduce((sum, m) => sum + m.monto, 0);
             const totalGastos = finanzas.filter(m => m.tipo === 'gasto').reduce((sum, m) => sum + m.monto, 0);
@@ -729,6 +723,12 @@
             document.getElementById('totalIngresos').textContent = `$${totalIngresos.toFixed(2)}`;
             document.getElementById('totalGastos').textContent = `$${totalGastos.toFixed(2)}`;
             document.getElementById('totalSaldo').textContent = `$${saldo.toFixed(2)}`;
+
+            // Resaltar filtro activo en los resúmenes
+            document.querySelectorAll('.finanzas-resumen .item').forEach(item => {
+                const filtro = item.dataset.filtro;
+                item.classList.toggle('active', filtro === filtroFinanzasActual);
+            });
         }
 
         function filtrarFinanzas(tipo) {
@@ -739,6 +739,7 @@
             });
             
             renderizarFinanzas();
+            renderizarResumenFinanzas();
         }
 
         // ============================================
@@ -762,14 +763,30 @@
             const totalGastos = finanzas.filter(m => m.tipo === 'gasto').reduce((sum, m) => sum + m.monto, 0);
 
             document.getElementById('resumenPeriodo').innerHTML = `
-                <div class="linea"><span>👥 Participantes activos</span><span>${total}</span></div>
-                <div class="linea"><span>📝 Inscripción (${pagadosInsc}/${total})</span><span>$${totalInsc.toFixed(2)}</span></div>
-                <div class="linea"><span>📚 Compendio (${pagadosComp}/${total})</span><span>$${totalComp.toFixed(2)}</span></div>
-                <div class="linea"><span>✝️ Crucifijo (${pagadosCruc}/${total})</span><span>$${totalCruc.toFixed(2)}</span></div>
-                <div class="linea"><span>💰 Total recaudado</span><span>$${totalGeneral.toFixed(2)}</span></div>
-                <div class="linea"><span>📊 Ingresos adicionales</span><span>$${totalIngresos.toFixed(2)}</span></div>
-                <div class="linea"><span>💸 Gastos</span><span>$${totalGastos.toFixed(2)}</span></div>
-                <div class="linea"><span>📈 Saldo final</span><span>$${(totalGeneral + totalIngresos - totalGastos).toFixed(2)}</span></div>
+                <div class="linea" style="display:flex; justify-content:space-between; padding:4px 0; border-bottom:1px solid #eee; font-size:13px;">
+                    <span>👥 Participantes activos</span><span>${total}</span>
+                </div>
+                <div class="linea" style="display:flex; justify-content:space-between; padding:4px 0; border-bottom:1px solid #eee; font-size:13px;">
+                    <span>📝 Inscripción (${pagadosInsc}/${total})</span><span>$${totalInsc.toFixed(2)}</span>
+                </div>
+                <div class="linea" style="display:flex; justify-content:space-between; padding:4px 0; border-bottom:1px solid #eee; font-size:13px;">
+                    <span>📚 Compendio (${pagadosComp}/${total})</span><span>$${totalComp.toFixed(2)}</span>
+                </div>
+                <div class="linea" style="display:flex; justify-content:space-between; padding:4px 0; border-bottom:1px solid #eee; font-size:13px;">
+                    <span>✝️ Crucifijo (${pagadosCruc}/${total})</span><span>$${totalCruc.toFixed(2)}</span>
+                </div>
+                <div class="linea" style="display:flex; justify-content:space-between; padding:4px 0; border-bottom:1px solid #eee; font-size:13px;">
+                    <span>💰 Total recaudado</span><span>$${totalGeneral.toFixed(2)}</span>
+                </div>
+                <div class="linea" style="display:flex; justify-content:space-between; padding:4px 0; border-bottom:1px solid #eee; font-size:13px;">
+                    <span>📊 Ingresos adicionales</span><span>$${totalIngresos.toFixed(2)}</span>
+                </div>
+                <div class="linea" style="display:flex; justify-content:space-between; padding:4px 0; border-bottom:1px solid #eee; font-size:13px;">
+                    <span>💸 Gastos</span><span>$${totalGastos.toFixed(2)}</span>
+                </div>
+                <div class="linea" style="display:flex; justify-content:space-between; padding:4px 0; font-weight:bold; font-size:14px; border-top:2px solid #2c3e50; margin-top:6px; padding-top:6px;">
+                    <span>📈 Saldo final</span><span>$${(totalGeneral + totalIngresos - totalGastos).toFixed(2)}</span>
+                </div>
             `;
 
             const historial = data.historial || [];
@@ -779,9 +796,9 @@
                 return;
             }
             list.innerHTML = historial.map(h => `
-                <div class="periodo-item">
-                    <div><strong>${h.nombre}</strong><span class="total">$${h.total.toFixed(2)}</span></div>
-                    <div class="fecha">Cerrado: ${formatearFecha(h.fechaCierre)}</div>
+                <div class="periodo-item" style="padding:8px 0; border-bottom:1px solid #eee; font-size:13px;">
+                    <div><strong>${h.nombre}</strong><span style="float:right; font-weight:bold; color:#27ae60;">$${h.total.toFixed(2)}</span></div>
+                    <div style="color:#666; font-size:11px;">Cerrado: ${formatearFecha(h.fechaCierre)}</div>
                 </div>
             `).join('');
         }
@@ -898,7 +915,7 @@
                         ${participante.pagos.crucifijo.pagado ? '✅ Pagado' : '❌ Pendiente'}
                     </button>
                 </div>
-                <hr>
+                <hr style="margin:8px 0;">
                 <div class="pago-item">
                     <span class="pago-label">👤 Estado</span>
                     <button class="btn-toggle ${participante.activo ? 'activo' : 'inactivo'}" 
@@ -958,7 +975,7 @@
             if (!confirm('¿Eliminar este movimiento?')) return;
             
             mostrarLoading(true);
-            const result = await sendData('deleteFinanza', { id });
+            const result = await sendData('deleteFinanza', { id: parseInt(id) });
             
             if (result && result.success) {
                 await recargarDatos();
@@ -1017,7 +1034,7 @@
 
             mostrarLoading(true);
             const result = await sendData('updateFinanza', {
-                id: movimientoEditando,
+                id: parseInt(movimientoEditando),
                 tipo,
                 concepto,
                 monto,
