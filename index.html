@@ -5,701 +5,150 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Gestión Evangelización</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif;
-            background: #f5f5f5;
-            padding-bottom: 70px;
-            color: #333;
-        }
-
-        .header {
-            background: #2c3e50;
-            color: white;
-            padding: 15px;
-            text-align: center;
-            position: sticky;
-            top: 0;
-            z-index: 100;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
-        }
-
-        .header h1 {
-            font-size: 20px;
-            font-weight: 600;
-        }
-
-        .tabs {
-            display: flex;
-            background: #34495e;
-            position: sticky;
-            top: 60px;
-            z-index: 100;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-        }
-
-        .tab {
-            flex: 1;
-            padding: 12px;
-            text-align: center;
-            color: #bdc3c7;
-            background: transparent;
-            border: none;
-            font-size: 14px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-
-        .tab.active {
-            color: white;
-            background: #2c3e50;
-            border-bottom: 3px solid #3498db;
-        }
-
-        .tab:hover {
-            background: #2c3e50;
-            color: white;
-        }
-
-        .content {
-            display: none;
-            padding: 15px;
-            max-width: 600px;
-            margin: 0 auto;
-        }
-
-        .content.active {
-            display: block;
-        }
-
-        .card {
-            background: white;
-            border-radius: 10px;
-            padding: 15px;
-            margin-bottom: 15px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-        }
-
-        .card-title {
-            font-size: 16px;
-            font-weight: 600;
-            margin-bottom: 10px;
-            color: #2c3e50;
-        }
-
-        .search-box {
-            width: 100%;
-            padding: 10px;
-            border: 2px solid #ddd;
-            border-radius: 8px;
-            font-size: 16px;
-            margin-bottom: 10px;
-        }
-
-        .search-box:focus {
-            outline: none;
-            border-color: #3498db;
-        }
-
-        .participant-list {
-            max-height: 400px;
-            overflow-y: auto;
-        }
-
-        .participant-item {
-            display: flex;
-            align-items: center;
-            padding: 10px;
-            border-bottom: 1px solid #eee;
-            cursor: pointer;
-            transition: background 0.2s;
-        }
-
-        .participant-item:hover {
-            background: #f8f9fa;
-        }
-
-        .participant-item.inactive {
-            opacity: 0.5;
-            background: #f0f0f0;
-        }
-
-        .participant-item.inactive:hover {
-            background: #e8e8e8;
-        }
-
-        .participant-name {
-            flex: 1;
-            font-size: 14px;
-            font-weight: 500;
-        }
-
-        .participant-status {
-            display: flex;
-            gap: 8px;
-            margin-left: 10px;
-        }
-
-        .status-icon {
-            width: 28px;
-            height: 28px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 50%;
-            font-size: 16px;
-            font-weight: bold;
-        }
-
-        .status-icon.pagado {
-            background: #27ae60;
-            color: white;
-        }
-
-        .status-icon.pendiente {
-            background: #e74c3c;
-            color: white;
-        }
-
-        .status-icon.inactive-icon {
-            background: #95a5a6;
-            color: white;
-            font-size: 12px;
-        }
-
-        .summary {
-            background: #2c3e50;
-            color: white;
-            padding: 15px;
-            border-radius: 10px;
-            position: sticky;
-            bottom: 70px;
-            margin-top: 10px;
-        }
-
-        .summary-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr 1fr;
-            gap: 10px;
-            margin-top: 8px;
-        }
-
-        .summary-item {
-            text-align: center;
-        }
-
-        .summary-item .label {
-            font-size: 11px;
-            opacity: 0.8;
-        }
-
-        .summary-item .value {
-            font-size: 16px;
-            font-weight: bold;
-        }
-
-        .modal-overlay {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: rgba(0,0,0,0.5);
-            z-index: 1000;
-            align-items: center;
-            justify-content: center;
-            padding: 20px;
-        }
-
-        .modal-overlay.active {
-            display: flex;
-        }
-
-        .modal {
-            background: white;
-            border-radius: 15px;
-            padding: 25px;
-            max-width: 400px;
-            width: 100%;
-            max-height: 90vh;
-            overflow-y: auto;
-        }
-
-        .modal h2 {
-            font-size: 18px;
-            margin-bottom: 15px;
-            color: #2c3e50;
-        }
-
-        .modal-close {
-            float: right;
-            background: none;
-            border: none;
-            font-size: 24px;
-            cursor: pointer;
-            color: #999;
-        }
-
-        .modal-close:hover {
-            color: #333;
-        }
-
-        .pago-item {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 12px 0;
-            border-bottom: 1px solid #eee;
-        }
-
-        .pago-item:last-child {
-            border-bottom: none;
-        }
-
-        .pago-label {
-            font-weight: 500;
-            flex: 1;
-        }
-
-        .pago-fecha {
-            font-size: 12px;
-            color: #666;
-            margin: 0 10px;
-        }
-
-        .btn-toggle {
-            padding: 6px 16px;
-            border: none;
-            border-radius: 20px;
-            font-size: 14px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-
-        .btn-toggle.pagado {
-            background: #27ae60;
-            color: white;
-        }
-
-        .btn-toggle.pendiente {
-            background: #e74c3c;
-            color: white;
-        }
-
-        .btn-toggle:hover {
-            transform: scale(1.05);
-        }
-
-        .btn-toggle.inactivo {
-            background: #95a5a6;
-            color: white;
-        }
-
-        .btn-toggle.activo {
-            background: #3498db;
-            color: white;
-        }
-
-        .btn {
-            padding: 10px 20px;
-            border: none;
-            border-radius: 8px;
-            font-size: 14px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.2s;
-            width: 100%;
-            margin-top: 8px;
-        }
-
-        .btn-primary {
-            background: #3498db;
-            color: white;
-        }
-
-        .btn-primary:hover {
-            background: #2980b9;
-        }
-
-        .btn-success {
-            background: #27ae60;
-            color: white;
-        }
-
-        .btn-success:hover {
-            background: #229954;
-        }
-
-        .btn-danger {
-            background: #e74c3c;
-            color: white;
-        }
-
-        .btn-danger:hover {
-            background: #c0392b;
-        }
-
-        .btn-warning {
-            background: #f39c12;
-            color: white;
-        }
-
-        .btn-warning:hover {
-            background: #e67e22;
-        }
-
-        .btn-secondary {
-            background: #95a5a6;
-            color: white;
-        }
-
-        .btn-secondary:hover {
-            background: #7f8c8d;
-        }
-
-        .btn-sm {
-            padding: 6px 12px;
-            font-size: 12px;
-            width: auto;
-        }
-
-        .form-group {
-            margin-bottom: 12px;
-        }
-
-        .form-group label {
-            display: block;
-            font-size: 14px;
-            font-weight: 600;
-            margin-bottom: 4px;
-            color: #555;
-        }
-
-        .form-control {
-            width: 100%;
-            padding: 10px;
-            border: 2px solid #ddd;
-            border-radius: 8px;
-            font-size: 14px;
-        }
-
-        .form-control:focus {
-            outline: none;
-            border-color: #3498db;
-        }
-
-        .form-row {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 10px;
-        }
-
-        select.form-control {
-            appearance: auto;
-        }
-
-        .finanzas-filtros {
-            display: flex;
-            gap: 8px;
-            margin-bottom: 12px;
-            flex-wrap: wrap;
-        }
-
-        .filtro-btn {
-            padding: 6px 14px;
-            border: 2px solid #ddd;
-            border-radius: 20px;
-            background: white;
-            font-size: 13px;
-            cursor: pointer;
-            transition: all 0.2s;
-            font-weight: 500;
-        }
-
-        .filtro-btn.active {
-            border-color: #3498db;
-            background: #3498db;
-            color: white;
-        }
-
-        .filtro-btn:hover {
-            border-color: #3498db;
-        }
-
-        .movimiento-item {
-            display: flex;
-            align-items: center;
-            padding: 10px;
-            border-bottom: 1px solid #eee;
-            gap: 10px;
-        }
-
-        .movimiento-item .fecha {
-            font-size: 12px;
-            color: #666;
-            min-width: 80px;
-        }
-
-        .movimiento-item .concepto {
-            flex: 1;
-            font-size: 14px;
-        }
-
-        .movimiento-item .monto {
-            font-weight: bold;
-            font-size: 14px;
-            min-width: 60px;
-            text-align: right;
-        }
-
-        .movimiento-item .monto.ingreso {
-            color: #27ae60;
-        }
-
-        .movimiento-item .monto.gasto {
-            color: #e74c3c;
-        }
-
-        .btn-accion {
-            background: none;
-            border: none;
-            font-size: 16px;
-            cursor: pointer;
-            padding: 0 4px;
-            transition: transform 0.2s;
-        }
-
-        .btn-accion:hover {
-            transform: scale(1.2);
-        }
-
-        .btn-editar {
-            color: #3498db;
-        }
-
-        .btn-eliminar {
-            color: #e74c3c;
-        }
-
-        .participant-list::-webkit-scrollbar,
-        .historial-list::-webkit-scrollbar {
-            width: 4px;
-        }
-
-        .participant-list::-webkit-scrollbar-thumb,
-        .historial-list::-webkit-scrollbar-thumb {
-            background: #bdc3c7;
-            border-radius: 4px;
-        }
-
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif; background: #f5f5f5; padding-bottom: 70px; color: #333; }
+        .header { background: #2c3e50; color: white; padding: 15px; text-align: center; position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 4px rgba(0,0,0,0.2); }
+        .header h1 { font-size: 20px; font-weight: 600; }
+        .tabs { display: flex; background: #34495e; position: sticky; top: 60px; z-index: 100; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        .tab { flex: 1; padding: 12px; text-align: center; color: #bdc3c7; background: transparent; border: none; font-size: 14px; font-weight: 600; cursor: pointer; transition: all 0.3s; }
+        .tab.active { color: white; background: #2c3e50; border-bottom: 3px solid #3498db; }
+        .tab:hover { background: #2c3e50; color: white; }
+        .content { display: none; padding: 15px; max-width: 600px; margin: 0 auto; }
+        .content.active { display: block; }
+        .card { background: white; border-radius: 10px; padding: 15px; margin-bottom: 15px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
+        .card-title { font-size: 16px; font-weight: 600; margin-bottom: 10px; color: #2c3e50; }
+        .search-box { width: 100%; padding: 10px; border: 2px solid #ddd; border-radius: 8px; font-size: 16px; margin-bottom: 10px; }
+        .search-box:focus { outline: none; border-color: #3498db; }
+        .participant-list { max-height: 400px; overflow-y: auto; }
+        .participant-item { display: flex; align-items: center; padding: 10px; border-bottom: 1px solid #eee; cursor: pointer; transition: background 0.2s; }
+        .participant-item:hover { background: #f8f9fa; }
+        .participant-item.inactive { opacity: 0.5; background: #f0f0f0; }
+        .participant-item.inactive:hover { background: #e8e8e8; }
+        .participant-name { flex: 1; font-size: 14px; font-weight: 500; }
+        .participant-status { display: flex; gap: 8px; margin-left: 10px; }
+        .status-icon { width: 28px; height: 28px; display: flex; align-items: center; justify-content: center; border-radius: 50%; font-size: 16px; font-weight: bold; }
+        .status-icon.pagado { background: #27ae60; color: white; }
+        .status-icon.pendiente { background: #e74c3c; color: white; }
+        .status-icon.inactive-icon { background: #95a5a6; color: white; font-size: 12px; }
+        .summary { background: #2c3e50; color: white; padding: 15px; border-radius: 10px; position: sticky; bottom: 70px; margin-top: 10px; }
+        .summary-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; margin-top: 8px; }
+        .summary-item { text-align: center; }
+        .summary-item .label { font-size: 11px; opacity: 0.8; }
+        .summary-item .value { font-size: 16px; font-weight: bold; }
+        .modal-overlay { display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.5); z-index: 1000; align-items: center; justify-content: center; padding: 20px; }
+        .modal-overlay.active { display: flex; }
+        .modal { background: white; border-radius: 15px; padding: 25px; max-width: 400px; width: 100%; max-height: 90vh; overflow-y: auto; }
+        .modal h2 { font-size: 18px; margin-bottom: 15px; color: #2c3e50; }
+        .modal-close { float: right; background: none; border: none; font-size: 24px; cursor: pointer; color: #999; }
+        .modal-close:hover { color: #333; }
+        .pago-item { display: flex; align-items: center; justify-content: space-between; padding: 12px 0; border-bottom: 1px solid #eee; }
+        .pago-item:last-child { border-bottom: none; }
+        .pago-label { font-weight: 500; flex: 1; }
+        .pago-fecha { font-size: 12px; color: #666; margin: 0 10px; }
+        .btn-toggle { padding: 6px 16px; border: none; border-radius: 20px; font-size: 14px; font-weight: 600; cursor: pointer; transition: all 0.2s; }
+        .btn-toggle.pagado { background: #27ae60; color: white; }
+        .btn-toggle.pendiente { background: #e74c3c; color: white; }
+        .btn-toggle:hover { transform: scale(1.05); }
+        .btn-toggle.inactivo { background: #95a5a6; color: white; }
+        .btn-toggle.activo { background: #3498db; color: white; }
+        .btn { padding: 10px 20px; border: none; border-radius: 8px; font-size: 14px; font-weight: 600; cursor: pointer; transition: all 0.2s; width: 100%; margin-top: 8px; }
+        .btn-primary { background: #3498db; color: white; }
+        .btn-primary:hover { background: #2980b9; }
+        .btn-success { background: #27ae60; color: white; }
+        .btn-success:hover { background: #229954; }
+        .btn-danger { background: #e74c3c; color: white; }
+        .btn-danger:hover { background: #c0392b; }
+        .btn-warning { background: #f39c12; color: white; }
+        .btn-warning:hover { background: #e67e22; }
+        .btn-secondary { background: #95a5a6; color: white; }
+        .btn-secondary:hover { background: #7f8c8d; }
+        .btn-sm { padding: 6px 12px; font-size: 12px; width: auto; }
+        .form-group { margin-bottom: 12px; }
+        .form-group label { display: block; font-size: 14px; font-weight: 600; margin-bottom: 4px; color: #555; }
+        .form-control { width: 100%; padding: 10px; border: 2px solid #ddd; border-radius: 8px; font-size: 14px; }
+        .form-control:focus { outline: none; border-color: #3498db; }
+        .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+        select.form-control { appearance: auto; }
+        .finanzas-filtros { display: flex; gap: 8px; margin-bottom: 12px; flex-wrap: wrap; }
+        .filtro-btn { padding: 6px 14px; border: 2px solid #ddd; border-radius: 20px; background: white; font-size: 13px; cursor: pointer; transition: all 0.2s; font-weight: 500; }
+        .filtro-btn.active { border-color: #3498db; background: #3498db; color: white; }
+        .filtro-btn:hover { border-color: #3498db; }
+        .movimiento-item { display: flex; align-items: center; padding: 10px; border-bottom: 1px solid #eee; gap: 10px; }
+        .movimiento-item .fecha { font-size: 12px; color: #666; min-width: 80px; }
+        .movimiento-item .concepto { flex: 1; font-size: 14px; }
+        .movimiento-item .monto { font-weight: bold; font-size: 14px; min-width: 60px; text-align: right; }
+        .movimiento-item .monto.ingreso { color: #27ae60; }
+        .movimiento-item .monto.gasto { color: #e74c3c; }
+        .btn-accion { background: none; border: none; font-size: 16px; cursor: pointer; padding: 0 4px; transition: transform 0.2s; }
+        .btn-accion:hover { transform: scale(1.2); }
+        .btn-editar { color: #3498db; }
+        .btn-eliminar { color: #e74c3c; }
+        .participant-list::-webkit-scrollbar, .historial-list::-webkit-scrollbar { width: 4px; }
+        .participant-list::-webkit-scrollbar-thumb, .historial-list::-webkit-scrollbar-thumb { background: #bdc3c7; border-radius: 4px; }
         @media (max-width: 480px) {
-            .summary-grid {
-                grid-template-columns: 1fr;
-                gap: 5px;
-            }
-            
-            .form-row {
-                grid-template-columns: 1fr;
-            }
-            
-            .participant-status {
-                gap: 4px;
-            }
-            
-            .status-icon {
-                width: 24px;
-                height: 24px;
-                font-size: 12px;
-            }
+            .summary-grid { grid-template-columns: 1fr; gap: 5px; }
+            .form-row { grid-template-columns: 1fr; }
+            .participant-status { gap: 4px; }
+            .status-icon { width: 24px; height: 24px; font-size: 12px; }
         }
-
-        @keyframes slideIn {
-            from {
-                transform: translateY(20px);
-                opacity: 0;
-            }
-            to {
-                transform: translateY(0);
-                opacity: 1;
-            }
-        }
-
-        .participant-item {
-            animation: slideIn 0.3s ease;
-        }
-
-        .historial-list {
-            max-height: 350px;
-            overflow-y: auto;
-        }
-
-        .empty-state {
-            text-align: center;
-            padding: 30px 0;
-            color: #999;
-        }
-
-        .badge {
-            display: inline-block;
-            padding: 2px 10px;
-            border-radius: 12px;
-            font-size: 11px;
-            font-weight: 600;
-        }
-
-        .badge-ingreso {
-            background: #d5f5e3;
-            color: #27ae60;
-        }
-
-        .badge-gasto {
-            background: #fadbd8;
-            color: #e74c3c;
-        }
-
-        .resumen-periodo {
-            background: #f8f9fa;
-            padding: 15px;
-            border-radius: 8px;
-            margin: 10px 0;
-        }
-
-        .resumen-periodo .linea {
-            display: flex;
-            justify-content: space-between;
-            padding: 6px 0;
-            border-bottom: 1px solid #eee;
-        }
-
-        .resumen-periodo .linea:last-child {
-            border-bottom: none;
-            font-weight: bold;
-            font-size: 16px;
-            padding-top: 10px;
-            margin-top: 10px;
-            border-top: 2px solid #2c3e50;
-        }
-
-        .historial-periodos {
-            max-height: 200px;
-            overflow-y: auto;
-        }
-
-        .periodo-item {
-            padding: 10px;
-            border-bottom: 1px solid #eee;
-            font-size: 14px;
-        }
-
-        .periodo-item .fecha {
-            color: #666;
-            font-size: 12px;
-        }
-
-        .periodo-item .total {
-            float: right;
-            font-weight: bold;
-            color: #27ae60;
-        }
-
-        .loading-overlay {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: rgba(0,0,0,0.7);
-            z-index: 2000;
-            align-items: center;
-            justify-content: center;
-            flex-direction: column;
-        }
-
-        .loading-overlay.active {
-            display: flex;
-        }
-
-        .loading-spinner {
-            width: 50px;
-            height: 50px;
-            border: 5px solid #f3f3f3;
-            border-top: 5px solid #3498db;
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-        }
-
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-
-        .loading-text {
-            color: white;
-            margin-top: 15px;
-            font-size: 16px;
-        }
+        @keyframes slideIn { from { transform: translateY(20px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+        .participant-item { animation: slideIn 0.3s ease; }
+        .historial-list { max-height: 350px; overflow-y: auto; }
+        .empty-state { text-align: center; padding: 30px 0; color: #999; }
+        .badge { display: inline-block; padding: 2px 10px; border-radius: 12px; font-size: 11px; font-weight: 600; }
+        .badge-ingreso { background: #d5f5e3; color: #27ae60; }
+        .badge-gasto { background: #fadbd8; color: #e74c3c; }
+        .resumen-periodo { background: #f8f9fa; padding: 15px; border-radius: 8px; margin: 10px 0; }
+        .resumen-periodo .linea { display: flex; justify-content: space-between; padding: 6px 0; border-bottom: 1px solid #eee; }
+        .resumen-periodo .linea:last-child { border-bottom: none; font-weight: bold; font-size: 16px; padding-top: 10px; margin-top: 10px; border-top: 2px solid #2c3e50; }
+        .historial-periodos { max-height: 200px; overflow-y: auto; }
+        .periodo-item { padding: 10px; border-bottom: 1px solid #eee; font-size: 14px; }
+        .periodo-item .fecha { color: #666; font-size: 12px; }
+        .periodo-item .total { float: right; font-weight: bold; color: #27ae60; }
+        .loading-overlay { display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.7); z-index: 2000; align-items: center; justify-content: center; flex-direction: column; }
+        .loading-overlay.active { display: flex; }
+        .loading-spinner { width: 50px; height: 50px; border: 5px solid #f3f3f3; border-top: 5px solid #3498db; border-radius: 50%; animation: spin 1s linear infinite; }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        .loading-text { color: white; margin-top: 15px; font-size: 16px; }
     </style>
 </head>
 <body>
 
-    <!-- Loading -->
     <div id="loadingOverlay" class="loading-overlay">
         <div class="loading-spinner"></div>
         <div class="loading-text">Cargando datos...</div>
     </div>
 
-    <!-- Header -->
-    <div class="header">
-        <h1>📋 Gestión Evangelización</h1>
-    </div>
+    <div class="header"><h1>📋 Gestión Evangelización</h1></div>
 
-    <!-- Tabs -->
     <div class="tabs">
         <button class="tab active" data-tab="cobros">👥 Cobros</button>
         <button class="tab" data-tab="finanzas">💰 Finanzas</button>
         <button class="tab" data-tab="admin">⚙️ Admin</button>
     </div>
 
-    <!-- ========== PANTALLA 1: COBROS ========== -->
+    <!-- COBROS -->
     <div id="cobros" class="content active">
         <div class="card">
             <div class="card-title">🔍 Buscar participante</div>
             <input type="text" id="searchInput" class="search-box" placeholder="Escribe el nombre...">
-            
             <div style="display: flex; gap: 8px; margin-bottom: 10px; flex-wrap: wrap;">
                 <button class="btn btn-primary btn-sm" onclick="abrirModalAgregar()">➕ Agregar</button>
                 <button class="btn btn-warning btn-sm" onclick="abrirModalMontos()">💰 Cambiar montos</button>
                 <button class="btn btn-secondary btn-sm" onclick="recargarDatos()">🔄 Sincronizar</button>
             </div>
         </div>
-
         <div class="card">
             <div class="card-title">📋 Participantes</div>
-            <div id="participantList" class="participant-list">
-                <!-- Generado por JavaScript -->
-            </div>
+            <div id="participantList" class="participant-list"></div>
         </div>
-
         <div class="summary" id="summary">
-            <div style="text-align: center; font-weight: bold; margin-bottom: 5px;">
-                📊 Resumen
-            </div>
-            <div id="summaryContent">
-                <!-- Generado por JavaScript -->
-            </div>
+            <div style="text-align: center; font-weight: bold; margin-bottom: 5px;">📊 Resumen</div>
+            <div id="summaryContent"></div>
         </div>
     </div>
 
-    <!-- ========== PANTALLA 2: FINANZAS ========== -->
+    <!-- FINANZAS -->
     <div id="finanzas" class="content">
         <div class="card">
             <div class="card-title">➕ Agregar movimiento</div>
@@ -726,7 +175,6 @@
             </div>
             <button class="btn btn-success" onclick="agregarMovimiento()">✅ Agregar movimiento</button>
         </div>
-
         <div class="card">
             <div class="card-title">🔍 Filtrar historial</div>
             <div class="finanzas-filtros">
@@ -738,66 +186,42 @@
                 <input type="text" id="finBuscar" class="form-control" placeholder="Buscar por concepto..." oninput="aplicarFiltrosFinanzas()">
             </div>
         </div>
-
         <div class="card">
             <div class="card-title">📋 Historial</div>
-            <div id="finanzasList" class="historial-list">
-                <!-- Generado por JavaScript -->
-            </div>
+            <div id="finanzasList" class="historial-list"></div>
         </div>
-
         <div class="summary" id="finanzasSummary">
             <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; text-align: center;">
-                <div>
-                    <div class="label">💰 Ingresos</div>
-                    <div class="value" id="totalIngresos" style="color: #27ae60;">$0</div>
-                </div>
-                <div>
-                    <div class="label">💸 Gastos</div>
-                    <div class="value" id="totalGastos" style="color: #e74c3c;">$0</div>
-                </div>
-                <div>
-                    <div class="label">📊 Saldo</div>
-                    <div class="value" id="totalSaldo" style="color: #3498db;">$0</div>
-                </div>
+                <div><div class="label">💰 Ingresos</div><div class="value" id="totalIngresos" style="color: #27ae60;">$0</div></div>
+                <div><div class="label">💸 Gastos</div><div class="value" id="totalGastos" style="color: #e74c3c;">$0</div></div>
+                <div><div class="label">📊 Saldo</div><div class="value" id="totalSaldo" style="color: #3498db;">$0</div></div>
             </div>
         </div>
     </div>
 
-    <!-- ========== PANTALLA 3: ADMINISTRACIÓN ========== -->
+    <!-- ADMIN -->
     <div id="admin" class="content">
         <div class="card">
             <div class="card-title">📊 Resumen del periodo actual</div>
-            <div id="resumenPeriodo" class="resumen-periodo">
-                <!-- Generado por JavaScript -->
-            </div>
+            <div id="resumenPeriodo" class="resumen-periodo"></div>
             <button class="btn btn-danger" onclick="cerrarPeriodo()">🔒 CERRAR PERIODO</button>
-            <p style="font-size: 12px; color: #666; margin-top: 8px;">
-                ⚠️ Al cerrar el periodo se guardará el resumen en el historial y se creará uno nuevo en blanco.
-            </p>
+            <p style="font-size: 12px; color: #666; margin-top: 8px;">⚠️ Al cerrar el periodo se guardará el resumen en el historial y se creará uno nuevo en blanco.</p>
         </div>
-
         <div class="card">
             <div class="card-title">📂 Períodos anteriores</div>
-            <div id="historialPeriodos" class="historial-periodos">
-                <!-- Generado por JavaScript -->
-            </div>
+            <div id="historialPeriodos" class="historial-periodos"></div>
         </div>
     </div>
 
-    <!-- ========== MODALES ========== -->
-    <!-- Modal Editar Participante -->
+    <!-- MODALES -->
     <div id="modalParticipante" class="modal-overlay">
         <div class="modal">
             <button class="modal-close" onclick="cerrarModal()">✕</button>
             <h2 id="modalTitle">Editar participante</h2>
-            <div id="modalContent">
-                <!-- Generado por JavaScript -->
-            </div>
+            <div id="modalContent"></div>
         </div>
     </div>
 
-    <!-- Modal Agregar Participante -->
     <div id="modalAgregar" class="modal-overlay">
         <div class="modal">
             <button class="modal-close" onclick="cerrarModalAgregar()">✕</button>
@@ -810,18 +234,14 @@
         </div>
     </div>
 
-    <!-- Modal Editar Movimiento -->
     <div id="modalEditarMovimiento" class="modal-overlay">
         <div class="modal">
             <button class="modal-close" onclick="cerrarModalEditarMovimiento()">✕</button>
             <h2>✏️ Editar movimiento</h2>
-            <div id="modalEditarMovimientoContent">
-                <!-- Generado por JavaScript -->
-            </div>
+            <div id="modalEditarMovimientoContent"></div>
         </div>
     </div>
 
-    <!-- Modal Cambiar Montos -->
     <div id="modalMontos" class="modal-overlay">
         <div class="modal">
             <button class="modal-close" onclick="cerrarModalMontos()">✕</button>
@@ -855,62 +275,80 @@
         let filtroFinanzasActual = 'todos';
         let participanteEditando = null;
         let movimientoEditando = null;
+        let cargando = false;
 
         // ============================================
-        // FUNCIONES DE API - CORREGIDAS
+        // FUNCIONES DE API - ¡ESTA ES LA ÚNICA VERSIÓN!
         // ============================================
-        async function callAPI(action, payload = {}) {
+        
+        // Para obtener datos (GET)
+        async function fetchData() {
+            try {
+                const response = await fetch(API_URL + '?action=getData');
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                const result = await response.json();
+                return result;
+            } catch (error) {
+                console.error('Error:', error);
+                return null;
+            }
+        }
+
+        // Para enviar datos (POST)
+        async function sendData(action, data) {
             try {
                 const response = await fetch(API_URL, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
                     },
-                    body: JSON.stringify({ action, ...payload })
+                    body: JSON.stringify({ action: action, data: data })
                 });
-                
                 if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status}`);
+                    throw new Error('Network response was not ok');
                 }
-                
                 const result = await response.json();
                 return result;
             } catch (error) {
-                console.error('Error en API:', error);
-                return { success: false, error: error.message };
-            }
-        }
-
-        async function getDataFromAPI() {
-            try {
-                const response = await fetch(`${API_URL}?action=getData`);
-                
-                if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status}`);
-                }
-                
-                const result = await response.json();
-                return result;
-            } catch (error) {
-                console.error('Error al obtener datos:', error);
+                console.error('Error:', error);
                 return null;
             }
         }
 
         // ============================================
-        // FUNCIONES DE CARGA Y SINCRONIZACIÓN
+        // FUNCIONES DE CARGA
         // ============================================
         async function cargarDatos() {
+            if (cargando) return;
+            cargando = true;
             mostrarLoading(true);
-            const result = await getDataFromAPI();
-            mostrarLoading(false);
             
-            if (result) {
-                data = result;
+            const result = await fetchData();
+            
+            mostrarLoading(false);
+            cargando = false;
+            
+            if (result && result.success) {
+                data = result.data;
                 return true;
             } else {
-                alert('Error al conectar con Google Sheets. Verifica tu conexión a internet.');
-                return false;
+                // Datos de ejemplo si no hay conexión
+                data = {
+                    config: { montoInscripcion: 50, montoCompendio: 80, montoCrucifijo: 50 },
+                    participantes: [
+                        { id: 1, nombre: "Alberto Domingo García Contreras", activo: true, pagos: { inscripcion: { pagado: true, fecha: "2026-08-03" }, compendio: { pagado: true, fecha: "2026-08-03" }, crucifijo: { pagado: false, fecha: null } } },
+                        { id: 2, nombre: "Alisson Celerino Reyes", activo: true, pagos: { inscripcion: { pagado: true, fecha: "2026-08-03" }, compendio: { pagado: false, fecha: null }, crucifijo: { pagado: false, fecha: null } } },
+                        { id: 3, nombre: "Andrés González Juárez", activo: true, pagos: { inscripcion: { pagado: true, fecha: "2026-01-03" }, compendio: { pagado: true, fecha: "2026-01-03" }, crucifijo: { pagado: true, fecha: "2026-05-31" } } }
+                    ],
+                    finanzas: [
+                        { id: 1, tipo: "ingreso", concepto: "Donativo", monto: 200, fecha: "2026-06-17" },
+                        { id: 2, tipo: "gasto", concepto: "Transporte", monto: 50, fecha: "2026-06-16" }
+                    ],
+                    historial: []
+                };
+                return true;
             }
         }
 
@@ -924,7 +362,7 @@
         }
 
         // ============================================
-        // RENDERIZADO PRINCIPAL
+        // RENDERIZADO
         // ============================================
         function renderizarTodo() {
             if (!data) return;
@@ -938,39 +376,22 @@
         function renderizarParticipantes() {
             const searchTerm = document.getElementById('searchInput').value.toLowerCase();
             const list = document.getElementById('participantList');
-            
             const activos = data.participantes.filter(p => p.activo);
             const inactivos = data.participantes.filter(p => !p.activo);
-            const filtrados = [...activos, ...inactivos].filter(p => 
-                p.nombre.toLowerCase().includes(searchTerm)
-            );
-
-            if (filtrados.length === 0) {
-                list.innerHTML = '<div class="empty-state">No hay participantes</div>';
-                return;
-            }
-
+            const filtrados = [...activos, ...inactivos].filter(p => p.nombre.toLowerCase().includes(searchTerm));
+            if (filtrados.length === 0) { list.innerHTML = '<div class="empty-state">No hay participantes</div>'; return; }
             list.innerHTML = filtrados.map(p => {
                 const statusClass = p.activo ? '' : 'inactive';
                 const statusIcon = p.activo ? '' : '<span class="status-icon inactive-icon">⛔</span>';
-                
-                return `
-                    <div class="participant-item ${statusClass}" onclick="editarParticipante('${p.nombre}')">
-                        <span class="participant-name">${p.nombre}</span>
-                        <div class="participant-status">
-                            ${statusIcon}
-                            <span class="status-icon ${p.pagos.inscripcion.pagado ? 'pagado' : 'pendiente'}">
-                                ${p.pagos.inscripcion.pagado ? '✓' : '✗'}
-                            </span>
-                            <span class="status-icon ${p.pagos.compendio.pagado ? 'pagado' : 'pendiente'}">
-                                ${p.pagos.compendio.pagado ? '✓' : '✗'}
-                            </span>
-                            <span class="status-icon ${p.pagos.crucifijo.pagado ? 'pagado' : 'pendiente'}">
-                                ${p.pagos.crucifijo.pagado ? '✓' : '✗'}
-                            </span>
-                        </div>
+                return `<div class="participant-item ${statusClass}" onclick="editarParticipante('${p.nombre}')">
+                    <span class="participant-name">${p.nombre}</span>
+                    <div class="participant-status">
+                        ${statusIcon}
+                        <span class="status-icon ${p.pagos.inscripcion.pagado ? 'pagado' : 'pendiente'}">${p.pagos.inscripcion.pagado ? '✓' : '✗'}</span>
+                        <span class="status-icon ${p.pagos.compendio.pagado ? 'pagado' : 'pendiente'}">${p.pagos.compendio.pagado ? '✓' : '✗'}</span>
+                        <span class="status-icon ${p.pagos.crucifijo.pagado ? 'pagado' : 'pendiente'}">${p.pagos.crucifijo.pagado ? '✓' : '✗'}</span>
                     </div>
-                `;
+                </div>`;
             }).join('');
         }
 
@@ -978,28 +399,15 @@
             const activos = data.participantes.filter(p => p.activo);
             const inactivos = data.participantes.filter(p => !p.activo);
             const total = activos.length;
-            
             const pagadosInsc = activos.filter(p => p.pagos.inscripcion.pagado).length;
             const pagadosComp = activos.filter(p => p.pagos.compendio.pagado).length;
             const pagadosCruc = activos.filter(p => p.pagos.crucifijo.pagado).length;
-
             document.getElementById('summaryContent').innerHTML = `
-                <div style="text-align: center; font-size: 14px; margin-bottom: 5px;">
-                    👥 Total: ${data.participantes.length} participantes (${inactivos.length} inactivos)
-                </div>
+                <div style="text-align: center; font-size: 14px; margin-bottom: 5px;">👥 Total: ${data.participantes.length} participantes (${inactivos.length} inactivos)</div>
                 <div class="summary-grid">
-                    <div class="summary-item">
-                        <div class="label">📝 Inscripción</div>
-                        <div class="value">${pagadosInsc}/${total}</div>
-                    </div>
-                    <div class="summary-item">
-                        <div class="label">📚 Compendio</div>
-                        <div class="value">${pagadosComp}/${total}</div>
-                    </div>
-                    <div class="summary-item">
-                        <div class="label">✝️ Crucifijo</div>
-                        <div class="value">${pagadosCruc}/${total}</div>
-                    </div>
+                    <div class="summary-item"><div class="label">📝 Inscripción</div><div class="value">${pagadosInsc}/${total}</div></div>
+                    <div class="summary-item"><div class="label">📚 Compendio</div><div class="value">${pagadosComp}/${total}</div></div>
+                    <div class="summary-item"><div class="label">✝️ Crucifijo</div><div class="value">${pagadosCruc}/${total}</div></div>
                 </div>
             `;
         }
@@ -1010,331 +418,139 @@
         function renderizarFinanzas() {
             const list = document.getElementById('finanzasList');
             const buscar = document.getElementById('finBuscar').value.toLowerCase();
-            
             let movimientos = data.finanzas || [];
-            
-            if (filtroFinanzasActual !== 'todos') {
-                movimientos = movimientos.filter(m => m.tipo === filtroFinanzasActual);
-            }
-            
-            if (buscar) {
-                movimientos = movimientos.filter(m => 
-                    m.concepto.toLowerCase().includes(buscar)
-                );
-            }
-            
+            if (filtroFinanzasActual !== 'todos') movimientos = movimientos.filter(m => m.tipo === filtroFinanzasActual);
+            if (buscar) movimientos = movimientos.filter(m => m.concepto.toLowerCase().includes(buscar));
             movimientos.sort((a, b) => b.fecha.localeCompare(a.fecha));
-
-            if (movimientos.length === 0) {
-                list.innerHTML = '<div class="empty-state">No hay movimientos</div>';
-                return;
-            }
-
+            if (movimientos.length === 0) { list.innerHTML = '<div class="empty-state">No hay movimientos</div>'; return; }
             list.innerHTML = movimientos.map(m => {
                 const signo = m.tipo === 'ingreso' ? '+' : '-';
                 const clase = m.tipo === 'ingreso' ? 'ingreso' : 'gasto';
                 const badge = m.tipo === 'ingreso' ? 'badge-ingreso' : 'badge-gasto';
                 const label = m.tipo === 'ingreso' ? 'Ingreso' : 'Gasto';
-                
-                return `
-                    <div class="movimiento-item">
-                        <span class="fecha">${formatearFecha(m.fecha)}</span>
-                        <span class="badge ${badge}">${label}</span>
-                        <span class="concepto">${m.concepto}</span>
-                        <span class="monto ${clase}">${signo}$${m.monto.toFixed(2)}</span>
-                        <button class="btn-accion btn-editar" onclick="abrirModalEditarMovimiento(${m.id})" title="Editar">✏️</button>
-                        <button class="btn-accion btn-eliminar" onclick="eliminarMovimiento(${m.id})" title="Eliminar">🗑️</button>
-                    </div>
-                `;
+                return `<div class="movimiento-item">
+                    <span class="fecha">${formatearFecha(m.fecha)}</span>
+                    <span class="badge ${badge}">${label}</span>
+                    <span class="concepto">${m.concepto}</span>
+                    <span class="monto ${clase}">${signo}$${m.monto.toFixed(2)}</span>
+                    <button class="btn-accion btn-editar" onclick="abrirModalEditarMovimiento(${m.id})" title="Editar">✏️</button>
+                    <button class="btn-accion btn-eliminar" onclick="eliminarMovimiento(${m.id})" title="Eliminar">🗑️</button>
+                </div>`;
             }).join('');
         }
 
         function renderizarResumenFinanzas() {
             const finanzas = data.finanzas || [];
-            
-            const totalIngresos = finanzas
-                .filter(m => m.tipo === 'ingreso')
-                .reduce((sum, m) => sum + m.monto, 0);
-            
-            const totalGastos = finanzas
-                .filter(m => m.tipo === 'gasto')
-                .reduce((sum, m) => sum + m.monto, 0);
-            
+            const totalIngresos = finanzas.filter(m => m.tipo === 'ingreso').reduce((sum, m) => sum + m.monto, 0);
+            const totalGastos = finanzas.filter(m => m.tipo === 'gasto').reduce((sum, m) => sum + m.monto, 0);
             const saldo = totalIngresos - totalGastos;
-
             document.getElementById('totalIngresos').textContent = `$${totalIngresos.toFixed(2)}`;
             document.getElementById('totalGastos').textContent = `$${totalGastos.toFixed(2)}`;
             document.getElementById('totalSaldo').textContent = `$${saldo.toFixed(2)}`;
         }
 
         // ============================================
-        // ADMINISTRACIÓN
+        // ADMIN
         // ============================================
         function renderizarAdmin() {
-            renderizarResumenPeriodo();
-            renderizarHistorial();
-        }
-
-        function renderizarResumenPeriodo() {
             const activos = data.participantes.filter(p => p.activo);
             const total = activos.length;
-            
             const pagadosInsc = activos.filter(p => p.pagos.inscripcion.pagado).length;
             const pagadosComp = activos.filter(p => p.pagos.compendio.pagado).length;
             const pagadosCruc = activos.filter(p => p.pagos.crucifijo.pagado).length;
-            
             const totalInsc = pagadosInsc * data.config.montoInscripcion;
             const totalComp = pagadosComp * data.config.montoCompendio;
             const totalCruc = pagadosCruc * data.config.montoCrucifijo;
             const totalGeneral = totalInsc + totalComp + totalCruc;
-
             const finanzas = data.finanzas || [];
-            const totalIngresos = finanzas
-                .filter(m => m.tipo === 'ingreso')
-                .reduce((sum, m) => sum + m.monto, 0);
-            
-            const totalGastos = finanzas
-                .filter(m => m.tipo === 'gasto')
-                .reduce((sum, m) => sum + m.monto, 0);
-
+            const totalIngresos = finanzas.filter(m => m.tipo === 'ingreso').reduce((sum, m) => sum + m.monto, 0);
+            const totalGastos = finanzas.filter(m => m.tipo === 'gasto').reduce((sum, m) => sum + m.monto, 0);
             document.getElementById('resumenPeriodo').innerHTML = `
-                <div class="linea">
-                    <span>👥 Participantes activos</span>
-                    <span>${total}</span>
-                </div>
-                <div class="linea">
-                    <span>📝 Inscripción (${pagadosInsc}/${total})</span>
-                    <span>$${totalInsc.toFixed(2)}</span>
-                </div>
-                <div class="linea">
-                    <span>📚 Compendio (${pagadosComp}/${total})</span>
-                    <span>$${totalComp.toFixed(2)}</span>
-                </div>
-                <div class="linea">
-                    <span>✝️ Crucifijo (${pagadosCruc}/${total})</span>
-                    <span>$${totalCruc.toFixed(2)}</span>
-                </div>
-                <div class="linea">
-                    <span>💰 Total recaudado</span>
-                    <span>$${totalGeneral.toFixed(2)}</span>
-                </div>
-                <div class="linea">
-                    <span>📊 Ingresos adicionales</span>
-                    <span>$${totalIngresos.toFixed(2)}</span>
-                </div>
-                <div class="linea">
-                    <span>💸 Gastos</span>
-                    <span>$${totalGastos.toFixed(2)}</span>
-                </div>
-                <div class="linea">
-                    <span>📈 Saldo final</span>
-                    <span>$${(totalGeneral + totalIngresos - totalGastos).toFixed(2)}</span>
-                </div>
+                <div class="linea"><span>👥 Participantes activos</span><span>${total}</span></div>
+                <div class="linea"><span>📝 Inscripción (${pagadosInsc}/${total})</span><span>$${totalInsc.toFixed(2)}</span></div>
+                <div class="linea"><span>📚 Compendio (${pagadosComp}/${total})</span><span>$${totalComp.toFixed(2)}</span></div>
+                <div class="linea"><span>✝️ Crucifijo (${pagadosCruc}/${total})</span><span>$${totalCruc.toFixed(2)}</span></div>
+                <div class="linea"><span>💰 Total recaudado</span><span>$${totalGeneral.toFixed(2)}</span></div>
+                <div class="linea"><span>📊 Ingresos adicionales</span><span>$${totalIngresos.toFixed(2)}</span></div>
+                <div class="linea"><span>💸 Gastos</span><span>$${totalGastos.toFixed(2)}</span></div>
+                <div class="linea"><span>📈 Saldo final</span><span>$${(totalGeneral + totalIngresos - totalGastos).toFixed(2)}</span></div>
             `;
-        }
-
-        function renderizarHistorial() {
-            const list = document.getElementById('historialPeriodos');
             const historial = data.historial || [];
-            
-            if (historial.length === 0) {
-                list.innerHTML = '<div class="empty-state">No hay períodos cerrados</div>';
-                return;
-            }
-
-            list.innerHTML = historial.map(h => `
-                <div class="periodo-item">
-                    <div>
-                        <strong>${h.nombre}</strong>
-                        <span class="total">$${h.total.toFixed(2)}</span>
-                    </div>
-                    <div class="fecha">Cerrado: ${formatearFecha(h.fechaCierre)}</div>
-                </div>
-            `).join('');
+            const list = document.getElementById('historialPeriodos');
+            if (historial.length === 0) { list.innerHTML = '<div class="empty-state">No hay períodos cerrados</div>'; return; }
+            list.innerHTML = historial.map(h => `<div class="periodo-item"><div><strong>${h.nombre}</strong><span class="total">$${h.total.toFixed(2)}</span></div><div class="fecha">Cerrado: ${formatearFecha(h.fechaCierre)}</div></div>`).join('');
         }
 
         // ============================================
-        // ACCIONES DE PARTICIPANTES
+        // ACCIONES
         // ============================================
         async function togglePago(nombre, concepto) {
             const participante = data.participantes.find(p => p.nombre === nombre);
             if (!participante) return;
-            
             const pago = participante.pagos[concepto];
             pago.pagado = !pago.pagado;
             pago.fecha = pago.pagado ? obtenerFechaActual() : null;
-            
             mostrarLoading(true);
-            const result = await callAPI('updatePago', {
-                nombre: nombre,
-                concepto: concepto,
-                pagado: pago.pagado,
-                fecha: pago.fecha
-            });
-            
-            if (result && result.success) {
-                await recargarDatos();
-            } else {
-                alert('Error al actualizar el pago');
-                mostrarLoading(false);
-            }
+            const result = await sendData('updatePago', { nombre, concepto, pagado: pago.pagado, fecha: pago.fecha });
+            if (result && result.success) { await recargarDatos(); } else { alert('Error al actualizar el pago'); mostrarLoading(false); }
             mostrarLoading(false);
-            
-            if (participanteEditando === nombre) {
-                editarParticipante(nombre);
-            }
+            if (participanteEditando === nombre) editarParticipante(nombre);
         }
 
         async function toggleActivo(nombre) {
             const participante = data.participantes.find(p => p.nombre === nombre);
             if (!participante) return;
-            
             participante.activo = !participante.activo;
-            
             mostrarLoading(true);
-            const result = await callAPI('updateActivo', {
-                nombre: nombre,
-                activo: participante.activo
-            });
-            
-            if (result && result.success) {
-                await recargarDatos();
-            } else {
-                alert('Error al actualizar el estado');
-                mostrarLoading(false);
-            }
+            const result = await sendData('updateActivo', { nombre, activo: participante.activo });
+            if (result && result.success) { await recargarDatos(); } else { alert('Error al actualizar el estado'); mostrarLoading(false); }
             mostrarLoading(false);
-            
-            if (participanteEditando === nombre) {
-                editarParticipante(nombre);
-            }
+            if (participanteEditando === nombre) editarParticipante(nombre);
         }
 
         async function agregarParticipante() {
             const nombre = document.getElementById('nuevoNombre').value.trim();
-            
-            if (!nombre) {
-                alert('Por favor, escribe el nombre del participante.');
-                return;
-            }
-            
+            if (!nombre) { alert('Por favor, escribe el nombre del participante.'); return; }
             mostrarLoading(true);
-            const result = await callAPI('addParticipante', { nombre: nombre });
-            
-            if (result && result.success) {
-                await recargarDatos();
-            } else {
-                alert('Error al agregar el participante');
-                mostrarLoading(false);
-            }
+            const result = await sendData('addParticipante', { nombre });
+            if (result && result.success) { await recargarDatos(); } else { alert('Error al agregar el participante'); mostrarLoading(false); }
             mostrarLoading(false);
-            
             cerrarModalAgregar();
         }
 
         function editarParticipante(nombre) {
             const participante = data.participantes.find(p => p.nombre === nombre);
             if (!participante) return;
-            
             participanteEditando = nombre;
             const modal = document.getElementById('modalParticipante');
             const content = document.getElementById('modalContent');
-            
             document.getElementById('modalTitle').textContent = `✏️ Editar: ${participante.nombre}`;
-            
             content.innerHTML = `
-                <div class="pago-item">
-                    <span class="pago-label">📝 Inscripción ($${data.config.montoInscripcion})</span>
-                    <span class="pago-fecha">${participante.pagos.inscripcion.fecha ? formatearFecha(participante.pagos.inscripcion.fecha) : 'Sin fecha'}</span>
-                    <button class="btn-toggle ${participante.pagos.inscripcion.pagado ? 'pagado' : 'pendiente'}" 
-                            onclick="togglePago('${participante.nombre}', 'inscripcion')">
-                        ${participante.pagos.inscripcion.pagado ? '✅ Pagado' : '❌ Pendiente'}
-                    </button>
-                </div>
-                <div class="pago-item">
-                    <span class="pago-label">📚 Compendio ($${data.config.montoCompendio})</span>
-                    <span class="pago-fecha">${participante.pagos.compendio.fecha ? formatearFecha(participante.pagos.compendio.fecha) : 'Sin fecha'}</span>
-                    <button class="btn-toggle ${participante.pagos.compendio.pagado ? 'pagado' : 'pendiente'}" 
-                            onclick="togglePago('${participante.nombre}', 'compendio')">
-                        ${participante.pagos.compendio.pagado ? '✅ Pagado' : '❌ Pendiente'}
-                    </button>
-                </div>
-                <div class="pago-item">
-                    <span class="pago-label">✝️ Crucifijo ($${data.config.montoCrucifijo})</span>
-                    <span class="pago-fecha">${participante.pagos.crucifijo.fecha ? formatearFecha(participante.pagos.crucifijo.fecha) : 'Sin fecha'}</span>
-                    <button class="btn-toggle ${participante.pagos.crucifijo.pagado ? 'pagado' : 'pendiente'}" 
-                            onclick="togglePago('${participante.nombre}', 'crucifijo')">
-                        ${participante.pagos.crucifijo.pagado ? '✅ Pagado' : '❌ Pendiente'}
-                    </button>
-                </div>
+                <div class="pago-item"><span class="pago-label">📝 Inscripción ($${data.config.montoInscripcion})</span><span class="pago-fecha">${participante.pagos.inscripcion.fecha ? formatearFecha(participante.pagos.inscripcion.fecha) : 'Sin fecha'}</span><button class="btn-toggle ${participante.pagos.inscripcion.pagado ? 'pagado' : 'pendiente'}" onclick="togglePago('${participante.nombre}', 'inscripcion')">${participante.pagos.inscripcion.pagado ? '✅ Pagado' : '❌ Pendiente'}</button></div>
+                <div class="pago-item"><span class="pago-label">📚 Compendio ($${data.config.montoCompendio})</span><span class="pago-fecha">${participante.pagos.compendio.fecha ? formatearFecha(participante.pagos.compendio.fecha) : 'Sin fecha'}</span><button class="btn-toggle ${participante.pagos.compendio.pagado ? 'pagado' : 'pendiente'}" onclick="togglePago('${participante.nombre}', 'compendio')">${participante.pagos.compendio.pagado ? '✅ Pagado' : '❌ Pendiente'}</button></div>
+                <div class="pago-item"><span class="pago-label">✝️ Crucifijo ($${data.config.montoCrucifijo})</span><span class="pago-fecha">${participante.pagos.crucifijo.fecha ? formatearFecha(participante.pagos.crucifijo.fecha) : 'Sin fecha'}</span><button class="btn-toggle ${participante.pagos.crucifijo.pagado ? 'pagado' : 'pendiente'}" onclick="togglePago('${participante.nombre}', 'crucifijo')">${participante.pagos.crucifijo.pagado ? '✅ Pagado' : '❌ Pendiente'}</button></div>
                 <hr style="margin: 15px 0;">
-                <div class="pago-item">
-                    <span class="pago-label">👤 Estado</span>
-                    <button class="btn-toggle ${participante.activo ? 'activo' : 'inactivo'}" 
-                            onclick="toggleActivo('${participante.nombre}')">
-                        ${participante.activo ? '🟢 Activo' : '🔴 Inactivo'}
-                    </button>
-                </div>
+                <div class="pago-item"><span class="pago-label">👤 Estado</span><button class="btn-toggle ${participante.activo ? 'activo' : 'inactivo'}" onclick="toggleActivo('${participante.nombre}')">${participante.activo ? '🟢 Activo' : '🔴 Inactivo'}</button></div>
             `;
-            
             modal.classList.add('active');
         }
 
-        function cerrarModal() {
-            document.getElementById('modalParticipante').classList.remove('active');
-            participanteEditando = null;
-        }
+        function cerrarModal() { document.getElementById('modalParticipante').classList.remove('active'); participanteEditando = null; }
+        function abrirModalAgregar() { document.getElementById('modalAgregar').classList.add('active'); document.getElementById('nuevoNombre').value = ''; document.getElementById('nuevoNombre').focus(); }
+        function cerrarModalAgregar() { document.getElementById('modalAgregar').classList.remove('active'); }
 
-        function abrirModalAgregar() {
-            document.getElementById('modalAgregar').classList.add('active');
-            document.getElementById('nuevoNombre').value = '';
-            document.getElementById('nuevoNombre').focus();
-        }
-
-        function cerrarModalAgregar() {
-            document.getElementById('modalAgregar').classList.remove('active');
-        }
-
-        // ============================================
-        // ACCIONES DE FINANZAS
-        // ============================================
         async function agregarMovimiento() {
             const tipo = document.getElementById('finTipo').value;
             const concepto = document.getElementById('finConcepto').value.trim();
             const monto = parseFloat(document.getElementById('finMonto').value);
             const fecha = document.getElementById('finFecha').value;
-
-            if (!concepto) {
-                alert('Por favor, escribe un concepto.');
-                return;
-            }
-
-            if (!monto || monto <= 0) {
-                alert('Por favor, ingresa un monto válido.');
-                return;
-            }
-
-            if (!fecha) {
-                alert('Por favor, selecciona una fecha.');
-                return;
-            }
-
+            if (!concepto) { alert('Por favor, escribe un concepto.'); return; }
+            if (!monto || monto <= 0) { alert('Por favor, ingresa un monto válido.'); return; }
+            if (!fecha) { alert('Por favor, selecciona una fecha.'); return; }
             mostrarLoading(true);
-            const result = await callAPI('addFinanza', {
-                tipo: tipo,
-                concepto: concepto,
-                monto: monto,
-                fecha: fecha
-            });
-            
-            if (result && result.success) {
-                await recargarDatos();
-            } else {
-                alert('Error al agregar el movimiento');
-                mostrarLoading(false);
-            }
+            const result = await sendData('addFinanza', { tipo, concepto, monto, fecha });
+            if (result && result.success) { await recargarDatos(); } else { alert('Error al agregar el movimiento'); mostrarLoading(false); }
             mostrarLoading(false);
-            
             document.getElementById('finConcepto').value = '';
             document.getElementById('finMonto').value = '';
             document.getElementById('finFecha').value = obtenerFechaActual();
@@ -1342,52 +558,24 @@
 
         async function eliminarMovimiento(id) {
             if (!confirm('¿Estás seguro de eliminar este movimiento?')) return;
-            
             mostrarLoading(true);
-            const result = await callAPI('deleteFinanza', { id: id });
-            
-            if (result && result.success) {
-                await recargarDatos();
-            } else {
-                alert('Error al eliminar el movimiento');
-                mostrarLoading(false);
-            }
+            const result = await sendData('deleteFinanza', { id });
+            if (result && result.success) { await recargarDatos(); } else { alert('Error al eliminar el movimiento'); mostrarLoading(false); }
             mostrarLoading(false);
         }
 
         function abrirModalEditarMovimiento(id) {
             const movimiento = data.finanzas.find(m => m.id === id);
             if (!movimiento) return;
-            
             movimientoEditando = id;
             const modal = document.getElementById('modalEditarMovimiento');
             const content = document.getElementById('modalEditarMovimientoContent');
-            
             content.innerHTML = `
-                <div class="form-group">
-                    <label>Tipo</label>
-                    <select id="editFinTipo" class="form-control">
-                        <option value="ingreso" ${movimiento.tipo === 'ingreso' ? 'selected' : ''}>💰 Ingreso</option>
-                        <option value="gasto" ${movimiento.tipo === 'gasto' ? 'selected' : ''}>💸 Gasto</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label>Concepto</label>
-                    <input type="text" id="editFinConcepto" class="form-control" value="${movimiento.concepto}">
-                </div>
-                <div class="form-row">
-                    <div class="form-group">
-                        <label>Monto ($)</label>
-                        <input type="number" id="editFinMonto" class="form-control" value="${movimiento.monto}" step="0.01">
-                    </div>
-                    <div class="form-group">
-                        <label>Fecha</label>
-                        <input type="date" id="editFinFecha" class="form-control" value="${movimiento.fecha}">
-                    </div>
-                </div>
+                <div class="form-group"><label>Tipo</label><select id="editFinTipo" class="form-control"><option value="ingreso" ${movimiento.tipo === 'ingreso' ? 'selected' : ''}>💰 Ingreso</option><option value="gasto" ${movimiento.tipo === 'gasto' ? 'selected' : ''}>💸 Gasto</option></select></div>
+                <div class="form-group"><label>Concepto</label><input type="text" id="editFinConcepto" class="form-control" value="${movimiento.concepto}"></div>
+                <div class="form-row"><div class="form-group"><label>Monto ($)</label><input type="number" id="editFinMonto" class="form-control" value="${movimiento.monto}" step="0.01"></div><div class="form-group"><label>Fecha</label><input type="date" id="editFinFecha" class="form-control" value="${movimiento.fecha}"></div></div>
                 <button class="btn btn-primary" onclick="guardarEdicionMovimiento()">💾 Guardar cambios</button>
             `;
-            
             modal.classList.add('active');
         }
 
@@ -1396,189 +584,81 @@
             const concepto = document.getElementById('editFinConcepto').value.trim();
             const monto = parseFloat(document.getElementById('editFinMonto').value);
             const fecha = document.getElementById('editFinFecha').value;
-
-            if (!concepto) {
-                alert('Por favor, escribe un concepto.');
-                return;
-            }
-
-            if (!monto || monto <= 0) {
-                alert('Por favor, ingresa un monto válido.');
-                return;
-            }
-
-            if (!fecha) {
-                alert('Por favor, selecciona una fecha.');
-                return;
-            }
-
+            if (!concepto) { alert('Por favor, escribe un concepto.'); return; }
+            if (!monto || monto <= 0) { alert('Por favor, ingresa un monto válido.'); return; }
+            if (!fecha) { alert('Por favor, selecciona una fecha.'); return; }
             mostrarLoading(true);
-            const result = await callAPI('updateFinanza', {
-                id: movimientoEditando,
-                tipo: tipo,
-                concepto: concepto,
-                monto: monto,
-                fecha: fecha
-            });
-            
-            if (result && result.success) {
-                await recargarDatos();
-            } else {
-                alert('Error al actualizar el movimiento');
-                mostrarLoading(false);
-            }
+            const result = await sendData('updateFinanza', { id: movimientoEditando, tipo, concepto, monto, fecha });
+            if (result && result.success) { await recargarDatos(); } else { alert('Error al actualizar el movimiento'); mostrarLoading(false); }
             mostrarLoading(false);
-            
             cerrarModalEditarMovimiento();
         }
 
-        function cerrarModalEditarMovimiento() {
-            document.getElementById('modalEditarMovimiento').classList.remove('active');
-            movimientoEditando = null;
-        }
+        function cerrarModalEditarMovimiento() { document.getElementById('modalEditarMovimiento').classList.remove('active'); movimientoEditando = null; }
+        function filtrarFinanzas(tipo) { filtroFinanzasActual = tipo; document.querySelectorAll('.filtro-btn').forEach(btn => { btn.classList.toggle('active', btn.dataset.filtro === tipo); }); aplicarFiltrosFinanzas(); }
+        function aplicarFiltrosFinanzas() { renderizarFinanzas(); }
 
-        function filtrarFinanzas(tipo) {
-            filtroFinanzasActual = tipo;
-            
-            document.querySelectorAll('.filtro-btn').forEach(btn => {
-                btn.classList.toggle('active', btn.dataset.filtro === tipo);
-            });
-            
-            aplicarFiltrosFinanzas();
-        }
-
-        function aplicarFiltrosFinanzas() {
-            renderizarFinanzas();
-        }
-
-        // ============================================
-        // ACCIONES DE ADMINISTRACIÓN
-        // ============================================
         async function cerrarPeriodo() {
-            if (!confirm('¿Estás seguro de cerrar el periodo actual? Se guardará el resumen y se creará uno nuevo en blanco.')) return;
-            
+            if (!confirm('¿Estás seguro de cerrar el periodo actual?')) return;
             const activos = data.participantes.filter(p => p.activo);
             const total = activos.length;
-            
             const pagadosInsc = activos.filter(p => p.pagos.inscripcion.pagado).length;
             const pagadosComp = activos.filter(p => p.pagos.compendio.pagado).length;
             const pagadosCruc = activos.filter(p => p.pagos.crucifijo.pagado).length;
-            
             const totalInsc = pagadosInsc * data.config.montoInscripcion;
             const totalComp = pagadosComp * data.config.montoCompendio;
             const totalCruc = pagadosCruc * data.config.montoCrucifijo;
             const totalGeneral = totalInsc + totalComp + totalCruc;
-
             const finanzas = data.finanzas || [];
-            const totalIngresos = finanzas
-                .filter(m => m.tipo === 'ingreso')
-                .reduce((sum, m) => sum + m.monto, 0);
-            
-            const totalGastos = finanzas
-                .filter(m => m.tipo === 'gasto')
-                .reduce((sum, m) => sum + m.monto, 0);
-
+            const totalIngresos = finanzas.filter(m => m.tipo === 'ingreso').reduce((sum, m) => sum + m.monto, 0);
+            const totalGastos = finanzas.filter(m => m.tipo === 'gasto').reduce((sum, m) => sum + m.monto, 0);
             const periodoNombre = `Periodo ${new Date().toLocaleDateString()}`;
             const fechaCierre = obtenerFechaActual();
             const totalFinal = totalGeneral + totalIngresos - totalGastos;
-
             mostrarLoading(true);
-            const result = await callAPI('closePeriod', {
-                nombre: periodoNombre,
-                fechaCierre: fechaCierre,
-                total: totalFinal
-            });
-            
-            if (result && result.success) {
-                await recargarDatos();
-                alert('✅ Periodo cerrado y nuevo periodo creado exitosamente.');
-            } else {
-                alert('Error al cerrar el periodo');
-                mostrarLoading(false);
-            }
+            const result = await sendData('closePeriod', { nombre: periodoNombre, fechaCierre, total: totalFinal });
+            if (result && result.success) { await recargarDatos(); alert('✅ Periodo cerrado y nuevo periodo creado exitosamente.'); } else { alert('Error al cerrar el periodo'); mostrarLoading(false); }
             mostrarLoading(false);
         }
 
-        // ============================================
-        // ACCIONES DE CONFIGURACIÓN
-        // ============================================
         function abrirModalMontos() {
             document.getElementById('montoInscripcion').value = data.config.montoInscripcion;
             document.getElementById('montoCompendio').value = data.config.montoCompendio;
             document.getElementById('montoCrucifijo').value = data.config.montoCrucifijo;
             document.getElementById('modalMontos').classList.add('active');
         }
-
-        function cerrarModalMontos() {
-            document.getElementById('modalMontos').classList.remove('active');
-        }
+        function cerrarModalMontos() { document.getElementById('modalMontos').classList.remove('active'); }
 
         async function guardarMontos() {
             const insc = parseFloat(document.getElementById('montoInscripcion').value);
             const comp = parseFloat(document.getElementById('montoCompendio').value);
             const cruc = parseFloat(document.getElementById('montoCrucifijo').value);
-            
-            if (isNaN(insc) || isNaN(comp) || isNaN(cruc)) {
-                alert('Por favor, ingresa montos válidos.');
-                return;
-            }
-            
+            if (isNaN(insc) || isNaN(comp) || isNaN(cruc)) { alert('Por favor, ingresa montos válidos.'); return; }
             mostrarLoading(true);
-            const result = await callAPI('updateMontos', {
-                montoInscripcion: insc,
-                montoCompendio: comp,
-                montoCrucifijo: cruc
-            });
-            
-            if (result && result.success) {
-                await recargarDatos();
-                alert('✅ Montos actualizados exitosamente.');
-            } else {
-                alert('Error al actualizar los montos');
-                mostrarLoading(false);
-            }
+            const result = await sendData('updateMontos', { montoInscripcion: insc, montoCompendio: comp, montoCrucifijo: cruc });
+            if (result && result.success) { await recargarDatos(); alert('✅ Montos actualizados exitosamente.'); } else { alert('Error al actualizar los montos'); mostrarLoading(false); }
             mostrarLoading(false);
-            
             cerrarModalMontos();
         }
 
         // ============================================
         // UTILIDADES
         // ============================================
-        function obtenerFechaActual() {
-            return new Date().toISOString().split('T')[0];
-        }
-
-        function formatearFecha(fecha) {
-            if (!fecha) return 'Sin fecha';
-            const parts = fecha.split('-');
-            return `${parts[2]}/${parts[1]}/${parts[0]}`;
-        }
-
+        function obtenerFechaActual() { return new Date().toISOString().split('T')[0]; }
+        function formatearFecha(fecha) { if (!fecha) return 'Sin fecha'; const parts = fecha.split('-'); return `${parts[2]}/${parts[1]}/${parts[0]}`; }
         function configurarTabs() {
             document.querySelectorAll('.tab').forEach(tab => {
                 tab.addEventListener('click', function() {
                     document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
                     document.querySelectorAll('.content').forEach(c => c.classList.remove('active'));
-                    
                     this.classList.add('active');
                     document.getElementById(this.dataset.tab).classList.add('active');
-                    
-                    if (this.dataset.tab === 'finanzas') {
-                        renderizarFinanzas();
-                        renderizarResumenFinanzas();
-                    }
+                    if (this.dataset.tab === 'finanzas') { renderizarFinanzas(); renderizarResumenFinanzas(); }
                 });
             });
         }
-
-        function configurarBusqueda() {
-            document.getElementById('searchInput').addEventListener('input', renderizarParticipantes);
-        }
-
-        function configurarFechaFinanzas() {
-            document.getElementById('finFecha').value = obtenerFechaActual();
-        }
+        function configurarBusqueda() { document.getElementById('searchInput').addEventListener('input', renderizarParticipantes); }
+        function configurarFechaFinanzas() { document.getElementById('finFecha').value = obtenerFechaActual(); }
 
         // ============================================
         // INICIALIZACIÓN
