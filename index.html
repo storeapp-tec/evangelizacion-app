@@ -807,33 +807,44 @@
         // ACCIONES - PARTICIPANTES
         // ============================================
         async function togglePago(nombre, concepto) {
-            const participante = data.participantes.find(p => p.nombre === nombre);
-            if (!participante) return;
-            
-            const pago = participante.pagos[concepto];
-            pago.pagado = !pago.pagado;
-            pago.fecha = pago.pagado ? obtenerFechaActual() : null;
-            
-            mostrarLoading(true);
-            const result = await sendData('updatePago', {
-                nombre: nombre,
-                concepto: concepto,
-                pagado: pago.pagado,
-                fecha: pago.fecha
-            });
-            
-            if (result && result.success) {
-                await recargarDatos();
-            } else {
-                alert('❌ Error al actualizar el pago');
-                mostrarLoading(false);
-            }
+    const participante = data.participantes.find(p => p.nombre === nombre);
+    if (!participante) return;
+    
+    const pago = participante.pagos[concepto];
+    pago.pagado = !pago.pagado;
+    pago.fecha = pago.pagado ? obtenerFechaActual() : null;
+    
+    mostrarLoading(true);
+    
+    try {
+        const result = await sendData('updatePago', {
+            nombre: nombre,
+            concepto: concepto,
+            pagado: pago.pagado,
+            fecha: pago.fecha
+        });
+        
+        console.log('📦 RESPUESTA COMPLETA:', result);
+        
+        if (result && result.success) {
+            await recargarDatos();
+        } else {
+            const errorMsg = result?.error || 'Error desconocido';
+            alert('❌ Error: ' + errorMsg);
             mostrarLoading(false);
-            
-            if (participanteEditando === nombre) {
-                editarParticipante(nombre);
-            }
         }
+    } catch(error) {
+        console.error('🔥 ERROR EN togglePago:', error);
+        alert('❌ Error en la conexión: ' + error.message);
+        mostrarLoading(false);
+    }
+    
+    mostrarLoading(false);
+    
+    if (participanteEditando === nombre) {
+        editarParticipante(nombre);
+    }
+}
 
         async function toggleActivo(nombre) {
             const participante = data.participantes.find(p => p.nombre === nombre);
