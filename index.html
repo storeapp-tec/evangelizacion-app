@@ -113,7 +113,6 @@
                 <button class="btn btn-primary btn-sm" onclick="abrirModalAgregar()">➕ Agregar</button>
                 <button class="btn btn-warning btn-sm" onclick="abrirModalMontos()">💰 Cambiar montos</button>
                 <button class="btn btn-secondary btn-sm" onclick="recargarDatos()">🔄 Sincronizar</button>
-                <button class="btn btn-danger btn-sm" onclick="testAPI()">🧪 TEST</button>
             </div>
         </div>
         <div class="card">
@@ -241,13 +240,10 @@
 
     <script>
         // ============================================
-        // CONFIGURACIÓN
+        // CONFIGURACIÓN - URL DE LA API (SOLO GET)
         // ============================================
-        const API_URL = 'https://script.google.com/macros/s/AKfycbx0nhLBOhaXjLZMTP5jePCrWAM9mhK7rj8I74Njl6lXqlnNzA3mPE8X9us08eo33Dgl/exec';
+        const API_URL = 'https://script.google.com/macros/s/AKfycbzOGZoRNVaWfADgb0Wu0EwWVsuCQLdJ4gDtVCnwIpxZmJcwE5jHst9_EkhUuMe2sGw7/exec';
 
-        // ============================================
-        // ESTADO GLOBAL
-        // ============================================
         let data = null;
         let filtroFinanzasActual = 'todos';
         let participanteEditando = null;
@@ -255,61 +251,36 @@
         let cargando = false;
 
         // ============================================
-        // FUNCIONES DE API - SIMPLES Y DIRECTAS
+        // API - SOLO GET (SIN CORS, SIN POST)
         // ============================================
         async function fetchData() {
             try {
-                const response = await fetch(API_URL + '?action=getData');
+                const url = API_URL + '?action=getData';
+                console.log('📤 GET:', url);
+                const response = await fetch(url);
                 const result = await response.json();
+                console.log('📥 Respuesta:', result);
                 return result;
-            } catch (error) {
-                console.error('Error en fetchData:', error);
+            } catch (e) {
+                console.error('Error en fetchData:', e);
                 return null;
             }
         }
 
         async function sendData(action, data) {
             try {
-                const response = await fetch(API_URL, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({ action: action, data: data })
-                });
+                const params = new URLSearchParams();
+                params.append('action', action);
+                params.append('data', JSON.stringify(data));
+                const url = API_URL + '?' + params.toString();
+                console.log('📤 GET (acción):', url);
+                const response = await fetch(url);
                 const result = await response.json();
+                console.log('📥 Respuesta:', result);
                 return result;
-            } catch (error) {
-                console.error('Error en sendData:', error);
-                return { success: false, error: error.message };
-            }
-        }
-
-        // ============================================
-        // FUNCIÓN DE PRUEBA
-        // ============================================
-        async function testAPI() {
-            alert('🔍 Probando API...');
-            
-            try {
-                // Probar GET
-                const getResult = await fetchData();
-                console.log('GET result:', getResult);
-                
-                // Probar POST
-                const postResult = await sendData('updatePago', {
-                    nombre: 'Alberto Domingo García Contreras',
-                    concepto: 'inscripcion',
-                    pagado: true,
-                    fecha: '2026-07-01'
-                });
-                console.log('POST result:', postResult);
-                
-                alert('✅ GET: ' + (getResult?.success ? 'OK' : 'FALLO') + 
-                      '\n✅ POST: ' + (postResult?.success ? 'OK' : 'FALLO') +
-                      '\n\nPOST respuesta: ' + JSON.stringify(postResult, null, 2));
-            } catch(error) {
-                alert('❌ Error en test: ' + error.message);
+            } catch (e) {
+                console.error('Error en sendData:', e);
+                return { success: false, error: e.message };
             }
         }
 
@@ -320,16 +291,18 @@
             if (cargando) return;
             cargando = true;
             mostrarLoading(true);
-            
+
             const result = await fetchData();
             mostrarLoading(false);
             cargando = false;
-            
+
             if (result && result.success) {
                 data = result.data;
+                if (!data.finanzas) data.finanzas = [];
+                if (!data.historial) data.historial = [];
                 return true;
             } else {
-                alert('❌ Error al cargar datos. Verifica tu conexión.');
+                alert('❌ Error al cargar datos: ' + (result?.error || ''));
                 return false;
             }
         }
@@ -500,35 +473,25 @@
         }
 
         // ============================================
-        // ACCIONES
+        // ACCIONES - PARTICIPANTES (TODAS CON GET)
         // ============================================
         async function togglePago(nombre, concepto) {
             const participante = data.participantes.find(p => p.nombre === nombre);
             if (!participante) return;
-            
             const pago = participante.pagos[concepto];
             pago.pagado = !pago.pagado;
             pago.fecha = pago.pagado ? obtenerFechaActual() : null;
-            
+
             mostrarLoading(true);
-            const result = await sendData('updatePago', {
-                nombre: nombre,
-                concepto: concepto,
-                pagado: pago.pagado,
-                fecha: pago.fecha
-            });
-            
+            const result = await sendData('updatePago', { nombre, concepto, pagado: pago.pagado, fecha: pago.fecha });
+            mostrarLoading(false);
+
             if (result && result.success) {
                 await recargarDatos();
             } else {
-                alert('❌ Error: ' + (result?.error || 'Error desconocido'));
-                mostrarLoading(false);
+                alert('❌ Error al actualizar: ' + (result?.error || 'desconocido'));
             }
-            mostrarLoading(false);
-            
-            if (participanteEditando === nombre) {
-                editarParticipante(nombre);
-            }
+            if (participanteEditando === nombre) editarParticipante(nombre);
         }
 
         async function toggleActivo(nombre) {
@@ -537,18 +500,27 @@
             participante.activo = !participante.activo;
             mostrarLoading(true);
             const result = await sendData('updateActivo', { nombre, activo: participante.activo });
-            if (result && result.success) { await recargarDatos(); } else { alert('❌ Error al actualizar el estado'); mostrarLoading(false); }
             mostrarLoading(false);
+            if (result && result.success) {
+                await recargarDatos();
+            } else {
+                alert('❌ Error al actualizar: ' + (result?.error || 'desconocido'));
+            }
             if (participanteEditando === nombre) editarParticipante(nombre);
         }
 
         async function agregarParticipante() {
             const nombre = document.getElementById('nuevoNombre').value.trim();
-            if (!nombre) { alert('Por favor, escribe el nombre.'); return; }
+            if (!nombre) { alert('Escribe un nombre'); return; }
             mostrarLoading(true);
             const result = await sendData('addParticipante', { nombre });
-            if (result && result.success) { await recargarDatos(); cerrarModalAgregar(); } else { alert('❌ Error al agregar'); mostrarLoading(false); }
             mostrarLoading(false);
+            if (result && result.success) {
+                await recargarDatos();
+                cerrarModalAgregar();
+            } else {
+                alert('❌ Error al agregar: ' + (result?.error || 'desconocido'));
+            }
         }
 
         function editarParticipante(nombre) {
@@ -572,6 +544,9 @@
         function abrirModalAgregar() { document.getElementById('modalAgregar').classList.add('active'); document.getElementById('nuevoNombre').value = ''; document.getElementById('nuevoNombre').focus(); }
         function cerrarModalAgregar() { document.getElementById('modalAgregar').classList.remove('active'); }
 
+        // ============================================
+        // ACCIONES - FINANZAS (TODAS CON GET)
+        // ============================================
         async function agregarMovimiento() {
             const tipo = document.getElementById('finTipo').value;
             const concepto = document.getElementById('finConcepto').value.trim();
@@ -582,16 +557,27 @@
             if (!fecha) { alert('Selecciona una fecha.'); return; }
             mostrarLoading(true);
             const result = await sendData('addFinanza', { tipo, concepto, monto, fecha });
-            if (result && result.success) { await recargarDatos(); document.getElementById('finConcepto').value = ''; document.getElementById('finMonto').value = ''; document.getElementById('finFecha').value = obtenerFechaActual(); } else { alert('❌ Error al agregar'); mostrarLoading(false); }
             mostrarLoading(false);
+            if (result && result.success) {
+                await recargarDatos();
+                document.getElementById('finConcepto').value = '';
+                document.getElementById('finMonto').value = '';
+                document.getElementById('finFecha').value = obtenerFechaActual();
+            } else {
+                alert('❌ Error al agregar: ' + (result?.error || 'desconocido'));
+            }
         }
 
         async function eliminarMovimiento(id) {
             if (!confirm('¿Eliminar este movimiento?')) return;
             mostrarLoading(true);
             const result = await sendData('deleteFinanza', { id: parseInt(id) });
-            if (result && result.success) { await recargarDatos(); } else { alert('❌ Error al eliminar'); mostrarLoading(false); }
             mostrarLoading(false);
+            if (result && result.success) {
+                await recargarDatos();
+            } else {
+                alert('❌ Error al eliminar: ' + (result?.error || 'desconocido'));
+            }
         }
 
         function abrirModalEditarMovimiento(id) {
@@ -619,12 +605,20 @@
             if (!fecha) { alert('Selecciona una fecha.'); return; }
             mostrarLoading(true);
             const result = await sendData('updateFinanza', { id: parseInt(movimientoEditando), tipo, concepto, monto, fecha });
-            if (result && result.success) { await recargarDatos(); cerrarModalEditarMovimiento(); } else { alert('❌ Error al actualizar'); mostrarLoading(false); }
             mostrarLoading(false);
+            if (result && result.success) {
+                await recargarDatos();
+                cerrarModalEditarMovimiento();
+            } else {
+                alert('❌ Error al actualizar: ' + (result?.error || 'desconocido'));
+            }
         }
 
         function cerrarModalEditarMovimiento() { document.getElementById('modalEditarMovimiento').classList.remove('active'); movimientoEditando = null; }
 
+        // ============================================
+        // ACCIONES - ADMIN
+        // ============================================
         async function cerrarPeriodo() {
             if (!confirm('¿Cerrar el periodo actual?')) return;
             const activos = data.participantes.filter(p => p.activo);
@@ -644,10 +638,18 @@
             const totalFinal = totalGeneral + totalIngresos - totalGastos;
             mostrarLoading(true);
             const result = await sendData('closePeriod', { nombre: periodoNombre, fechaCierre, total: totalFinal });
-            if (result && result.success) { await recargarDatos(); alert('✅ Periodo cerrado'); } else { alert('❌ Error al cerrar'); mostrarLoading(false); }
             mostrarLoading(false);
+            if (result && result.success) {
+                await recargarDatos();
+                alert('✅ Periodo cerrado');
+            } else {
+                alert('❌ Error al cerrar: ' + (result?.error || 'desconocido'));
+            }
         }
 
+        // ============================================
+        // ACCIONES - CONFIGURACIÓN
+        // ============================================
         function abrirModalMontos() {
             document.getElementById('montoInscripcion').value = data.config.montoInscripcion;
             document.getElementById('montoCompendio').value = data.config.montoCompendio;
@@ -663,8 +665,14 @@
             if (isNaN(insc) || isNaN(comp) || isNaN(cruc)) { alert('Ingresa montos válidos.'); return; }
             mostrarLoading(true);
             const result = await sendData('updateMontos', { montoInscripcion: insc, montoCompendio: comp, montoCrucifijo: cruc });
-            if (result && result.success) { await recargarDatos(); cerrarModalMontos(); alert('✅ Montos actualizados'); } else { alert('❌ Error al actualizar montos'); mostrarLoading(false); }
             mostrarLoading(false);
+            if (result && result.success) {
+                await recargarDatos();
+                cerrarModalMontos();
+                alert('✅ Montos actualizados');
+            } else {
+                alert('❌ Error al actualizar: ' + (result?.error || 'desconocido'));
+            }
         }
 
         // ============================================
