@@ -350,11 +350,13 @@
                     const pago = p.pagos[concepto];
                     if (pago && pago.pagado && pago.fecha) {
                         const monto = data.config[`monto${concepto.charAt(0).toUpperCase() + concepto.slice(1)}`] || 0;
+                        // Guardamos el concepto completo para usarlo después
                         ingresos.push({
                             id: `pago_${p.id}_${concepto}`,
                             fecha: pago.fecha,
                             tipo: 'ingreso',
-                            concepto: `${p.nombre} - ${concepto.charAt(0).toUpperCase() + concepto.slice(1)}`,
+                            concepto: concepto, // Guardamos el concepto original
+                            nombreParticipante: p.nombre,
                             monto: monto,
                             esPago: true
                         });
@@ -365,7 +367,7 @@
             return ingresos;
         }
 
-        // TODOS LOS MOVIMIENTOS: Ingresos manuales + Gastos manuales + Compendios + Crucifijos + Inscripciones (solo control)
+        // TODOS LOS MOVIMIENTOS: Ingresos manuales + Gastos manuales + Compendios + Crucifijos (sin inscripciones)
         function obtenerTodosLosMovimientos() {
             const movimientos = [];
 
@@ -474,18 +476,29 @@
         }
 
         // ============================================
-        // FINANZAS
+        // FINANZAS - CON ETIQUETA SOLO EN "TODOS" E "INGRESOS"
         // ============================================
         function renderizarFinanzas() {
             const list = document.getElementById('finanzasList');
             let movimientos = [];
 
             if (filtroFinanzasActual === 'todos') {
-                // TODOS: Ingresos manuales + Gastos manuales + Compendios + Crucifijos + Inscripciones (control)
+                // TODOS: Ingresos manuales + Gastos manuales + Compendios + Crucifijos (con etiqueta)
                 movimientos = obtenerTodosLosMovimientos();
             } else if (filtroFinanzasActual === 'ingreso') {
-                // INGRESOS: Solo los que suman al disponible (Compendios + Crucifijos + Ingresos manuales)
-                movimientos = obtenerIngresosDisponibles();
+                // INGRESOS: Compendios + Crucifijos + Ingresos manuales (con etiqueta)
+                const ingresos = obtenerIngresosDisponibles();
+                movimientos = ingresos.map(m => {
+                    // Si es un pago de participante, mostrar con etiqueta
+                    if (m.esPago) {
+                        const nombreConcepto = m.concepto.charAt(0).toUpperCase() + m.concepto.slice(1);
+                        return {
+                            ...m,
+                            concepto: `${m.nombreParticipante} - ${nombreConcepto}`
+                        };
+                    }
+                    return m;
+                });
             } else if (filtroFinanzasActual === 'gasto') {
                 // GASTOS: Solo gastos manuales
                 movimientos = (data.finanzas || []).filter(m => m.tipo === 'gasto').map(m => ({
@@ -497,7 +510,7 @@
                     esPago: false
                 }));
             } else {
-                // Filtro por concepto (inscripcion, compendio, crucifijo)
+                // Filtro por concepto (inscripcion, compendio, crucifijo) - SIN ETIQUETA
                 movimientos = [];
                 data.participantes.forEach(p => {
                     if (!p.activo) return;
@@ -511,7 +524,7 @@
                                     id: `pago_${p.id}_${concepto}`,
                                     fecha: pago.fecha,
                                     tipo: 'ingreso',
-                                    concepto: `${p.nombre} - ${concepto.charAt(0).toUpperCase() + concepto.slice(1)}`,
+                                    concepto: p.nombre, // SOLO el nombre del participante
                                     monto: monto,
                                     esPago: true
                                 });
@@ -531,17 +544,13 @@
             list.innerHTML = movimientos.map(m => {
                 const signo = m.tipo === 'ingreso' ? '+' : '-';
                 const clase = m.tipo === 'ingreso' ? 'ingreso' : 'gasto';
-                let concepto = m.concepto;
-                if (m.esInscripcion) {
-                    concepto = m.concepto + ' (PARROQUIA)';
-                }
                 const acciones = m.esPago ? '' : `
                     <button class="btn-accion btn-editar" onclick="abrirModalEditarMovimiento('${m.id}')">✏️</button>
                     <button class="btn-accion btn-eliminar" onclick="eliminarMovimiento('${m.id}')">🗑️</button>
                 `;
                 return `<div class="movimiento-item">
                     <span class="fecha">${formatearFecha(m.fecha)}</span>
-                    <span class="concepto">${concepto}</span>
+                    <span class="concepto">${m.concepto}</span>
                     <span class="monto ${clase}">${signo}$${m.monto.toFixed(2)}</span>
                     ${acciones}
                 </div>`;
@@ -566,7 +575,6 @@
             const gastosManuales = finanzas.filter(m => m.tipo === 'gasto').reduce((sum, m) => sum + m.monto, 0);
 
             // 3. Totales (SOLO Compendios + Crucifijos + Ingresos manuales - Gastos)
-            // Inscripciones NO se suman
             const totalIngresos = totalComp + totalCruc + ingresosManuales;
             const totalGastos = gastosManuales;
             const disponible = totalIngresos - totalGastos;
@@ -615,7 +623,6 @@
             const finanzas = data.finanzas || [];
             const totalIngresosManual = finanzas.filter(m => m.tipo === 'ingreso').reduce((sum, m) => sum + m.monto, 0);
             const totalGastosManual = finanzas.filter(m => m.tipo === 'gasto').reduce((sum, m) => sum + m.monto, 0);
-            // Disponible: SOLO Compendios + Crucifijos + Ingresos manuales - Gastos
             const disponible = totalComp + totalCruc + totalIngresosManual - totalGastosManual;
 
             document.getElementById('resumenPeriodo').innerHTML = `
