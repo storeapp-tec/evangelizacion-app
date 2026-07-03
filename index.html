@@ -56,18 +56,66 @@
         .btn-toggle.pendiente { background: #e74c3c; color: white; }
         .btn-toggle.activo { background: #3498db; color: white; }
         .btn-toggle.inactivo { background: #95a5a6; color: white; }
-        .finanzas-resumen { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; margin-bottom: 10px; text-align: center; }
-        .finanzas-resumen .item { background: #f8f9fa; padding: 8px; border-radius: 8px; cursor: pointer; transition: all 0.2s; }
-        .finanzas-resumen .item:hover { background: #e9ecef; }
-        .finanzas-resumen .item.active { background: #3498db; color: white; }
-        .finanzas-resumen .item.active .label { color: rgba(255,255,255,0.8); }
-        .finanzas-resumen .label { font-size: 10px; color: #666; }
-        .finanzas-resumen .value { font-size: 16px; font-weight: bold; }
-        .filtros-rapidos { display: flex; gap: 5px; flex-wrap: wrap; margin: 8px 0; }
-        .filtro-btn { padding: 4px 12px; border: 1px solid #ddd; border-radius: 16px; background: white; font-size: 11px; cursor: pointer; transition: all 0.2s; }
-        .filtro-btn.active { border-color: #3498db; background: #3498db; color: white; }
-        .movimiento-item { display: flex; align-items: center; padding: 6px 8px; border-bottom: 1px solid #f0f0f0; gap: 6px; font-size: 12px; }
-        .movimiento-item .fecha { color: #666; min-width: 65px; }
+        
+        /* ===== FINANZAS - DISEÑO CORREGIDO ===== */
+        .finanzas-totales {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 8px;
+            margin-bottom: 12px;
+            text-align: center;
+        }
+        .finanzas-totales .item {
+            background: #f8f9fa;
+            padding: 10px 8px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .finanzas-totales .item:hover { background: #e9ecef; }
+        .finanzas-totales .item.active { background: #3498db; color: white; }
+        .finanzas-totales .item.active .label { color: rgba(255,255,255,0.8); }
+        .finanzas-totales .label { font-size: 10px; color: #666; }
+        .finanzas-totales .value { font-size: 16px; font-weight: bold; }
+
+        .finanzas-filtros {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr 1fr;
+            gap: 6px;
+            margin: 10px 0;
+        }
+        .finanzas-filtros .filtro-btn {
+            padding: 8px 4px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            background: white;
+            font-size: 11px;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-align: center;
+            font-weight: 600;
+        }
+        .finanzas-filtros .filtro-btn.active {
+            border-color: #3498db;
+            background: #3498db;
+            color: white;
+        }
+        .finanzas-filtros .filtro-btn .sub {
+            font-weight: normal;
+            font-size: 10px;
+            opacity: 0.7;
+            display: block;
+        }
+
+        .movimiento-item {
+            display: flex;
+            align-items: center;
+            padding: 6px 8px;
+            border-bottom: 1px solid #f0f0f0;
+            gap: 6px;
+            font-size: 12px;
+        }
+        .movimiento-item .fecha { color: #666; min-width: 80px; font-size: 11px; }
         .movimiento-item .concepto { flex: 1; }
         .movimiento-item .monto { font-weight: bold; min-width: 50px; text-align: right; }
         .movimiento-item .monto.ingreso { color: #27ae60; }
@@ -75,18 +123,27 @@
         .btn-accion { background: none; border: none; font-size: 13px; cursor: pointer; padding: 0 3px; }
         .btn-editar { color: #3498db; }
         .btn-eliminar { color: #e74c3c; }
+
         .form-group { margin-bottom: 6px; }
         .form-group label { display: block; font-size: 11px; font-weight: 600; color: #555; margin-bottom: 2px; }
         .form-control { width: 100%; padding: 6px 10px; border: 1px solid #ddd; border-radius: 6px; font-size: 13px; }
         .form-control:focus { outline: none; border-color: #3498db; }
         .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+
         .loading-overlay { display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.7); z-index: 2000; align-items: center; justify-content: center; flex-direction: column; }
         .loading-overlay.active { display: flex; }
         .loading-spinner { width: 36px; height: 36px; border: 3px solid #f3f3f3; border-top: 3px solid #3498db; border-radius: 50%; animation: spin 1s linear infinite; }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
         .loading-text { color: white; margin-top: 10px; font-size: 13px; }
         .empty-state { text-align: center; padding: 20px 0; color: #999; font-size: 13px; }
-        @media (max-width: 480px) { .summary-grid { grid-template-columns: 1fr; gap: 3px; } .form-row { grid-template-columns: 1fr; } .finanzas-resumen { grid-template-columns: 1fr 1fr 1fr; gap: 4px; } }
+        .resumen-periodo .linea { display: flex; justify-content: space-between; padding: 4px 0; border-bottom: 1px solid #eee; font-size: 13px; }
+        .periodo-item { padding: 8px 0; border-bottom: 1px solid #eee; font-size: 13px; }
+        .periodo-item .total { float: right; font-weight: bold; color: #27ae60; }
+
+        @media (max-width: 480px) {
+            .finanzas-filtros { grid-template-columns: 1fr 1fr; }
+            .finanzas-totales { grid-template-columns: 1fr 1fr 1fr; gap: 4px; }
+        }
     </style>
 </head>
 <body>
@@ -128,7 +185,8 @@
     <!-- ===== FINANZAS ===== -->
     <div id="finanzas" class="content">
         <div class="card" style="padding: 10px;">
-            <div class="finanzas-resumen">
+            <!-- Totales -->
+            <div class="finanzas-totales">
                 <div class="item" data-filtro="ingreso" onclick="filtrarFinanzas('ingreso')">
                     <div class="label">💰 Ingresos</div>
                     <div class="value" id="totalIngresos" style="color:#27ae60;">$0</div>
@@ -142,16 +200,33 @@
                     <div class="value" id="totalSaldo" style="color:#3498db;">$0</div>
                 </div>
             </div>
-            <div class="filtros-rapidos">
-                <button class="filtro-btn active" data-filtro="todos" onclick="filtrarFinanzas('todos')">📋 Todos</button>
-                <button class="filtro-btn" data-filtro="inscripcion" onclick="filtrarFinanzas('inscripcion')">📝 Inscripción</button>
-                <button class="filtro-btn" data-filtro="compendio" onclick="filtrarFinanzas('compendio')">📚 Compendio</button>
-                <button class="filtro-btn" data-filtro="crucifijo" onclick="filtrarFinanzas('crucifijo')">✝️ Crucifijo</button>
+
+            <!-- Filtros grandes -->
+            <div class="finanzas-filtros">
+                <button class="filtro-btn active" data-filtro="todos" onclick="filtrarFinanzas('todos')">
+                    📋 Todos
+                </button>
+                <button class="filtro-btn" data-filtro="inscripcion" onclick="filtrarFinanzas('inscripcion')" id="btnInscripcion">
+                    📝 Inscripción
+                    <span class="sub" id="subInscripcion">0/0 $0</span>
+                </button>
+                <button class="filtro-btn" data-filtro="compendio" onclick="filtrarFinanzas('compendio')" id="btnCompendio">
+                    📚 Compendio
+                    <span class="sub" id="subCompendio">0/0 $0</span>
+                </button>
+                <button class="filtro-btn" data-filtro="crucifijo" onclick="filtrarFinanzas('crucifijo')" id="btnCrucifijo">
+                    ✝️ Crucifijo
+                    <span class="sub" id="subCrucifijo">0/0 $0</span>
+                </button>
             </div>
         </div>
+
+        <!-- Lista de movimientos -->
         <div class="card" style="padding: 8px;">
             <div id="finanzasList" class="historial-list" style="max-height:280px; overflow-y:auto;"></div>
         </div>
+
+        <!-- Agregar movimiento -->
         <div class="card" style="padding: 10px;">
             <div style="font-size:13px; font-weight:600; margin-bottom:6px; color:#2c3e50;">➕ Agregar movimiento</div>
             <div class="form-group">
@@ -240,7 +315,7 @@
 
     <script>
         // ============================================
-        // CONFIGURACIÓN - URL DE LA API (SOLO GET)
+        // CONFIGURACIÓN
         // ============================================
         const API_URL = 'https://script.google.com/macros/s/AKfycbzOGZoRNVaWfADgb0Wu0EwWVsuCQLdJ4gDtVCnwIpxZmJcwE5jHst9_EkhUuMe2sGw7/exec';
 
@@ -251,18 +326,14 @@
         let cargando = false;
 
         // ============================================
-        // API - SOLO GET (SIN CORS, SIN POST)
+        // API
         // ============================================
         async function fetchData() {
             try {
-                const url = API_URL + '?action=getData';
-                console.log('📤 GET:', url);
-                const response = await fetch(url);
-                const result = await response.json();
-                console.log('📥 Respuesta:', result);
-                return result;
+                const response = await fetch(API_URL + '?action=getData');
+                return await response.json();
             } catch (e) {
-                console.error('Error en fetchData:', e);
+                console.error(e);
                 return null;
             }
         }
@@ -272,14 +343,10 @@
                 const params = new URLSearchParams();
                 params.append('action', action);
                 params.append('data', JSON.stringify(data));
-                const url = API_URL + '?' + params.toString();
-                console.log('📤 GET (acción):', url);
-                const response = await fetch(url);
-                const result = await response.json();
-                console.log('📥 Respuesta:', result);
-                return result;
+                const response = await fetch(API_URL + '?' + params.toString());
+                return await response.json();
             } catch (e) {
-                console.error('Error en sendData:', e);
+                console.error(e);
                 return { success: false, error: e.message };
             }
         }
@@ -366,11 +433,12 @@
         }
 
         // ============================================
-        // FINANZAS
+        // FINANZAS - CORREGIDA
         // ============================================
         function renderizarFinanzas() {
             const list = document.getElementById('finanzasList');
             let movimientos = [];
+            
             if (filtroFinanzasActual === 'todos') {
                 movimientos = data.finanzas || [];
             } else if (filtroFinanzasActual === 'ingreso') {
@@ -378,6 +446,7 @@
             } else if (filtroFinanzasActual === 'gasto') {
                 movimientos = (data.finanzas || []).filter(m => m.tipo === 'gasto');
             } else {
+                // Filtrar por concepto (inscripcion, compendio, crucifijo)
                 movimientos = [];
                 data.participantes.forEach(p => {
                     const conceptos = ['inscripcion', 'compendio', 'crucifijo'];
@@ -399,14 +468,20 @@
                     });
                 });
             }
+            
             movimientos.sort((a, b) => b.fecha.localeCompare(a.fecha));
-            if (movimientos.length === 0) { list.innerHTML = '<div class="empty-state">No hay movimientos</div>'; return; }
+            
+            if (movimientos.length === 0) {
+                list.innerHTML = '<div class="empty-state">No hay movimientos</div>';
+                return;
+            }
+            
             list.innerHTML = movimientos.map(m => {
                 const signo = m.tipo === 'ingreso' ? '+' : '-';
                 const clase = m.tipo === 'ingreso' ? 'ingreso' : 'gasto';
                 const acciones = m.esPago ? '' : `
-                    <button class="btn-accion btn-editar" onclick="abrirModalEditarMovimiento('${m.id}')" title="Editar">✏️</button>
-                    <button class="btn-accion btn-eliminar" onclick="eliminarMovimiento('${m.id}')" title="Eliminar">🗑️</button>
+                    <button class="btn-accion btn-editar" onclick="abrirModalEditarMovimiento('${m.id}')">✏️</button>
+                    <button class="btn-accion btn-eliminar" onclick="eliminarMovimiento('${m.id}')">🗑️</button>
                 `;
                 return `<div class="movimiento-item">
                     <span class="fecha">${formatearFecha(m.fecha)}</span>
@@ -418,24 +493,51 @@
         }
 
         function renderizarResumenFinanzas() {
+            // 1. Calcular cobros
+            const activos = data.participantes.filter(p => p.activo);
+            const total = activos.length;
+            const pagadosInsc = activos.filter(p => p.pagos.inscripcion.pagado).length;
+            const pagadosComp = activos.filter(p => p.pagos.compendio.pagado).length;
+            const pagadosCruc = activos.filter(p => p.pagos.crucifijo.pagado).length;
+            
+            const totalInsc = pagadosInsc * data.config.montoInscripcion;
+            const totalComp = pagadosComp * data.config.montoCompendio;
+            const totalCruc = pagadosCruc * data.config.montoCrucifijo;
+
+            // 2. Ingresos/Gastos manuales
             const finanzas = data.finanzas || [];
-            const totalIngresos = finanzas.filter(m => m.tipo === 'ingreso').reduce((sum, m) => sum + m.monto, 0);
-            const totalGastos = finanzas.filter(m => m.tipo === 'gasto').reduce((sum, m) => sum + m.monto, 0);
-            const saldo = totalIngresos - totalGastos;
+            const ingresosManuales = finanzas.filter(m => m.tipo === 'ingreso').reduce((sum, m) => sum + m.monto, 0);
+            const gastosManuales = finanzas.filter(m => m.tipo === 'gasto').reduce((sum, m) => sum + m.monto, 0);
+
+            // 3. Totales
+            const totalIngresos = totalComp + totalCruc + ingresosManuales;
+            const totalGastos = gastosManuales;
+            const disponible = totalIngresos - totalGastos;
+
+            // 4. Mostrar en la interfaz
             document.getElementById('totalIngresos').textContent = `$${totalIngresos.toFixed(2)}`;
             document.getElementById('totalGastos').textContent = `$${totalGastos.toFixed(2)}`;
-            document.getElementById('totalSaldo').textContent = `$${saldo.toFixed(2)}`;
-            document.querySelectorAll('.finanzas-resumen .item').forEach(item => {
+            document.getElementById('totalSaldo').textContent = `$${disponible.toFixed(2)}`;
+
+            // 5. Actualizar subtítulos de los botones
+            document.getElementById('subInscripcion').textContent = `${pagadosInsc}/${total} $${totalInsc.toFixed(0)}`;
+            document.getElementById('subCompendio').textContent = `${pagadosComp}/${total} $${totalComp.toFixed(0)}`;
+            document.getElementById('subCrucifijo').textContent = `${pagadosCruc}/${total} $${totalCruc.toFixed(0)}`;
+
+            // 6. Resaltar filtro activo
+            document.querySelectorAll('.finanzas-totales .item').forEach(item => {
                 const filtro = item.dataset.filtro;
                 item.classList.toggle('active', filtro === filtroFinanzasActual);
+            });
+            
+            document.querySelectorAll('.finanzas-filtros .filtro-btn').forEach(btn => {
+                const filtro = btn.dataset.filtro;
+                btn.classList.toggle('active', filtro === filtroFinanzasActual);
             });
         }
 
         function filtrarFinanzas(tipo) {
             filtroFinanzasActual = tipo;
-            document.querySelectorAll('.filtro-btn').forEach(btn => {
-                btn.classList.toggle('active', btn.dataset.filtro === tipo);
-            });
             renderizarFinanzas();
             renderizarResumenFinanzas();
         }
@@ -454,26 +556,28 @@
             const totalCruc = pagadosCruc * data.config.montoCrucifijo;
             const totalGeneral = totalInsc + totalComp + totalCruc;
             const finanzas = data.finanzas || [];
-            const totalIngresos = finanzas.filter(m => m.tipo === 'ingreso').reduce((sum, m) => sum + m.monto, 0);
-            const totalGastos = finanzas.filter(m => m.tipo === 'gasto').reduce((sum, m) => sum + m.monto, 0);
+            const totalIngresosManual = finanzas.filter(m => m.tipo === 'ingreso').reduce((sum, m) => sum + m.monto, 0);
+            const totalGastosManual = finanzas.filter(m => m.tipo === 'gasto').reduce((sum, m) => sum + m.monto, 0);
+            const disponible = totalComp + totalCruc + totalIngresosManual - totalGastosManual;
+            
             document.getElementById('resumenPeriodo').innerHTML = `
-                <div class="linea" style="display:flex; justify-content:space-between; padding:4px 0; border-bottom:1px solid #eee; font-size:13px;"><span>👥 Participantes activos</span><span>${total}</span></div>
-                <div class="linea" style="display:flex; justify-content:space-between; padding:4px 0; border-bottom:1px solid #eee; font-size:13px;"><span>📝 Inscripción (${pagadosInsc}/${total})</span><span>$${totalInsc.toFixed(2)}</span></div>
-                <div class="linea" style="display:flex; justify-content:space-between; padding:4px 0; border-bottom:1px solid #eee; font-size:13px;"><span>📚 Compendio (${pagadosComp}/${total})</span><span>$${totalComp.toFixed(2)}</span></div>
-                <div class="linea" style="display:flex; justify-content:space-between; padding:4px 0; border-bottom:1px solid #eee; font-size:13px;"><span>✝️ Crucifijo (${pagadosCruc}/${total})</span><span>$${totalCruc.toFixed(2)}</span></div>
-                <div class="linea" style="display:flex; justify-content:space-between; padding:4px 0; border-bottom:1px solid #eee; font-size:13px;"><span>💰 Total recaudado</span><span>$${totalGeneral.toFixed(2)}</span></div>
-                <div class="linea" style="display:flex; justify-content:space-between; padding:4px 0; border-bottom:1px solid #eee; font-size:13px;"><span>📊 Ingresos adicionales</span><span>$${totalIngresos.toFixed(2)}</span></div>
-                <div class="linea" style="display:flex; justify-content:space-between; padding:4px 0; border-bottom:1px solid #eee; font-size:13px;"><span>💸 Gastos</span><span>$${totalGastos.toFixed(2)}</span></div>
-                <div class="linea" style="display:flex; justify-content:space-between; padding:4px 0; font-weight:bold; font-size:14px; border-top:2px solid #2c3e50; margin-top:6px; padding-top:6px;"><span>📈 Saldo final</span><span>$${(totalGeneral + totalIngresos - totalGastos).toFixed(2)}</span></div>
+                <div class="linea"><span>👥 Participantes activos</span><span>${total}</span></div>
+                <div class="linea"><span>📝 Inscripción (${pagadosInsc}/${total})</span><span>$${totalInsc.toFixed(2)}</span></div>
+                <div class="linea"><span>📚 Compendio (${pagadosComp}/${total})</span><span>$${totalComp.toFixed(2)}</span></div>
+                <div class="linea"><span>✝️ Crucifijo (${pagadosCruc}/${total})</span><span>$${totalCruc.toFixed(2)}</span></div>
+                <div class="linea"><span>💰 Total recaudado</span><span>$${totalGeneral.toFixed(2)}</span></div>
+                <div class="linea"><span>📊 Ingresos adicionales</span><span>$${totalIngresosManual.toFixed(2)}</span></div>
+                <div class="linea"><span>💸 Gastos</span><span>$${totalGastosManual.toFixed(2)}</span></div>
+                <div class="linea" style="font-weight:bold; font-size:14px; border-top:2px solid #2c3e50; margin-top:6px; padding-top:6px; border-bottom:none; color:#27ae60;"><span>📈 Disponible</span><span>$${disponible.toFixed(2)}</span></div>
             `;
             const historial = data.historial || [];
             const list = document.getElementById('historialPeriodos');
             if (historial.length === 0) { list.innerHTML = '<div class="empty-state">No hay períodos cerrados</div>'; return; }
-            list.innerHTML = historial.map(h => `<div class="periodo-item" style="padding:8px 0; border-bottom:1px solid #eee; font-size:13px;"><div><strong>${h.nombre}</strong><span style="float:right; font-weight:bold; color:#27ae60;">$${h.total.toFixed(2)}</span></div><div style="color:#666; font-size:11px;">Cerrado: ${formatearFecha(h.fechaCierre)}</div></div>`).join('');
+            list.innerHTML = historial.map(h => `<div class="periodo-item"><div><strong>${h.nombre}</strong><span class="total">$${h.total.toFixed(2)}</span></div><div style="color:#666; font-size:11px;">Cerrado: ${formatearFecha(h.fechaCierre)}</div></div>`).join('');
         }
 
         // ============================================
-        // ACCIONES - PARTICIPANTES (TODAS CON GET)
+        // ACCIONES - PARTICIPANTES
         // ============================================
         async function togglePago(nombre, concepto) {
             const participante = data.participantes.find(p => p.nombre === nombre);
@@ -545,7 +649,7 @@
         function cerrarModalAgregar() { document.getElementById('modalAgregar').classList.remove('active'); }
 
         // ============================================
-        // ACCIONES - FINANZAS (TODAS CON GET)
+        // ACCIONES - FINANZAS
         // ============================================
         async function agregarMovimiento() {
             const tipo = document.getElementById('finTipo').value;
@@ -617,7 +721,7 @@
         function cerrarModalEditarMovimiento() { document.getElementById('modalEditarMovimiento').classList.remove('active'); movimientoEditando = null; }
 
         // ============================================
-        // ACCIONES - ADMIN
+        // ADMIN - CERRAR PERIODO
         // ============================================
         async function cerrarPeriodo() {
             if (!confirm('¿Cerrar el periodo actual?')) return;
@@ -631,11 +735,11 @@
             const totalCruc = pagadosCruc * data.config.montoCrucifijo;
             const totalGeneral = totalInsc + totalComp + totalCruc;
             const finanzas = data.finanzas || [];
-            const totalIngresos = finanzas.filter(m => m.tipo === 'ingreso').reduce((sum, m) => sum + m.monto, 0);
-            const totalGastos = finanzas.filter(m => m.tipo === 'gasto').reduce((sum, m) => sum + m.monto, 0);
+            const totalIngresosManual = finanzas.filter(m => m.tipo === 'ingreso').reduce((sum, m) => sum + m.monto, 0);
+            const totalGastosManual = finanzas.filter(m => m.tipo === 'gasto').reduce((sum, m) => sum + m.monto, 0);
+            const totalFinal = totalInsc + totalComp + totalCruc + totalIngresosManual - totalGastosManual;
             const periodoNombre = `Periodo ${new Date().toLocaleDateString()}`;
             const fechaCierre = obtenerFechaActual();
-            const totalFinal = totalGeneral + totalIngresos - totalGastos;
             mostrarLoading(true);
             const result = await sendData('closePeriod', { nombre: periodoNombre, fechaCierre, total: totalFinal });
             mostrarLoading(false);
@@ -648,7 +752,7 @@
         }
 
         // ============================================
-        // ACCIONES - CONFIGURACIÓN
+        // CONFIGURACIÓN - MONTOS
         // ============================================
         function abrirModalMontos() {
             document.getElementById('montoInscripcion').value = data.config.montoInscripcion;
@@ -679,7 +783,26 @@
         // UTILIDADES
         // ============================================
         function obtenerFechaActual() { return new Date().toISOString().split('T')[0]; }
-        function formatearFecha(fecha) { if (!fecha) return 'Sin fecha'; const parts = fecha.split('-'); return `${parts[2]}/${parts[1]}/${parts[0]}`; }
+        
+        function formatearFecha(fecha) {
+            if (!fecha) return 'Sin fecha';
+            if (fecha.includes('/')) return fecha;
+            const parts = fecha.split('-');
+            if (parts.length === 3) {
+                return `${parts[2]}/${parts[1]}/${parts[0]}`;
+            }
+            try {
+                const d = new Date(fecha);
+                if (!isNaN(d.getTime())) {
+                    const day = String(d.getDate()).padStart(2, '0');
+                    const month = String(d.getMonth() + 1).padStart(2, '0');
+                    const year = d.getFullYear();
+                    return `${day}/${month}/${year}`;
+                }
+            } catch(e) {}
+            return fecha;
+        }
+
         function configurarTabs() {
             document.querySelectorAll('.tab').forEach(tab => {
                 tab.addEventListener('click', function() {
