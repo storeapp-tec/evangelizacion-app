@@ -479,83 +479,163 @@
         // FINANZAS - CON ETIQUETA SOLO EN "TODOS" E "INGRESOS"
         // ============================================
         function renderizarFinanzas() {
-            const list = document.getElementById('finanzasList');
-            let movimientos = [];
+    const list = document.getElementById('finanzasList');
+    let movimientos = [];
 
-            if (filtroFinanzasActual === 'todos') {
-                // TODOS: Ingresos manuales + Gastos manuales + Compendios + Crucifijos (con etiqueta)
-                movimientos = obtenerTodosLosMovimientos();
-            } else if (filtroFinanzasActual === 'ingreso') {
-                // INGRESOS: Compendios + Crucifijos + Ingresos manuales (con etiqueta)
-                const ingresos = obtenerIngresosDisponibles();
-                movimientos = ingresos.map(m => {
-                    // Si es un pago de participante, mostrar con etiqueta
-                    if (m.esPago) {
-                        const nombreConcepto = m.concepto.charAt(0).toUpperCase() + m.concepto.slice(1);
-                        return {
-                            ...m,
-                            concepto: `${m.nombreParticipante} - ${nombreConcepto}`
-                        };
-                    }
-                    return m;
-                });
-            } else if (filtroFinanzasActual === 'gasto') {
-                // GASTOS: Solo gastos manuales
-                movimientos = (data.finanzas || []).filter(m => m.tipo === 'gasto').map(m => ({
-                    id: m.id,
-                    fecha: m.fecha,
-                    tipo: 'gasto',
-                    concepto: m.concepto,
-                    monto: m.monto,
-                    esPago: false
-                }));
-            } else {
-                // Filtro por concepto (inscripcion, compendio, crucifijo) - SIN ETIQUETA
-                movimientos = [];
-                data.participantes.forEach(p => {
-                    if (!p.activo) return;
-                    const conceptos = ['inscripcion', 'compendio', 'crucifijo'];
-                    conceptos.forEach(concepto => {
-                        if (concepto === filtroFinanzasActual) {
-                            const pago = p.pagos[concepto];
-                            if (pago && pago.pagado && pago.fecha) {
-                                const monto = data.config[`monto${concepto.charAt(0).toUpperCase() + concepto.slice(1)}`] || 0;
-                                movimientos.push({
-                                    id: `pago_${p.id}_${concepto}`,
-                                    fecha: pago.fecha,
-                                    tipo: 'ingreso',
-                                    concepto: p.nombre, // SOLO el nombre del participante
-                                    monto: monto,
-                                    esPago: true
-                                });
-                            }
-                        }
+    if (filtroFinanzasActual === 'todos') {
+        // TODOS: Ingresos manuales + Gastos manuales + Compendios + Crucifijos (CON ETIQUETA)
+        movimientos = [];
+        
+        // 1. Ingresos manuales
+        if (data.finanzas) {
+            data.finanzas.forEach(m => {
+                if (m.tipo === 'ingreso') {
+                    movimientos.push({
+                        id: m.id,
+                        fecha: m.fecha,
+                        tipo: 'ingreso',
+                        concepto: m.concepto,
+                        monto: m.monto,
+                        esPago: false
                     });
-                });
-            }
-
-            movimientos.sort((a, b) => b.fecha.localeCompare(a.fecha));
-
-            if (movimientos.length === 0) {
-                list.innerHTML = '<div class="empty-state">No hay movimientos</div>';
-                return;
-            }
-
-            list.innerHTML = movimientos.map(m => {
-                const signo = m.tipo === 'ingreso' ? '+' : '-';
-                const clase = m.tipo === 'ingreso' ? 'ingreso' : 'gasto';
-                const acciones = m.esPago ? '' : `
-                    <button class="btn-accion btn-editar" onclick="abrirModalEditarMovimiento('${m.id}')">✏️</button>
-                    <button class="btn-accion btn-eliminar" onclick="eliminarMovimiento('${m.id}')">🗑️</button>
-                `;
-                return `<div class="movimiento-item">
-                    <span class="fecha">${formatearFecha(m.fecha)}</span>
-                    <span class="concepto">${m.concepto}</span>
-                    <span class="monto ${clase}">${signo}$${m.monto.toFixed(2)}</span>
-                    ${acciones}
-                </div>`;
-            }).join('');
+                }
+            });
         }
+
+        // 2. Gastos manuales
+        if (data.finanzas) {
+            data.finanzas.forEach(m => {
+                if (m.tipo === 'gasto') {
+                    movimientos.push({
+                        id: m.id,
+                        fecha: m.fecha,
+                        tipo: 'gasto',
+                        concepto: m.concepto,
+                        monto: m.monto,
+                        esPago: false
+                    });
+                }
+            });
+        }
+
+        // 3. Cobros de Compendios y Crucifijos (CON ETIQUETA)
+        data.participantes.forEach(p => {
+            if (!p.activo) return;
+            const conceptos = ['compendio', 'crucifijo'];
+            conceptos.forEach(concepto => {
+                const pago = p.pagos[concepto];
+                if (pago && pago.pagado && pago.fecha) {
+                    const monto = data.config[`monto${concepto.charAt(0).toUpperCase() + concepto.slice(1)}`] || 0;
+                    movimientos.push({
+                        id: `pago_${p.id}_${concepto}`,
+                        fecha: pago.fecha,
+                        tipo: 'ingreso',
+                        concepto: `${p.nombre} - ${concepto.charAt(0).toUpperCase() + concepto.slice(1)}`,
+                        monto: monto,
+                        esPago: true
+                    });
+                }
+            });
+        });
+        
+    } else if (filtroFinanzasActual === 'ingreso') {
+        // INGRESOS: Ingresos manuales + Compendios + Crucifijos (CON ETIQUETA)
+        movimientos = [];
+        
+        // 1. Ingresos manuales
+        if (data.finanzas) {
+            data.finanzas.forEach(m => {
+                if (m.tipo === 'ingreso') {
+                    movimientos.push({
+                        id: m.id,
+                        fecha: m.fecha,
+                        tipo: 'ingreso',
+                        concepto: m.concepto,
+                        monto: m.monto,
+                        esPago: false
+                    });
+                }
+            });
+        }
+
+        // 2. Cobros de Compendios y Crucifijos (CON ETIQUETA)
+        data.participantes.forEach(p => {
+            if (!p.activo) return;
+            const conceptos = ['compendio', 'crucifijo'];
+            conceptos.forEach(concepto => {
+                const pago = p.pagos[concepto];
+                if (pago && pago.pagado && pago.fecha) {
+                    const monto = data.config[`monto${concepto.charAt(0).toUpperCase() + concepto.slice(1)}`] || 0;
+                    movimientos.push({
+                        id: `pago_${p.id}_${concepto}`,
+                        fecha: pago.fecha,
+                        tipo: 'ingreso',
+                        concepto: `${p.nombre} - ${concepto.charAt(0).toUpperCase() + concepto.slice(1)}`,
+                        monto: monto,
+                        esPago: true
+                    });
+                }
+            });
+        });
+        
+    } else if (filtroFinanzasActual === 'gasto') {
+        // GASTOS: Solo gastos manuales
+        movimientos = (data.finanzas || []).filter(m => m.tipo === 'gasto').map(m => ({
+            id: m.id,
+            fecha: m.fecha,
+            tipo: 'gasto',
+            concepto: m.concepto,
+            monto: m.monto,
+            esPago: false
+        }));
+    } else {
+        // Filtro por concepto (inscripcion, compendio, crucifijo) - SIN ETIQUETA
+        movimientos = [];
+        data.participantes.forEach(p => {
+            if (!p.activo) return;
+            const conceptos = ['inscripcion', 'compendio', 'crucifijo'];
+            conceptos.forEach(concepto => {
+                if (concepto === filtroFinanzasActual) {
+                    const pago = p.pagos[concepto];
+                    if (pago && pago.pagado && pago.fecha) {
+                        const monto = data.config[`monto${concepto.charAt(0).toUpperCase() + concepto.slice(1)}`] || 0;
+                        movimientos.push({
+                            id: `pago_${p.id}_${concepto}`,
+                            fecha: pago.fecha,
+                            tipo: 'ingreso',
+                            concepto: p.nombre, // SOLO el nombre del participante
+                            monto: monto,
+                            esPago: true
+                        });
+                    }
+                }
+            });
+        });
+    }
+
+    // Ordenar y mostrar...
+    movimientos.sort((a, b) => b.fecha.localeCompare(a.fecha));
+
+    if (movimientos.length === 0) {
+        list.innerHTML = '<div class="empty-state">No hay movimientos</div>';
+        return;
+    }
+
+    list.innerHTML = movimientos.map(m => {
+        const signo = m.tipo === 'ingreso' ? '+' : '-';
+        const clase = m.tipo === 'ingreso' ? 'ingreso' : 'gasto';
+        const acciones = m.esPago ? '' : `
+            <button class="btn-accion btn-editar" onclick="abrirModalEditarMovimiento('${m.id}')">✏️</button>
+            <button class="btn-accion btn-eliminar" onclick="eliminarMovimiento('${m.id}')">🗑️</button>
+        `;
+        return `<div class="movimiento-item">
+            <span class="fecha">${formatearFecha(m.fecha)}</span>
+            <span class="concepto">${m.concepto}</span>
+            <span class="monto ${clase}">${signo}$${m.monto.toFixed(2)}</span>
+            ${acciones}
+        </div>`;
+    }).join('');
+}
 
         function renderizarResumenFinanzas() {
             // 1. Calcular cobros
