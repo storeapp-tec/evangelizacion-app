@@ -319,6 +319,130 @@
         }
 
         // ============================================
+        // FUNCIONES PARA OBTENER MOVIMIENTOS
+        // ============================================
+
+        // SOLO INGRESOS QUE SUMAN AL DISPONIBLE: Compendios + Crucifijos + Ingresos manuales
+        function obtenerIngresosDisponibles() {
+            const ingresos = [];
+
+            // 1. Ingresos manuales (de la hoja Finanzas)
+            if (data.finanzas) {
+                data.finanzas.forEach(m => {
+                    if (m.tipo === 'ingreso') {
+                        ingresos.push({
+                            id: m.id,
+                            fecha: m.fecha,
+                            tipo: 'ingreso',
+                            concepto: m.concepto,
+                            monto: m.monto,
+                            esPago: false
+                        });
+                    }
+                });
+            }
+
+            // 2. Cobros de Compendios y Crucifijos (NO inscripciones)
+            data.participantes.forEach(p => {
+                if (!p.activo) return;
+                const conceptos = ['compendio', 'crucifijo'];
+                conceptos.forEach(concepto => {
+                    const pago = p.pagos[concepto];
+                    if (pago && pago.pagado && pago.fecha) {
+                        const monto = data.config[`monto${concepto.charAt(0).toUpperCase() + concepto.slice(1)}`] || 0;
+                        ingresos.push({
+                            id: `pago_${p.id}_${concepto}`,
+                            fecha: pago.fecha,
+                            tipo: 'ingreso',
+                            concepto: `${p.nombre} - ${concepto.charAt(0).toUpperCase() + concepto.slice(1)}`,
+                            monto: monto,
+                            esPago: true
+                        });
+                    }
+                });
+            });
+
+            return ingresos;
+        }
+
+        // TODOS LOS MOVIMIENTOS: Ingresos manuales + Gastos manuales + Compendios + Crucifijos + Inscripciones (solo control)
+        function obtenerTodosLosMovimientos() {
+            const movimientos = [];
+
+            // 1. Ingresos manuales
+            if (data.finanzas) {
+                data.finanzas.forEach(m => {
+                    if (m.tipo === 'ingreso') {
+                        movimientos.push({
+                            id: m.id,
+                            fecha: m.fecha,
+                            tipo: 'ingreso',
+                            concepto: m.concepto,
+                            monto: m.monto,
+                            esPago: false
+                        });
+                    }
+                });
+            }
+
+            // 2. Gastos manuales
+            if (data.finanzas) {
+                data.finanzas.forEach(m => {
+                    if (m.tipo === 'gasto') {
+                        movimientos.push({
+                            id: m.id,
+                            fecha: m.fecha,
+                            tipo: 'gasto',
+                            concepto: m.concepto,
+                            monto: m.monto,
+                            esPago: false
+                        });
+                    }
+                });
+            }
+
+            // 3. Cobros de Compendios y Crucifijos (NO inscripciones)
+            data.participantes.forEach(p => {
+                if (!p.activo) return;
+                const conceptos = ['compendio', 'crucifijo'];
+                conceptos.forEach(concepto => {
+                    const pago = p.pagos[concepto];
+                    if (pago && pago.pagado && pago.fecha) {
+                        const monto = data.config[`monto${concepto.charAt(0).toUpperCase() + concepto.slice(1)}`] || 0;
+                        movimientos.push({
+                            id: `pago_${p.id}_${concepto}`,
+                            fecha: pago.fecha,
+                            tipo: 'ingreso',
+                            concepto: `${p.nombre} - ${concepto.charAt(0).toUpperCase() + concepto.slice(1)}`,
+                            monto: monto,
+                            esPago: true
+                        });
+                    }
+                });
+            });
+
+            // 4. Inscripciones (SOLO PARA CONTROL, no afectan disponible)
+            data.participantes.forEach(p => {
+                if (!p.activo) return;
+                const pago = p.pagos.inscripcion;
+                if (pago && pago.pagado && pago.fecha) {
+                    const monto = data.config.montoInscripcion || 0;
+                    movimientos.push({
+                        id: `pago_${p.id}_inscripcion`,
+                        fecha: pago.fecha,
+                        tipo: 'ingreso',
+                        concepto: `${p.nombre} - Inscripción (PARROQUIA)`,
+                        monto: monto,
+                        esPago: true,
+                        esInscripcion: true
+                    });
+                }
+            });
+
+            return movimientos;
+        }
+
+        // ============================================
         // RENDERIZADO
         // ============================================
         function renderizarTodo() {
@@ -368,39 +492,28 @@
         }
 
         // ============================================
-        // FINANZAS - CORREGIDA
+        // FINANZAS
         // ============================================
         function renderizarFinanzas() {
             const list = document.getElementById('finanzasList');
             let movimientos = [];
 
             if (filtroFinanzasActual === 'todos') {
-                movimientos = data.finanzas || [];
+                // TODOS: Ingresos manuales + Gastos manuales + Compendios + Crucifijos + Inscripciones (control)
+                movimientos = obtenerTodosLosMovimientos();
             } else if (filtroFinanzasActual === 'ingreso') {
-                // MOSTRAR TODOS LOS INGRESOS: manuales + cobros de participantes (compendios y crucifijos)
-                movimientos = [...(data.finanzas || []).filter(m => m.tipo === 'ingreso')];
-
-                // Agregar cobros de Compendios y Crucifijos (NO Inscripciones)
-                data.participantes.forEach(p => {
-                    if (!p.activo) return;
-                    const conceptos = ['compendio', 'crucifijo'];
-                    conceptos.forEach(concepto => {
-                        const pago = p.pagos[concepto];
-                        if (pago && pago.pagado && pago.fecha) {
-                            const monto = data.config[`monto${concepto.charAt(0).toUpperCase() + concepto.slice(1)}`] || 0;
-                            movimientos.push({
-                                id: `pago_${p.id}_${concepto}`,
-                                fecha: pago.fecha,
-                                tipo: 'ingreso',
-                                concepto: `${p.nombre} - ${concepto.charAt(0).toUpperCase() + concepto.slice(1)}`,
-                                monto: monto,
-                                esPago: true
-                            });
-                        }
-                    });
-                });
+                // INGRESOS: Solo los que suman al disponible (Compendios + Crucifijos + Ingresos manuales)
+                movimientos = obtenerIngresosDisponibles();
             } else if (filtroFinanzasActual === 'gasto') {
-                movimientos = (data.finanzas || []).filter(m => m.tipo === 'gasto');
+                // GASTOS: Solo gastos manuales
+                movimientos = (data.finanzas || []).filter(m => m.tipo === 'gasto').map(m => ({
+                    id: m.id,
+                    fecha: m.fecha,
+                    tipo: 'gasto',
+                    concepto: m.concepto,
+                    monto: m.monto,
+                    esPago: false
+                }));
             } else {
                 // Filtro por concepto (inscripcion, compendio, crucifijo)
                 movimientos = [];
@@ -436,13 +549,17 @@
             list.innerHTML = movimientos.map(m => {
                 const signo = m.tipo === 'ingreso' ? '+' : '-';
                 const clase = m.tipo === 'ingreso' ? 'ingreso' : 'gasto';
+                let concepto = m.concepto;
+                if (m.esInscripcion) {
+                    concepto = m.concepto + ' (PARROQUIA)';
+                }
                 const acciones = m.esPago ? '' : `
                     <button class="btn-accion btn-editar" onclick="abrirModalEditarMovimiento('${m.id}')">✏️</button>
                     <button class="btn-accion btn-eliminar" onclick="eliminarMovimiento('${m.id}')">🗑️</button>
                 `;
                 return `<div class="movimiento-item">
                     <span class="fecha">${formatearFecha(m.fecha)}</span>
-                    <span class="concepto">${m.concepto}</span>
+                    <span class="concepto">${concepto}</span>
                     <span class="monto ${clase}">${signo}$${m.monto.toFixed(2)}</span>
                     ${acciones}
                 </div>`;
@@ -466,7 +583,8 @@
             const ingresosManuales = finanzas.filter(m => m.tipo === 'ingreso').reduce((sum, m) => sum + m.monto, 0);
             const gastosManuales = finanzas.filter(m => m.tipo === 'gasto').reduce((sum, m) => sum + m.monto, 0);
 
-            // 3. Totales
+            // 3. Totales (SOLO Compendios + Crucifijos + Ingresos manuales - Gastos)
+            // Inscripciones NO se suman
             const totalIngresos = totalComp + totalCruc + ingresosManuales;
             const totalGastos = gastosManuales;
             const disponible = totalIngresos - totalGastos;
@@ -515,6 +633,7 @@
             const finanzas = data.finanzas || [];
             const totalIngresosManual = finanzas.filter(m => m.tipo === 'ingreso').reduce((sum, m) => sum + m.monto, 0);
             const totalGastosManual = finanzas.filter(m => m.tipo === 'gasto').reduce((sum, m) => sum + m.monto, 0);
+            // Disponible: SOLO Compendios + Crucifijos + Ingresos manuales - Gastos
             const disponible = totalComp + totalCruc + totalIngresosManual - totalGastosManual;
 
             document.getElementById('resumenPeriodo').innerHTML = `
@@ -694,7 +813,7 @@
             const finanzas = data.finanzas || [];
             const totalIngresosManual = finanzas.filter(m => m.tipo === 'ingreso').reduce((sum, m) => sum + m.monto, 0);
             const totalGastosManual = finanzas.filter(m => m.tipo === 'gasto').reduce((sum, m) => sum + m.monto, 0);
-            const totalFinal = totalInsc + totalComp + totalCruc + totalIngresosManual - totalGastosManual;
+            const totalFinal = totalGeneral + totalIngresosManual - totalGastosManual;
             const periodoNombre = `Periodo ${new Date().toLocaleDateString()}`;
             const fechaCierre = obtenerFechaActual();
             mostrarLoading(true);
@@ -743,42 +862,23 @@
 
         function formatearFecha(fecha) {
             if (!fecha) return 'Sin fecha';
-
-            // Si ya está en formato corto (dd/mm/yyyy)
-            if (typeof fecha === 'string' && fecha.includes('/') && fecha.length <= 10) {
-                return fecha;
-            }
-
-            // Si es un string ISO con zona horaria (ej: 2026-07-03T06:00:00.000Z)
+            if (typeof fecha === 'string' && fecha.includes('/') && fecha.length <= 10) return fecha;
             if (typeof fecha === 'string' && fecha.includes('T')) {
                 const d = new Date(fecha);
                 if (!isNaN(d.getTime())) {
-                    const day = String(d.getDate()).padStart(2, '0');
-                    const month = String(d.getMonth() + 1).padStart(2, '0');
-                    const year = d.getFullYear();
-                    return `${day}/${month}/${year}`;
+                    return `${String(d.getDate()).padStart(2, '0')}/${String(d.getMonth() + 1).padStart(2, '0')}/${d.getFullYear()}`;
                 }
             }
-
-            // Si es formato ISO simple (yyyy-mm-dd)
             if (typeof fecha === 'string' && fecha.includes('-') && fecha.length === 10) {
                 const parts = fecha.split('-');
-                if (parts.length === 3) {
-                    return `${parts[2]}/${parts[1]}/${parts[0]}`;
-                }
+                if (parts.length === 3) return `${parts[2]}/${parts[1]}/${parts[0]}`;
             }
-
-            // Último intento: crear un objeto Date
             try {
                 const d = new Date(fecha);
                 if (!isNaN(d.getTime())) {
-                    const day = String(d.getDate()).padStart(2, '0');
-                    const month = String(d.getMonth() + 1).padStart(2, '0');
-                    const year = d.getFullYear();
-                    return `${day}/${month}/${year}`;
+                    return `${String(d.getDate()).padStart(2, '0')}/${String(d.getMonth() + 1).padStart(2, '0')}/${d.getFullYear()}`;
                 }
             } catch(e) {}
-
             return fecha;
         }
 
