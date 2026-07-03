@@ -421,24 +421,6 @@
                 });
             });
 
-            // 4. Inscripciones (SOLO PARA CONTROL, no afectan disponible)
-            data.participantes.forEach(p => {
-                if (!p.activo) return;
-                const pago = p.pagos.inscripcion;
-                if (pago && pago.pagado && pago.fecha) {
-                    const monto = data.config.montoInscripcion || 0;
-                    movimientos.push({
-                        id: `pago_${p.id}_inscripcion`,
-                        fecha: pago.fecha,
-                        tipo: 'ingreso',
-                        concepto: `${p.nombre} - Inscripción (PARROQUIA)`,
-                        monto: monto,
-                        esPago: true,
-                        esInscripcion: true
-                    });
-                }
-            });
-
             return movimientos;
         }
 
