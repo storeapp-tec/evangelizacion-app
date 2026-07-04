@@ -5,35 +5,200 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Gestión Evangelización</title>
     <style>
+        /* ===== RESET Y ESTILOS GLOBALES ===== */
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #f0f2f5; padding-bottom: 70px; color: #333; font-size: 14px; }
-        .header { background: #1a2634; color: white; padding: 12px; text-align: center; position: sticky; top: 0; z-index: 100; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #f0f2f5;
+            padding-bottom: 10px;
+            color: #333;
+            font-size: 14px;
+        }
+        .header {
+            background: #1a2634;
+            color: white;
+            padding: 12px;
+            text-align: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
         .header h1 { font-size: 17px; font-weight: 600; }
-        .tabs { display: flex; background: #2c3e50; position: sticky; top: 49px; z-index: 99; }
-        .tab { flex: 1; padding: 10px; text-align: center; color: #bdc3c7; background: transparent; border: none; font-size: 13px; font-weight: 600; cursor: pointer; border-bottom: 3px solid transparent; }
+
+        /* ===== TABS ===== */
+        .tabs {
+            display: flex;
+            background: #2c3e50;
+            position: sticky;
+            top: 49px;
+            z-index: 99;
+        }
+        .tab {
+            flex: 1;
+            padding: 10px;
+            text-align: center;
+            color: #bdc3c7;
+            background: transparent;
+            border: none;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            border-bottom: 3px solid transparent;
+        }
         .tab.active { color: white; border-bottom-color: #3498db; }
-        .content { display: none; padding: 12px; max-width: 600px; margin: 0 auto; }
+
+        /* ===== CONTENIDO ===== */
+        .content {
+            display: none;
+            padding: 12px;
+            max-width: 600px;
+            margin: 0 auto;
+        }
         .content.active { display: block; }
-        .card { background: white; border-radius: 10px; padding: 12px; margin-bottom: 12px; box-shadow: 0 1px 4px rgba(0,0,0,0.08); }
-        .card-title { font-size: 14px; font-weight: 600; margin-bottom: 8px; color: #2c3e50; }
-        .search-box { width: 100%; padding: 8px 10px; border: 1px solid #ddd; border-radius: 6px; font-size: 14px; margin-bottom: 8px; }
+
+        /* ===== TARJETAS ===== */
+        .card {
+            background: white;
+            border-radius: 10px;
+            padding: 12px;
+            margin-bottom: 12px;
+            box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+        }
+        .card-title {
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #2c3e50;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        /* ===== BUSCADOR ===== */
+        .search-box {
+            width: 100%;
+            padding: 8px 10px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 14px;
+            margin-bottom: 8px;
+        }
         .search-box:focus { outline: none; border-color: #3498db; }
-        .participant-list { max-height: 400px; overflow-y: auto; }
-        .participant-item { display: flex; align-items: center; padding: 8px 6px; border-bottom: 1px solid #f0f0f0; cursor: pointer; }
+
+        /* ===== LISTA DE PARTICIPANTES ===== */
+        .participant-list {
+            max-height: 380px;
+            overflow-y: auto;
+        }
+        .participant-item {
+            display: flex;
+            align-items: center;
+            padding: 8px 6px;
+            border-bottom: 1px solid #f0f0f0;
+            cursor: pointer;
+        }
         .participant-item:hover { background: #f8f9fa; }
         .participant-item.inactive { opacity: 0.5; background: #f5f5f5; }
         .participant-name { flex: 1; font-size: 13px; font-weight: 500; }
         .participant-status { display: flex; gap: 5px; margin-left: 6px; }
-        .status-icon { width: 22px; height: 22px; display: flex; align-items: center; justify-content: center; border-radius: 50%; font-size: 11px; font-weight: bold; color: white; }
+
+        /* ===== INDICADORES DE PAGO ===== */
+        .status-icon {
+            width: 22px;
+            height: 22px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            font-size: 11px;
+            font-weight: bold;
+            color: white;
+        }
         .status-icon.pagado { background: #27ae60; }
         .status-icon.pendiente { background: #e74c3c; }
         .status-icon.inactivo-icon { background: #95a5a6; font-size: 10px; }
-        .summary { background: #1a2634; color: white; padding: 12px; border-radius: 10px; position: sticky; bottom: 0; margin-top: 8px; }
-        .summary-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 6px; margin-top: 4px; }
+
+        /* ===== FILTROS COBROS ===== */
+        .filtros-cobros {
+            display: flex;
+            gap: 6px;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+        .filtro-icono {
+            font-size: 20px;
+            cursor: pointer;
+            padding: 4px 6px;
+            border-radius: 6px;
+            border: 2px solid transparent;
+            transition: all 0.2s;
+            background: none;
+            line-height: 1;
+        }
+        .filtro-icono:hover {
+            background: #e9ecef;
+        }
+        .filtro-icono.active {
+            border-color: #3498db;
+            background: #e9ecef;
+        }
+        .filtro-icono .badge {
+            font-size: 10px;
+            background: #e74c3c;
+            color: white;
+            border-radius: 50%;
+            padding: 0 5px;
+            margin-left: 2px;
+            display: none;
+        }
+        .filtro-icono .badge.visible {
+            display: inline;
+        }
+        .limpiar-filtro {
+            font-size: 12px;
+            color: #e74c3c;
+            cursor: pointer;
+            padding: 2px 8px;
+            border-radius: 12px;
+            background: #fde8e8;
+            border: 1px solid #f5c6cb;
+            display: none;
+            margin-left: 8px;
+        }
+        .limpiar-filtro.visible {
+            display: inline-block;
+        }
+
+        /* ===== RESUMEN ===== */
+        .summary {
+            background: #1a2634;
+            color: white;
+            padding: 12px;
+            border-radius: 10px;
+            position: sticky;
+            bottom: 0;
+            margin-top: 8px;
+        }
+        .summary-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 6px;
+            margin-top: 4px;
+        }
         .summary-item { text-align: center; }
         .summary-item .label { font-size: 10px; opacity: 0.8; }
         .summary-item .value { font-size: 14px; font-weight: bold; }
-        .btn { padding: 6px 14px; border: none; border-radius: 6px; font-size: 12px; font-weight: 600; cursor: pointer; transition: all 0.2s; }
+
+        /* ===== BOTONES ===== */
+        .btn {
+            padding: 6px 14px;
+            border: none;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
         .btn-sm { padding: 4px 10px; font-size: 11px; width: auto; }
         .btn-primary { background: #3498db; color: white; }
         .btn-success { background: #27ae60; color: white; }
@@ -41,33 +206,166 @@
         .btn-warning { background: #f39c12; color: white; }
         .btn-secondary { background: #95a5a6; color: white; }
         .btn-group { display: flex; gap: 6px; flex-wrap: wrap; }
-        .modal-overlay { display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.5); z-index: 1000; align-items: center; justify-content: center; padding: 20px; }
+
+        /* ===== MODALES ===== */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0,0,0,0.5);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
         .modal-overlay.active { display: flex; }
-        .modal { background: white; border-radius: 14px; padding: 20px; max-width: 400px; width: 100%; max-height: 90vh; overflow-y: auto; }
+        .modal {
+            background: white;
+            border-radius: 14px;
+            padding: 20px;
+            max-width: 400px;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
         .modal h2 { font-size: 16px; margin-bottom: 12px; color: #2c3e50; }
-        .modal-close { float: right; background: none; border: none; font-size: 22px; cursor: pointer; color: #999; }
+        .modal-close {
+            float: right;
+            background: none;
+            border: none;
+            font-size: 22px;
+            cursor: pointer;
+            color: #999;
+        }
         .modal-close:hover { color: #333; }
-        .pago-item { display: flex; align-items: center; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid #eee; }
+
+        .pago-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px solid #eee;
+        }
         .pago-item:last-child { border-bottom: none; }
         .pago-label { font-weight: 500; flex: 1; font-size: 13px; }
         .pago-fecha { font-size: 11px; color: #666; margin: 0 6px; }
-        .btn-toggle { padding: 3px 12px; border: none; border-radius: 16px; font-size: 12px; font-weight: 600; cursor: pointer; }
+
+        /* ===== SWITCH TOGGLE ===== */
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 44px;
+            height: 24px;
+            flex-shrink: 0;
+        }
+        .switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            transition: .3s;
+            border-radius: 24px;
+        }
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 18px;
+            width: 18px;
+            left: 3px;
+            bottom: 3px;
+            background-color: white;
+            transition: .3s;
+            border-radius: 50%;
+        }
+        .switch input:checked + .slider {
+            background-color: #27ae60;
+        }
+        .switch input:checked + .slider:before {
+            transform: translateX(20px);
+        }
+        .btn-toggle {
+            padding: 3px 12px;
+            border: none;
+            border-radius: 16px;
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+        }
         .btn-toggle.pagado { background: #27ae60; color: white; }
         .btn-toggle.pendiente { background: #e74c3c; color: white; }
         .btn-toggle.activo { background: #3498db; color: white; }
         .btn-toggle.inactivo { background: #95a5a6; color: white; }
-        .finanzas-totales { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; margin-bottom: 12px; text-align: center; }
-        .finanzas-totales .item { background: #f8f9fa; padding: 10px 8px; border-radius: 8px; cursor: pointer; transition: all 0.2s; }
+
+        /* ===== FINANZAS ===== */
+        .finanzas-totales {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 8px;
+            margin-bottom: 12px;
+            text-align: center;
+        }
+        .finanzas-totales .item {
+            background: #f8f9fa;
+            padding: 10px 8px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-weight: bold;
+        }
         .finanzas-totales .item:hover { background: #e9ecef; }
-        .finanzas-totales .item.active { background: #3498db; color: white; }
+        .finanzas-totales .item.active {
+            background: #3498db;
+            color: white;
+        }
         .finanzas-totales .item.active .label { color: rgba(255,255,255,0.8); }
-        .finanzas-totales .label { font-size: 10px; color: #666; }
+        .finanzas-totales .label { font-size: 10px; color: #666; font-weight: normal; }
         .finanzas-totales .value { font-size: 16px; font-weight: bold; }
-        .finanzas-filtros { display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap: 6px; margin: 10px 0; }
-        .finanzas-filtros .filtro-btn { padding: 8px 4px; border: 1px solid #ddd; border-radius: 8px; background: white; font-size: 11px; cursor: pointer; transition: all 0.2s; text-align: center; font-weight: 600; }
-        .finanzas-filtros .filtro-btn.active { border-color: #3498db; background: #3498db; color: white; }
-        .finanzas-filtros .filtro-btn .sub { font-weight: normal; font-size: 10px; opacity: 0.7; display: block; }
-        .movimiento-item { display: flex; align-items: center; padding: 6px 8px; border-bottom: 1px solid #f0f0f0; gap: 6px; font-size: 12px; }
+
+        .finanzas-filtros {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+            gap: 6px;
+            margin: 10px 0;
+        }
+        .finanzas-filtros .filtro-btn {
+            padding: 8px 4px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            background: white;
+            font-size: 11px;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-align: center;
+            font-weight: bold;
+        }
+        .finanzas-filtros .filtro-btn.active {
+            border-color: #3498db;
+            background: #3498db;
+            color: white;
+        }
+        .finanzas-filtros .filtro-btn .sub {
+            font-weight: normal;
+            font-size: 10px;
+            opacity: 0.7;
+            display: block;
+        }
+
+        .movimiento-item {
+            display: flex;
+            align-items: center;
+            padding: 6px 8px;
+            border-bottom: 1px solid #f0f0f0;
+            gap: 6px;
+            font-size: 12px;
+        }
         .movimiento-item .fecha { color: #666; min-width: 80px; font-size: 11px; }
         .movimiento-item .concepto { flex: 1; }
         .movimiento-item .monto { font-weight: bold; min-width: 50px; text-align: right; }
@@ -76,21 +374,159 @@
         .btn-accion { background: none; border: none; font-size: 13px; cursor: pointer; padding: 0 3px; }
         .btn-editar { color: #3498db; }
         .btn-eliminar { color: #e74c3c; }
+
         .form-group { margin-bottom: 6px; }
         .form-group label { display: block; font-size: 11px; font-weight: 600; color: #555; margin-bottom: 2px; }
-        .form-control { width: 100%; padding: 6px 10px; border: 1px solid #ddd; border-radius: 6px; font-size: 13px; }
+        .form-control {
+            width: 100%;
+            padding: 6px 10px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 13px;
+        }
         .form-control:focus { outline: none; border-color: #3498db; }
         .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
-        .loading-overlay { display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.7); z-index: 2000; align-items: center; justify-content: center; flex-direction: column; }
+
+        .loading-overlay {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0,0,0,0.7);
+            z-index: 2000;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+        }
         .loading-overlay.active { display: flex; }
-        .loading-spinner { width: 36px; height: 36px; border: 3px solid #f3f3f3; border-top: 3px solid #3498db; border-radius: 50%; animation: spin 1s linear infinite; }
-        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        .loading-spinner {
+            width: 36px;
+            height: 36px;
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid #3498db;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
         .loading-text { color: white; margin-top: 10px; font-size: 13px; }
+
         .empty-state { text-align: center; padding: 20px 0; color: #999; font-size: 13px; }
-        .resumen-periodo .linea { display: flex; justify-content: space-between; padding: 4px 0; border-bottom: 1px solid #eee; font-size: 13px; }
-        .periodo-item { padding: 8px 0; border-bottom: 1px solid #eee; font-size: 13px; }
+
+        .resumen-periodo .linea {
+            display: flex;
+            justify-content: space-between;
+            padding: 4px 0;
+            border-bottom: 1px solid #eee;
+            font-size: 13px;
+        }
+        .periodo-item {
+            padding: 8px 0;
+            border-bottom: 1px solid #eee;
+            font-size: 13px;
+        }
         .periodo-item .total { float: right; font-weight: bold; color: #27ae60; }
-        @media (max-width: 480px) { .finanzas-filtros { grid-template-columns: 1fr 1fr; } .finanzas-totales { grid-template-columns: 1fr 1fr 1fr; gap: 4px; } }
+
+        /* ===== MENU INFERIOR FINANZAS ===== */
+        .menu-inferior-finanzas {
+            background: #1a2634;
+            color: white;
+            padding: 12px;
+            border-radius: 10px;
+            position: sticky;
+            bottom: 0;
+            margin-top: 8px;
+        }
+        .menu-inferior-finanzas .fila {
+            display: flex;
+            justify-content: space-between;
+            padding: 3px 0;
+            font-size: 13px;
+            cursor: pointer;
+            transition: all 0.2s;
+            border-radius: 4px;
+            padding: 4px 6px;
+        }
+        .menu-inferior-finanzas .fila:hover {
+            background: rgba(255,255,255,0.1);
+        }
+        .menu-inferior-finanzas .fila .etiqueta {
+            font-weight: normal;
+        }
+        .menu-inferior-finanzas .fila .valor {
+            font-weight: bold;
+        }
+        .menu-inferior-finanzas .fila.inscripcion .valor { color: #e67e22; }
+        .menu-inferior-finanzas .fila.compendio .valor { color: #27ae60; }
+        .menu-inferior-finanzas .fila.crucifijo .valor { color: #3498db; }
+        .menu-inferior-finanzas .fila.ingresos .valor { color: #1e8449; }
+        .menu-inferior-finanzas .fila.gastos .valor { color: #d35400; }
+        .menu-inferior-finanzas .fila.disponible .valor { color: #2ecc71; font-size: 15px; }
+        .menu-inferior-finanzas .fila.active {
+            background: rgba(52, 152, 219, 0.3);
+            border-left: 3px solid #3498db;
+        }
+
+        .menu-inferior-finanzas .separador {
+            border-top: 1px solid rgba(255,255,255,0.2);
+            margin: 4px 0;
+        }
+
+        .filtro-activo-indicador {
+            font-size: 11px;
+            color: #bdc3c7;
+            text-align: center;
+            padding: 4px 0;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            margin-top: 4px;
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 480px) {
+            .summary-grid { grid-template-columns: 1fr; gap: 3px; }
+            .form-row { grid-template-columns: 1fr; }
+            .finanzas-totales { grid-template-columns: 1fr 1fr 1fr; gap: 4px; }
+            .finanzas-filtros { grid-template-columns: 1fr 1fr 1fr; }
+            .finanzas-filtros .filtro-btn { font-size: 10px; padding: 4px 6px; }
+        }
+        /* ===== DROPDOWN FLOTANTE ===== */
+        .dropdown-filtro {
+            display: none;
+            position: absolute;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            padding: 8px 0;
+            min-width: 140px;
+            z-index: 50;
+            border: 1px solid #e0e0e0;
+        }
+        .dropdown-filtro.visible {
+            display: block;
+        }
+        .dropdown-filtro .opcion {
+            padding: 8px 16px;
+            cursor: pointer;
+            font-size: 13px;
+            transition: background 0.2s;
+            border: none;
+            background: none;
+            width: 100%;
+            text-align: left;
+            color: #333;
+        }
+        .dropdown-filtro .opcion:hover {
+            background: #f0f2f5;
+        }
+        .dropdown-filtro .opcion.activa {
+            background: #e9ecef;
+            font-weight: bold;
+        }
+        .posicion-relativa {
+            position: relative;
+            display: inline-block;
+        }
     </style>
 </head>
 <body>
@@ -108,62 +544,70 @@
         <button class="tab" data-tab="admin">⚙️ Admin</button>
     </div>
 
-    <!-- ===== COBROS ===== -->
+    <!-- ============================================================ -->
+    <!-- PANTALLA 1: COBROS -->
+    <!-- ============================================================ -->
     <div id="cobros" class="content active">
         <div class="card">
-            <div class="card-title">🔍 Buscar participante</div>
+            <div class="card-title">
+                🔍 Buscar participante
+                <span style="display:flex; align-items:center; gap:6px;">
+                    <span style="font-size:12px; color:#666; cursor:pointer;" onclick="recargarDatos()" title="Sincronizar">🔄</span>
+                </span>
+            </div>
             <input type="text" id="searchInput" class="search-box" placeholder="Escribe el nombre...">
             <div class="btn-group">
                 <button class="btn btn-primary btn-sm" onclick="abrirModalAgregar()">➕ Agregar</button>
                 <button class="btn btn-warning btn-sm" onclick="abrirModalMontos()">💰 Cambiar montos</button>
-                <button class="btn btn-secondary btn-sm" onclick="recargarDatos()">🔄 Sincronizar</button>
             </div>
         </div>
+
         <div class="card">
-            <div class="card-title">📋 Participantes</div>
+            <div class="card-title">
+                📋 Participantes
+                <span style="display:flex; align-items:center; gap:4px;">
+                    <span class="posicion-relativa">
+                        <button class="filtro-icono" data-concepto="inscripcion" onclick="toggleDropdownFiltro(event, 'inscripcion')" title="Filtrar por Inscripción">📝</button>
+                        <div class="dropdown-filtro" id="dropdown-inscripcion">
+                            <button class="opcion" data-filtro="todos" onclick="aplicarFiltroCobros('inscripcion', 'todos')">📋 Todos</button>
+                            <button class="opcion" data-filtro="pagados" onclick="aplicarFiltroCobros('inscripcion', 'pagados')">✅ Pagados</button>
+                            <button class="opcion" data-filtro="pendientes" onclick="aplicarFiltroCobros('inscripcion', 'pendientes')">❌ Pendientes</button>
+                        </div>
+                    </span>
+                    <span class="posicion-relativa">
+                        <button class="filtro-icono" data-concepto="compendio" onclick="toggleDropdownFiltro(event, 'compendio')" title="Filtrar por Compendio">📚</button>
+                        <div class="dropdown-filtro" id="dropdown-compendio">
+                            <button class="opcion" data-filtro="todos" onclick="aplicarFiltroCobros('compendio', 'todos')">📋 Todos</button>
+                            <button class="opcion" data-filtro="pagados" onclick="aplicarFiltroCobros('compendio', 'pagados')">✅ Pagados</button>
+                            <button class="opcion" data-filtro="pendientes" onclick="aplicarFiltroCobros('compendio', 'pendientes')">❌ Pendientes</button>
+                        </div>
+                    </span>
+                    <span class="posicion-relativa">
+                        <button class="filtro-icono" data-concepto="crucifijo" onclick="toggleDropdownFiltro(event, 'crucifijo')" title="Filtrar por Crucifijo">✝️</button>
+                        <div class="dropdown-filtro" id="dropdown-crucifijo">
+                            <button class="opcion" data-filtro="todos" onclick="aplicarFiltroCobros('crucifijo', 'todos')">📋 Todos</button>
+                            <button class="opcion" data-filtro="pagados" onclick="aplicarFiltroCobros('crucifijo', 'pagados')">✅ Pagados</button>
+                            <button class="opcion" data-filtro="pendientes" onclick="aplicarFiltroCobros('crucifijo', 'pendientes')">❌ Pendientes</button>
+                        </div>
+                    </span>
+                    <span class="limpiar-filtro" id="limpiarFiltroCobros" onclick="limpiarFiltroCobros()">✕ Limpiar filtro</span>
+                </span>
+            </div>
             <div id="participantList" class="participant-list"></div>
         </div>
+
         <div class="summary" id="summary">
             <div style="text-align:center; font-weight:bold; margin-bottom:3px; font-size:13px;">📊 Resumen</div>
             <div id="summaryContent"></div>
         </div>
     </div>
 
-    <!-- ===== FINANZAS ===== -->
+    <!-- ============================================================ -->
+    <!-- PANTALLA 2: FINANZAS -->
+    <!-- ============================================================ -->
     <div id="finanzas" class="content">
-        <div class="card" style="padding: 10px;">
-            <div class="finanzas-totales">
-                <div class="item" data-filtro="ingreso" onclick="filtrarFinanzas('ingreso')">
-                    <div class="label">💰 Ingresos</div>
-                    <div class="value" id="totalIngresos" style="color:#27ae60;">$0</div>
-                </div>
-                <div class="item" data-filtro="gasto" onclick="filtrarFinanzas('gasto')">
-                    <div class="label">💸 Gastos</div>
-                    <div class="value" id="totalGastos" style="color:#e74c3c;">$0</div>
-                </div>
-                <div class="item" style="cursor:default;">
-                    <div class="label">📊 Disponible</div>
-                    <div class="value" id="totalSaldo" style="color:#3498db;">$0</div>
-                </div>
-            </div>
-            <div class="finanzas-filtros">
-                <button class="filtro-btn active" data-filtro="todos" onclick="filtrarFinanzas('todos')">📋 Todos</button>
-                <button class="filtro-btn" data-filtro="inscripcion" onclick="filtrarFinanzas('inscripcion')" id="btnInscripcion">
-                    📝 Inscripción <span class="sub" id="subInscripcion">0/0 $0</span>
-                </button>
-                <button class="filtro-btn" data-filtro="compendio" onclick="filtrarFinanzas('compendio')" id="btnCompendio">
-                    📚 Compendio <span class="sub" id="subCompendio">0/0 $0</span>
-                </button>
-                <button class="filtro-btn" data-filtro="crucifijo" onclick="filtrarFinanzas('crucifijo')" id="btnCrucifijo">
-                    ✝️ Crucifijo <span class="sub" id="subCrucifijo">0/0 $0</span>
-                </button>
-            </div>
-        </div>
-        <div class="card" style="padding: 8px;">
-            <div id="finanzasList" class="historial-list" style="max-height:280px; overflow-y:auto;"></div>
-        </div>
-        <div class="card" style="padding: 10px;">
-            <div style="font-size:13px; font-weight:600; margin-bottom:6px; color:#2c3e50;">➕ Agregar movimiento</div>
+        <div class="card">
+            <div class="card-title" style="font-size:13px;">➕ Agregar movimiento</div>
             <div class="form-group">
                 <select id="finTipo" class="form-control" style="font-size:13px; padding:5px 8px;">
                     <option value="ingreso">💰 Ingreso</option>
@@ -183,9 +627,46 @@
             </div>
             <button class="btn btn-success" onclick="agregarMovimiento()" style="width:100%; font-size:13px; padding:6px;">✅ Agregar</button>
         </div>
+
+        <div class="card" style="padding: 8px;">
+            <div id="finanzasList" class="historial-list" style="max-height:320px; overflow-y:auto;"></div>
+        </div>
+
+        <div class="menu-inferior-finanzas" id="menuInferiorFinanzas">
+            <div style="text-align:center; font-weight:bold; margin-bottom:6px; font-size:13px; color:#fff;">📊 Resumen de movimientos</div>
+            <div class="fila inscripcion" data-filtro="inscripcion" onclick="filtrarFinanzas('inscripcion')">
+                <span class="etiqueta">📝 Inscripción</span>
+                <span class="valor" id="menuInscripcion">0/0 $0</span>
+            </div>
+            <div class="fila compendio" data-filtro="compendio" onclick="filtrarFinanzas('compendio')">
+                <span class="etiqueta">📚 Compendio</span>
+                <span class="valor" id="menuCompendio">0/0 $0</span>
+            </div>
+            <div class="fila crucifijo" data-filtro="crucifijo" onclick="filtrarFinanzas('crucifijo')">
+                <span class="etiqueta">✝️ Crucifijo</span>
+                <span class="valor" id="menuCrucifijo">0/0 $0</span>
+            </div>
+            <div class="separador"></div>
+            <div class="fila ingresos" data-filtro="ingreso" onclick="filtrarFinanzas('ingreso')">
+                <span class="etiqueta">💰 Ingresos adicionales</span>
+                <span class="valor" id="menuIngresos">$0</span>
+            </div>
+            <div class="fila gastos" data-filtro="gasto" onclick="filtrarFinanzas('gasto')">
+                <span class="etiqueta">💸 Gastos</span>
+                <span class="valor" id="menuGastos">$0</span>
+            </div>
+            <div class="separador"></div>
+            <div class="fila disponible" style="cursor:default;">
+                <span class="etiqueta">📈 Disponible</span>
+                <span class="valor" id="menuDisponible">$0</span>
+            </div>
+            <div class="filtro-activo-indicador" id="filtroActivoFinanzas">📋 Mostrando: Ingresos adicionales</div>
+        </div>
     </div>
 
-    <!-- ===== ADMIN ===== -->
+    <!-- ============================================================ -->
+    <!-- PANTALLA 3: ADMIN -->
+    <!-- ============================================================ -->
     <div id="admin" class="content">
         <div class="card">
             <div class="card-title">📊 Resumen del periodo</div>
@@ -199,7 +680,9 @@
         </div>
     </div>
 
-    <!-- ===== MODALES ===== -->
+    <!-- ============================================================ -->
+    <!-- MODALES -->
+    <!-- ============================================================ -->
     <div id="modalParticipante" class="modal-overlay">
         <div class="modal">
             <button class="modal-close" onclick="cerrarModal()">✕</button>
@@ -255,7 +738,9 @@
         const API_URL = 'https://script.google.com/macros/s/AKfycbzOGZoRNVaWfADgb0Wu0EwWVsuCQLdJ4gDtVCnwIpxZmJcwE5jHst9_EkhUuMe2sGw7/exec';
 
         let data = null;
-        let filtroFinanzasActual = 'todos';
+        let filtroFinanzasActual = 'ingreso';
+        let filtroCobrosConcepto = null;
+        let filtroCobrosEstado = null;
         let participanteEditando = null;
         let movimientoEditando = null;
         let cargando = false;
@@ -319,115 +804,7 @@
         }
 
         // ============================================
-        // FUNCIONES PARA OBTENER MOVIMIENTOS
-        // ============================================
-
-        // SOLO INGRESOS QUE SUMAN AL DISPONIBLE: Compendios + Crucifijos + Ingresos manuales
-        function obtenerIngresosDisponibles() {
-            const ingresos = [];
-
-            // 1. Ingresos manuales (de la hoja Finanzas)
-            if (data.finanzas) {
-                data.finanzas.forEach(m => {
-                    if (m.tipo === 'ingreso') {
-                        ingresos.push({
-                            id: m.id,
-                            fecha: m.fecha,
-                            tipo: 'ingreso',
-                            concepto: m.concepto,
-                            monto: m.monto,
-                            esPago: false
-                        });
-                    }
-                });
-            }
-
-            // 2. Cobros de Compendios y Crucifijos (NO inscripciones)
-            data.participantes.forEach(p => {
-                if (!p.activo) return;
-                const conceptos = ['compendio', 'crucifijo'];
-                conceptos.forEach(concepto => {
-                    const pago = p.pagos[concepto];
-                    if (pago && pago.pagado && pago.fecha) {
-                        const monto = data.config[`monto${concepto.charAt(0).toUpperCase() + concepto.slice(1)}`] || 0;
-                        // Guardamos el concepto completo para usarlo después
-                        ingresos.push({
-                            id: `pago_${p.id}_${concepto}`,
-                            fecha: pago.fecha,
-                            tipo: 'ingreso',
-                            concepto: concepto, // Guardamos el concepto original
-                            nombreParticipante: p.nombre,
-                            monto: monto,
-                            esPago: true
-                        });
-                    }
-                });
-            });
-
-            return ingresos;
-        }
-
-        // TODOS LOS MOVIMIENTOS: Ingresos manuales + Gastos manuales + Compendios + Crucifijos (sin inscripciones)
-        function obtenerTodosLosMovimientos() {
-            const movimientos = [];
-
-            // 1. Ingresos manuales
-            if (data.finanzas) {
-                data.finanzas.forEach(m => {
-                    if (m.tipo === 'ingreso') {
-                        movimientos.push({
-                            id: m.id,
-                            fecha: m.fecha,
-                            tipo: 'ingreso',
-                            concepto: m.concepto,
-                            monto: m.monto,
-                            esPago: false
-                        });
-                    }
-                });
-            }
-
-            // 2. Gastos manuales
-            if (data.finanzas) {
-                data.finanzas.forEach(m => {
-                    if (m.tipo === 'gasto') {
-                        movimientos.push({
-                            id: m.id,
-                            fecha: m.fecha,
-                            tipo: 'gasto',
-                            concepto: m.concepto,
-                            monto: m.monto,
-                            esPago: false
-                        });
-                    }
-                });
-            }
-
-            // 3. Cobros de Compendios y Crucifijos (NO inscripciones)
-            data.participantes.forEach(p => {
-                if (!p.activo) return;
-                const conceptos = ['compendio', 'crucifijo'];
-                conceptos.forEach(concepto => {
-                    const pago = p.pagos[concepto];
-                    if (pago && pago.pagado && pago.fecha) {
-                        const monto = data.config[`monto${concepto.charAt(0).toUpperCase() + concepto.slice(1)}`] || 0;
-                        movimientos.push({
-                            id: `pago_${p.id}_${concepto}`,
-                            fecha: pago.fecha,
-                            tipo: 'ingreso',
-                            concepto: `${p.nombre} - ${concepto.charAt(0).toUpperCase() + concepto.slice(1)}`,
-                            monto: monto,
-                            esPago: true
-                        });
-                    }
-                });
-            });
-
-            return movimientos;
-        }
-
-        // ============================================
-        // RENDERIZADO
+        // RENDERIZADO PRINCIPAL
         // ============================================
         function renderizarTodo() {
             if (!data) return;
@@ -438,24 +815,73 @@
             renderizarAdmin();
         }
 
+        // ============================================
+        // COBROS - PARTICIPANTES
+        // ============================================
         function renderizarParticipantes() {
             const searchTerm = document.getElementById('searchInput').value.toLowerCase();
             const list = document.getElementById('participantList');
-            const filtrados = data.participantes.filter(p => p.nombre.toLowerCase().includes(searchTerm));
-            if (filtrados.length === 0) { list.innerHTML = '<div class="empty-state">No hay participantes</div>'; return; }
+
+            let participantes = data.participantes;
+
+            // Aplicar filtro de cobros si está activo
+            if (filtroCobrosConcepto && filtroCobrosEstado) {
+                participantes = participantes.filter(p => {
+                    const pago = p.pagos[filtroCobrosConcepto];
+                    if (!pago) return false;
+                    if (filtroCobrosEstado === 'pagados') return pago.pagado === true;
+                    if (filtroCobrosEstado === 'pendientes') return pago.pagado === false;
+                    return true;
+                });
+            }
+
+            const filtrados = participantes.filter(p => p.nombre.toLowerCase().includes(searchTerm));
+
+            if (filtrados.length === 0) {
+                list.innerHTML = '<div class="empty-state">No hay participantes</div>';
+                return;
+            }
+
+            // Mostrar solo la columna del filtro si está activo
+            const mostrarUnaColumna = filtroCobrosConcepto && filtroCobrosEstado;
+
             list.innerHTML = filtrados.map(p => {
                 const statusClass = p.activo ? '' : 'inactive';
                 const statusIcon = p.activo ? '' : '<span class="status-icon inactivo-icon">⛔</span>';
+
+                let iconosHTML = '';
+                if (mostrarUnaColumna) {
+                    const pago = p.pagos[filtroCobrosConcepto];
+                    const estado = pago && pago.pagado ? 'pagado' : 'pendiente';
+                    const simbolo = pago && pago.pagado ? '✅' : '❌';
+                    iconosHTML = `<span class="status-icon ${estado}">${simbolo}</span>`;
+                } else {
+                    const insc = p.pagos.inscripcion;
+                    const comp = p.pagos.compendio;
+                    const cru = p.pagos.crucifijo;
+                    iconosHTML = `
+                        <span class="status-icon ${insc && insc.pagado ? 'pagado' : 'pendiente'}">${insc && insc.pagado ? '✓' : '✗'}</span>
+                        <span class="status-icon ${comp && comp.pagado ? 'pagado' : 'pendiente'}">${comp && comp.pagado ? '✓' : '✗'}</span>
+                        <span class="status-icon ${cru && cru.pagado ? 'pagado' : 'pendiente'}">${cru && cru.pagado ? '✓' : '✗'}</span>
+                    `;
+                }
+
                 return `<div class="participant-item ${statusClass}" onclick="editarParticipante('${p.nombre}')">
                     <span class="participant-name">${p.nombre}</span>
                     <div class="participant-status">
                         ${statusIcon}
-                        <span class="status-icon ${p.pagos.inscripcion.pagado ? 'pagado' : 'pendiente'}">${p.pagos.inscripcion.pagado ? '✓' : '✗'}</span>
-                        <span class="status-icon ${p.pagos.compendio.pagado ? 'pagado' : 'pendiente'}">${p.pagos.compendio.pagado ? '✓' : '✗'}</span>
-                        <span class="status-icon ${p.pagos.crucifijo.pagado ? 'pagado' : 'pendiente'}">${p.pagos.crucifijo.pagado ? '✓' : '✗'}</span>
+                        ${iconosHTML}
                     </div>
                 </div>`;
             }).join('');
+
+            // Actualizar indicador de filtro activo
+            const limpiarBtn = document.getElementById('limpiarFiltroCobros');
+            if (filtroCobrosConcepto && filtroCobrosEstado) {
+                limpiarBtn.classList.add('visible');
+            } else {
+                limpiarBtn.classList.remove('visible');
+            }
         }
 
         function renderizarResumen() {
@@ -465,180 +891,183 @@
             const pagadosInsc = activos.filter(p => p.pagos.inscripcion.pagado).length;
             const pagadosComp = activos.filter(p => p.pagos.compendio.pagado).length;
             const pagadosCruc = activos.filter(p => p.pagos.crucifijo.pagado).length;
+
             document.getElementById('summaryContent').innerHTML = `
-                <div style="text-align:center; font-size:12px; margin-bottom:3px;">👥 Total: ${data.participantes.length} (${inactivos.length} inactivos)</div>
+                <div style="text-align:center; font-size:13px; margin-bottom:3px;">
+                    👥 ${activos.length} activos (${inactivos.length} inactivos)
+                </div>
                 <div class="summary-grid">
-                    <div class="summary-item"><div class="label">📝 Inscripción</div><div class="value">${pagadosInsc}/${total}</div></div>
-                    <div class="summary-item"><div class="label">📚 Compendio</div><div class="value">${pagadosComp}/${total}</div></div>
-                    <div class="summary-item"><div class="label">✝️ Crucifijo</div><div class="value">${pagadosCruc}/${total}</div></div>
+                    <div class="summary-item">
+                        <div class="label">📝 Inscripción</div>
+                        <div class="value">${pagadosInsc}/${total}</div>
+                    </div>
+                    <div class="summary-item">
+                        <div class="label">📚 Compendio</div>
+                        <div class="value">${pagadosComp}/${total}</div>
+                    </div>
+                    <div class="summary-item">
+                        <div class="label">✝️ Crucifijo</div>
+                        <div class="value">${pagadosCruc}/${total}</div>
+                    </div>
                 </div>
             `;
         }
 
         // ============================================
-        // FINANZAS - CON ETIQUETA SOLO EN "TODOS" E "INGRESOS"
+        // COBROS - FILTROS
+        // ============================================
+        function toggleDropdownFiltro(event, concepto) {
+            event.stopPropagation();
+            // Cerrar otros dropdowns
+            document.querySelectorAll('.dropdown-filtro').forEach(d => d.classList.remove('visible'));
+            const dropdown = document.getElementById('dropdown-' + concepto);
+            dropdown.classList.toggle('visible');
+
+            // Marcar el icono como activo si hay filtro
+            document.querySelectorAll('.filtro-icono').forEach(icon => {
+                icon.classList.remove('active');
+            });
+            if (filtroCobrosConcepto === concepto) {
+                document.querySelector(`.filtro-icono[data-concepto="${concepto}"]`).classList.add('active');
+            }
+        }
+
+        function aplicarFiltroCobros(concepto, estado) {
+            filtroCobrosConcepto = concepto;
+            filtroCobrosEstado = estado;
+            // Cerrar dropdown
+            document.querySelectorAll('.dropdown-filtro').forEach(d => d.classList.remove('visible'));
+            // Marcar icono activo
+            document.querySelectorAll('.filtro-icono').forEach(icon => {
+                icon.classList.remove('active');
+            });
+            document.querySelector(`.filtro-icono[data-concepto="${concepto}"]`).classList.add('active');
+            renderizarParticipantes();
+        }
+
+        function limpiarFiltroCobros() {
+            filtroCobrosConcepto = null;
+            filtroCobrosEstado = null;
+            document.querySelectorAll('.filtro-icono').forEach(icon => {
+                icon.classList.remove('active');
+            });
+            document.querySelectorAll('.dropdown-filtro').forEach(d => d.classList.remove('visible'));
+            document.getElementById('limpiarFiltroCobros').classList.remove('visible');
+            renderizarParticipantes();
+        }
+
+        // Cerrar dropdown al hacer clic fuera
+        document.addEventListener('click', function() {
+            document.querySelectorAll('.dropdown-filtro').forEach(d => d.classList.remove('visible'));
+        });
+
+        // ============================================
+        // FINANZAS
         // ============================================
         function renderizarFinanzas() {
-    const list = document.getElementById('finanzasList');
-    let movimientos = [];
+            const list = document.getElementById('finanzasList');
+            let movimientos = [];
 
-    if (filtroFinanzasActual === 'todos') {
-        // TODOS: Ingresos manuales + Gastos manuales + Compendios + Crucifijos (CON ETIQUETA)
-        movimientos = [];
-        
-        // 1. Ingresos manuales
-        if (data.finanzas) {
-            data.finanzas.forEach(m => {
-                if (m.tipo === 'ingreso') {
-                    movimientos.push({
-                        id: m.id,
-                        fecha: m.fecha,
-                        tipo: 'ingreso',
-                        concepto: m.concepto,
-                        monto: m.monto,
-                        esPago: false
-                    });
-                }
-            });
-        }
-
-        // 2. Gastos manuales
-        if (data.finanzas) {
-            data.finanzas.forEach(m => {
-                if (m.tipo === 'gasto') {
-                    movimientos.push({
-                        id: m.id,
-                        fecha: m.fecha,
-                        tipo: 'gasto',
-                        concepto: m.concepto,
-                        monto: m.monto,
-                        esPago: false
-                    });
-                }
-            });
-        }
-
-        // 3. Cobros de Compendios y Crucifijos (CON ETIQUETA)
-        data.participantes.forEach(p => {
-            if (!p.activo) return;
-            const conceptos = ['compendio', 'crucifijo'];
-            conceptos.forEach(concepto => {
-                const pago = p.pagos[concepto];
-                if (pago && pago.pagado && pago.fecha) {
-                    const monto = data.config[`monto${concepto.charAt(0).toUpperCase() + concepto.slice(1)}`] || 0;
-                    movimientos.push({
-                        id: `pago_${p.id}_${concepto}`,
-                        fecha: pago.fecha,
-                        tipo: 'ingreso',
-                        concepto: `${p.nombre} - ${concepto.charAt(0).toUpperCase() + concepto.slice(1)}`,
-                        monto: monto,
-                        esPago: true
-                    });
-                }
-            });
-        });
-        
-    } else if (filtroFinanzasActual === 'ingreso') {
-        // INGRESOS: Ingresos manuales + Compendios + Crucifijos (CON ETIQUETA)
-        movimientos = [];
-        
-        // 1. Ingresos manuales
-        if (data.finanzas) {
-            data.finanzas.forEach(m => {
-                if (m.tipo === 'ingreso') {
-                    movimientos.push({
-                        id: m.id,
-                        fecha: m.fecha,
-                        tipo: 'ingreso',
-                        concepto: m.concepto,
-                        monto: m.monto,
-                        esPago: false
-                    });
-                }
-            });
-        }
-
-        // 2. Cobros de Compendios y Crucifijos (CON ETIQUETA)
-        data.participantes.forEach(p => {
-            if (!p.activo) return;
-            const conceptos = ['compendio', 'crucifijo'];
-            conceptos.forEach(concepto => {
-                const pago = p.pagos[concepto];
-                if (pago && pago.pagado && pago.fecha) {
-                    const monto = data.config[`monto${concepto.charAt(0).toUpperCase() + concepto.slice(1)}`] || 0;
-                    movimientos.push({
-                        id: `pago_${p.id}_${concepto}`,
-                        fecha: pago.fecha,
-                        tipo: 'ingreso',
-                        concepto: `${p.nombre} - ${concepto.charAt(0).toUpperCase() + concepto.slice(1)}`,
-                        monto: monto,
-                        esPago: true
-                    });
-                }
-            });
-        });
-        
-    } else if (filtroFinanzasActual === 'gasto') {
-        // GASTOS: Solo gastos manuales
-        movimientos = (data.finanzas || []).filter(m => m.tipo === 'gasto').map(m => ({
-            id: m.id,
-            fecha: m.fecha,
-            tipo: 'gasto',
-            concepto: m.concepto,
-            monto: m.monto,
-            esPago: false
-        }));
-    } else {
-        // Filtro por concepto (inscripcion, compendio, crucifijo) - SIN ETIQUETA
-        movimientos = [];
-        data.participantes.forEach(p => {
-            if (!p.activo) return;
-            const conceptos = ['inscripcion', 'compendio', 'crucifijo'];
-            conceptos.forEach(concepto => {
-                if (concepto === filtroFinanzasActual) {
-                    const pago = p.pagos[concepto];
+            // Obtener todos los movimientos según el filtro
+            if (filtroFinanzasActual === 'ingreso') {
+                // SOLO ingresos manuales (actividades, donativos)
+                movimientos = (data.finanzas || []).filter(m => m.tipo === 'ingreso').map(m => ({
+                    id: m.id,
+                    fecha: m.fecha,
+                    tipo: 'ingreso',
+                    concepto: m.concepto,
+                    monto: m.monto,
+                    esPago: false
+                }));
+            } else if (filtroFinanzasActual === 'gasto') {
+                movimientos = (data.finanzas || []).filter(m => m.tipo === 'gasto').map(m => ({
+                    id: m.id,
+                    fecha: m.fecha,
+                    tipo: 'gasto',
+                    concepto: m.concepto,
+                    monto: m.monto,
+                    esPago: false
+                }));
+            } else if (filtroFinanzasActual === 'inscripcion') {
+                data.participantes.forEach(p => {
+                    if (!p.activo) return;
+                    const pago = p.pagos.inscripcion;
                     if (pago && pago.pagado && pago.fecha) {
-                        const monto = data.config[`monto${concepto.charAt(0).toUpperCase() + concepto.slice(1)}`] || 0;
                         movimientos.push({
-                            id: `pago_${p.id}_${concepto}`,
+                            id: `pago_${p.id}_inscripcion`,
                             fecha: pago.fecha,
                             tipo: 'ingreso',
-                            concepto: p.nombre, // SOLO el nombre del participante
-                            monto: monto,
+                            concepto: `${p.nombre} - Inscripción (Parroquia)`,
+                            monto: data.config.montoInscripcion || 0,
                             esPago: true
                         });
                     }
-                }
-            });
-        });
-    }
+                });
+            } else if (filtroFinanzasActual === 'compendio') {
+                data.participantes.forEach(p => {
+                    if (!p.activo) return;
+                    const pago = p.pagos.compendio;
+                    if (pago && pago.pagado && pago.fecha) {
+                        movimientos.push({
+                            id: `pago_${p.id}_compendio`,
+                            fecha: pago.fecha,
+                            tipo: 'ingreso',
+                            concepto: p.nombre,
+                            monto: data.config.montoCompendio || 0,
+                            esPago: true
+                        });
+                    }
+                });
+            } else if (filtroFinanzasActual === 'crucifijo') {
+                data.participantes.forEach(p => {
+                    if (!p.activo) return;
+                    const pago = p.pagos.crucifijo;
+                    if (pago && pago.pagado && pago.fecha) {
+                        movimientos.push({
+                            id: `pago_${p.id}_crucifijo`,
+                            fecha: pago.fecha,
+                            tipo: 'ingreso',
+                            concepto: p.nombre,
+                            monto: data.config.montoCrucifijo || 0,
+                            esPago: true
+                        });
+                    }
+                });
+            }
 
-    // Ordenar y mostrar...
-    movimientos.sort((a, b) => b.fecha.localeCompare(a.fecha));
+            movimientos.sort((a, b) => b.fecha.localeCompare(a.fecha));
 
-    if (movimientos.length === 0) {
-        list.innerHTML = '<div class="empty-state">No hay movimientos</div>';
-        return;
-    }
+            if (movimientos.length === 0) {
+                list.innerHTML = '<div class="empty-state">No hay movimientos</div>';
+                return;
+            }
 
-    list.innerHTML = movimientos.map(m => {
-        const signo = m.tipo === 'ingreso' ? '+' : '-';
-        const clase = m.tipo === 'ingreso' ? 'ingreso' : 'gasto';
-        const acciones = m.esPago ? '' : `
-            <button class="btn-accion btn-editar" onclick="abrirModalEditarMovimiento('${m.id}')">✏️</button>
-            <button class="btn-accion btn-eliminar" onclick="eliminarMovimiento('${m.id}')">🗑️</button>
-        `;
-        return `<div class="movimiento-item">
-            <span class="fecha">${formatearFecha(m.fecha)}</span>
-            <span class="concepto">${m.concepto}</span>
-            <span class="monto ${clase}">${signo}$${m.monto.toFixed(2)}</span>
-            ${acciones}
-        </div>`;
-    }).join('');
-}
+            let labelFiltro = '';
+            if (filtroFinanzasActual === 'ingreso') labelFiltro = 'Ingresos adicionales';
+            else if (filtroFinanzasActual === 'gasto') labelFiltro = 'Gastos';
+            else if (filtroFinanzasActual === 'inscripcion') labelFiltro = 'Inscripciones';
+            else if (filtroFinanzasActual === 'compendio') labelFiltro = 'Compendios';
+            else if (filtroFinanzasActual === 'crucifijo') labelFiltro = 'Crucifijos';
+            document.getElementById('filtroActivoFinanzas').textContent = `📋 Mostrando: ${labelFiltro}`;
+
+            list.innerHTML = movimientos.map(m => {
+                const signo = m.tipo === 'ingreso' ? '+' : '-';
+                const clase = m.tipo === 'ingreso' ? 'ingreso' : 'gasto';
+                const acciones = m.esPago ? '' : `
+                    <button class="btn-accion btn-editar" onclick="abrirModalEditarMovimiento('${m.id}')">✏️</button>
+                    <button class="btn-accion btn-eliminar" onclick="eliminarMovimiento('${m.id}')">🗑️</button>
+                `;
+                return `<div class="movimiento-item">
+                    <span class="fecha">${formatearFecha(m.fecha)}</span>
+                    <span class="concepto">${m.concepto}</span>
+                    <span class="monto ${clase}">${signo}$${m.monto.toFixed(2)}</span>
+                    ${acciones}
+                </div>`;
+            }).join('');
+        }
 
         function renderizarResumenFinanzas() {
-            // 1. Calcular cobros
+            // Calcular cobros
             const activos = data.participantes.filter(p => p.activo);
             const total = activos.length;
             const pagadosInsc = activos.filter(p => p.pagos.inscripcion.pagado).length;
@@ -649,35 +1078,28 @@
             const totalComp = pagadosComp * data.config.montoCompendio;
             const totalCruc = pagadosCruc * data.config.montoCrucifijo;
 
-            // 2. Ingresos/Gastos manuales
+            // Ingresos/Gastos manuales
             const finanzas = data.finanzas || [];
             const ingresosManuales = finanzas.filter(m => m.tipo === 'ingreso').reduce((sum, m) => sum + m.monto, 0);
             const gastosManuales = finanzas.filter(m => m.tipo === 'gasto').reduce((sum, m) => sum + m.monto, 0);
 
-            // 3. Totales (SOLO Compendios + Crucifijos + Ingresos manuales - Gastos)
+            // Totales
             const totalIngresos = totalComp + totalCruc + ingresosManuales;
             const totalGastos = gastosManuales;
             const disponible = totalIngresos - totalGastos;
 
-            // 4. Mostrar en la interfaz
-            document.getElementById('totalIngresos').textContent = `$${totalIngresos.toFixed(2)}`;
-            document.getElementById('totalGastos').textContent = `$${totalGastos.toFixed(2)}`;
-            document.getElementById('totalSaldo').textContent = `$${disponible.toFixed(2)}`;
+            // Actualizar menú inferior
+            document.getElementById('menuInscripcion').textContent = `${pagadosInsc}/${total} $${totalInsc.toFixed(0)}`;
+            document.getElementById('menuCompendio').textContent = `${pagadosComp}/${total} $${totalComp.toFixed(0)}`;
+            document.getElementById('menuCrucifijo').textContent = `${pagadosCruc}/${total} $${totalCruc.toFixed(0)}`;
+            document.getElementById('menuIngresos').textContent = `$${ingresosManuales.toFixed(2)}`;
+            document.getElementById('menuGastos').textContent = `$${gastosManuales.toFixed(2)}`;
+            document.getElementById('menuDisponible').textContent = `$${disponible.toFixed(2)}`;
 
-            // 5. Actualizar subtítulos de los botones
-            document.getElementById('subInscripcion').textContent = `${pagadosInsc}/${total} $${totalInsc.toFixed(0)}`;
-            document.getElementById('subCompendio').textContent = `${pagadosComp}/${total} $${totalComp.toFixed(0)}`;
-            document.getElementById('subCrucifijo').textContent = `${pagadosCruc}/${total} $${totalCruc.toFixed(0)}`;
-
-            // 6. Resaltar filtro activo
-            document.querySelectorAll('.finanzas-totales .item').forEach(item => {
-                const filtro = item.dataset.filtro;
-                item.classList.toggle('active', filtro === filtroFinanzasActual);
-            });
-
-            document.querySelectorAll('.finanzas-filtros .filtro-btn').forEach(btn => {
-                const filtro = btn.dataset.filtro;
-                btn.classList.toggle('active', filtro === filtroFinanzasActual);
+            // Resaltar filtro activo en el menú inferior
+            document.querySelectorAll('.menu-inferior-finanzas .fila[data-filtro]').forEach(fila => {
+                const filtro = fila.dataset.filtro;
+                fila.classList.toggle('active', filtro === filtroFinanzasActual);
             });
         }
 
@@ -699,7 +1121,6 @@
             const totalInsc = pagadosInsc * data.config.montoInscripcion;
             const totalComp = pagadosComp * data.config.montoCompendio;
             const totalCruc = pagadosCruc * data.config.montoCrucifijo;
-            const totalGeneral = totalInsc + totalComp + totalCruc;
             const finanzas = data.finanzas || [];
             const totalIngresosManual = finanzas.filter(m => m.tipo === 'ingreso').reduce((sum, m) => sum + m.monto, 0);
             const totalGastosManual = finanzas.filter(m => m.tipo === 'gasto').reduce((sum, m) => sum + m.monto, 0);
@@ -707,40 +1128,98 @@
 
             document.getElementById('resumenPeriodo').innerHTML = `
                 <div class="linea"><span>👥 Participantes activos</span><span>${total}</span></div>
-                <div class="linea"><span>📝 Inscripción (${pagadosInsc}/${total})</span><span>$${totalInsc.toFixed(2)}</span></div>
+                <div class="linea"><span>📝 Inscripción (${pagadosInsc}/${total})</span><span>$${totalInsc.toFixed(2)} (Parroquia)</span></div>
                 <div class="linea"><span>📚 Compendio (${pagadosComp}/${total})</span><span>$${totalComp.toFixed(2)}</span></div>
                 <div class="linea"><span>✝️ Crucifijo (${pagadosCruc}/${total})</span><span>$${totalCruc.toFixed(2)}</span></div>
-                <div class="linea"><span>💰 Total recaudado</span><span>$${totalGeneral.toFixed(2)}</span></div>
                 <div class="linea"><span>📊 Ingresos adicionales</span><span>$${totalIngresosManual.toFixed(2)}</span></div>
                 <div class="linea"><span>💸 Gastos</span><span>$${totalGastosManual.toFixed(2)}</span></div>
                 <div class="linea" style="font-weight:bold; font-size:14px; border-top:2px solid #2c3e50; margin-top:6px; padding-top:6px; border-bottom:none; color:#27ae60;"><span>📈 Disponible</span><span>$${disponible.toFixed(2)}</span></div>
             `;
             const historial = data.historial || [];
             const list = document.getElementById('historialPeriodos');
-            if (historial.length === 0) { list.innerHTML = '<div class="empty-state">No hay períodos cerrados</div>'; return; }
-            list.innerHTML = historial.map(h => `<div class="periodo-item"><div><strong>${h.nombre}</strong><span class="total">$${h.total.toFixed(2)}</span></div><div style="color:#666; font-size:11px;">Cerrado: ${formatearFecha(h.fechaCierre)}</div></div>`).join('');
+            if (historial.length === 0) {
+                list.innerHTML = '<div class="empty-state">No hay períodos cerrados</div>';
+                return;
+            }
+            list.innerHTML = historial.map(h =>
+                `<div class="periodo-item"><div><strong>${h.nombre}</strong><span class="total">$${h.total.toFixed(2)}</span></div><div style="color:#666; font-size:11px;">Cerrado: ${formatearFecha(h.fechaCierre)}</div></div>`
+            ).join('');
         }
 
         // ============================================
         // ACCIONES - PARTICIPANTES
         // ============================================
         async function togglePago(nombre, concepto) {
+            // Esta función se usa para el toggle individual (ahora solo se usa con checkboxes)
+        }
+
+        async function guardarCambiosParticipante(nombre) {
             const participante = data.participantes.find(p => p.nombre === nombre);
             if (!participante) return;
-            const pago = participante.pagos[concepto];
-            pago.pagado = !pago.pagado;
-            pago.fecha = pago.pagado ? obtenerFechaActual() : null;
+
+            const cambios = [];
+            const conceptos = ['inscripcion', 'compendio', 'crucifijo'];
+
+            conceptos.forEach(concepto => {
+                const checkbox = document.getElementById(`chk_${concepto}`);
+                if (checkbox) {
+                    const estadoActual = checkbox.checked;
+                    const estadoOriginal = participante.pagos[concepto].pagado;
+                    if (estadoActual !== estadoOriginal) {
+                        cambios.push({
+                            concepto: concepto,
+                            pagado: estadoActual,
+                            fecha: estadoActual ? obtenerFechaActual() : null
+                        });
+                    }
+                }
+            });
+
+            // También verificar si cambió el estado activo
+            const activoCheckbox = document.getElementById('chk_activo');
+            if (activoCheckbox) {
+                const estadoActual = activoCheckbox.checked;
+                const estadoOriginal = participante.activo;
+                if (estadoActual !== estadoOriginal) {
+                    // Guardar cambio de activo
+                    mostrarLoading(true);
+                    const result = await sendData('updateActivo', { nombre: nombre, activo: estadoActual });
+                    mostrarLoading(false);
+                    if (!result || !result.success) {
+                        alert('❌ Error al actualizar el estado');
+                        return;
+                    }
+                    participante.activo = estadoActual;
+                }
+            }
+
+            if (cambios.length === 0) {
+                alert('No hay cambios para guardar');
+                return;
+            }
 
             mostrarLoading(true);
-            const result = await sendData('updatePago', { nombre, concepto, pagado: pago.pagado, fecha: pago.fecha });
+            const result = await sendData('updateMultiplePagos', {
+                nombre: nombre,
+                cambios: cambios
+            });
             mostrarLoading(false);
 
             if (result && result.success) {
+                // Actualizar datos localmente
+                conceptos.forEach(concepto => {
+                    const checkbox = document.getElementById(`chk_${concepto}`);
+                    if (checkbox) {
+                        participante.pagos[concepto].pagado = checkbox.checked;
+                        participante.pagos[concepto].fecha = checkbox.checked ? obtenerFechaActual() : null;
+                    }
+                });
                 await recargarDatos();
+                cerrarModal();
+                alert('✅ Cambios guardados correctamente');
             } else {
-                alert('❌ Error al actualizar: ' + (result?.error || 'desconocido'));
+                alert('❌ Error al guardar: ' + (result?.error || 'desconocido'));
             }
-            if (participanteEditando === nombre) editarParticipante(nombre);
         }
 
         async function toggleActivo(nombre) {
@@ -753,7 +1232,7 @@
             if (result && result.success) {
                 await recargarDatos();
             } else {
-                alert('❌ Error al actualizar: ' + (result?.error || 'desconocido'));
+                alert('❌ Error al actualizar el estado');
             }
             if (participanteEditando === nombre) editarParticipante(nombre);
         }
@@ -778,20 +1257,66 @@
             participanteEditando = nombre;
             const modal = document.getElementById('modalParticipante');
             const content = document.getElementById('modalContent');
+
             document.getElementById('modalTitle').textContent = `✏️ Editar: ${participante.nombre}`;
+
             content.innerHTML = `
-                <div class="pago-item"><span class="pago-label">📝 Inscripción ($${data.config.montoInscripcion})</span><span class="pago-fecha">${participante.pagos.inscripcion.fecha ? formatearFecha(participante.pagos.inscripcion.fecha) : 'Sin fecha'}</span><button class="btn-toggle ${participante.pagos.inscripcion.pagado ? 'pagado' : 'pendiente'}" onclick="togglePago('${participante.nombre}', 'inscripcion')">${participante.pagos.inscripcion.pagado ? '✅ Pagado' : '❌ Pendiente'}</button></div>
-                <div class="pago-item"><span class="pago-label">📚 Compendio ($${data.config.montoCompendio})</span><span class="pago-fecha">${participante.pagos.compendio.fecha ? formatearFecha(participante.pagos.compendio.fecha) : 'Sin fecha'}</span><button class="btn-toggle ${participante.pagos.compendio.pagado ? 'pagado' : 'pendiente'}" onclick="togglePago('${participante.nombre}', 'compendio')">${participante.pagos.compendio.pagado ? '✅ Pagado' : '❌ Pendiente'}</button></div>
-                <div class="pago-item"><span class="pago-label">✝️ Crucifijo ($${data.config.montoCrucifijo})</span><span class="pago-fecha">${participante.pagos.crucifijo.fecha ? formatearFecha(participante.pagos.crucifijo.fecha) : 'Sin fecha'}</span><button class="btn-toggle ${participante.pagos.crucifijo.pagado ? 'pagado' : 'pendiente'}" onclick="togglePago('${participante.nombre}', 'crucifijo')">${participante.pagos.crucifijo.pagado ? '✅ Pagado' : '❌ Pendiente'}</button></div>
+                <div class="pago-item">
+                    <span class="pago-label">📝 Inscripción ($${data.config.montoInscripcion})</span>
+                    <span class="pago-fecha">${participante.pagos.inscripcion.fecha ? formatearFecha(participante.pagos.inscripcion.fecha) : 'Sin fecha'}</span>
+                    <label class="switch">
+                        <input type="checkbox" id="chk_inscripcion" ${participante.pagos.inscripcion.pagado ? 'checked' : ''}>
+                        <span class="slider"></span>
+                    </label>
+                </div>
+                <div class="pago-item">
+                    <span class="pago-label">📚 Compendio ($${data.config.montoCompendio})</span>
+                    <span class="pago-fecha">${participante.pagos.compendio.fecha ? formatearFecha(participante.pagos.compendio.fecha) : 'Sin fecha'}</span>
+                    <label class="switch">
+                        <input type="checkbox" id="chk_compendio" ${participante.pagos.compendio.pagado ? 'checked' : ''}>
+                        <span class="slider"></span>
+                    </label>
+                </div>
+                <div class="pago-item">
+                    <span class="pago-label">✝️ Crucifijo ($${data.config.montoCrucifijo})</span>
+                    <span class="pago-fecha">${participante.pagos.crucifijo.fecha ? formatearFecha(participante.pagos.crucifijo.fecha) : 'Sin fecha'}</span>
+                    <label class="switch">
+                        <input type="checkbox" id="chk_crucifijo" ${participante.pagos.crucifijo.pagado ? 'checked' : ''}>
+                        <span class="slider"></span>
+                    </label>
+                </div>
                 <hr style="margin:8px 0;">
-                <div class="pago-item"><span class="pago-label">👤 Estado</span><button class="btn-toggle ${participante.activo ? 'activo' : 'inactivo'}" onclick="toggleActivo('${participante.nombre}')">${participante.activo ? '🟢 Activo' : '🔴 Inactivo'}</button></div>
+                <div class="pago-item">
+                    <span class="pago-label">👤 Estado</span>
+                    <label class="switch">
+                        <input type="checkbox" id="chk_activo" ${participante.activo ? 'checked' : ''}>
+                        <span class="slider"></span>
+                    </label>
+                </div>
+                <hr style="margin:8px 0;">
+                <div style="display:flex; gap:8px; margin-top:10px;">
+                    <button class="btn btn-success" onclick="guardarCambiosParticipante('${participante.nombre}')" style="flex:2;">💾 Guardar cambios</button>
+                    <button class="btn btn-secondary" onclick="cerrarModal()" style="flex:1;">❌ Cancelar</button>
+                </div>
             `;
+
             modal.classList.add('active');
         }
 
-        function cerrarModal() { document.getElementById('modalParticipante').classList.remove('active'); participanteEditando = null; }
-        function abrirModalAgregar() { document.getElementById('modalAgregar').classList.add('active'); document.getElementById('nuevoNombre').value = ''; document.getElementById('nuevoNombre').focus(); }
-        function cerrarModalAgregar() { document.getElementById('modalAgregar').classList.remove('active'); }
+        function cerrarModal() {
+            document.getElementById('modalParticipante').classList.remove('active');
+            participanteEditando = null;
+        }
+
+        function abrirModalAgregar() {
+            document.getElementById('modalAgregar').classList.add('active');
+            document.getElementById('nuevoNombre').value = '';
+            document.getElementById('nuevoNombre').focus();
+        }
+
+        function cerrarModalAgregar() {
+            document.getElementById('modalAgregar').classList.remove('active');
+        }
 
         // ============================================
         // ACCIONES - FINANZAS
@@ -863,7 +1388,10 @@
             }
         }
 
-        function cerrarModalEditarMovimiento() { document.getElementById('modalEditarMovimiento').classList.remove('active'); movimientoEditando = null; }
+        function cerrarModalEditarMovimiento() {
+            document.getElementById('modalEditarMovimiento').classList.remove('active');
+            movimientoEditando = null;
+        }
 
         // ============================================
         // ADMIN - CERRAR PERIODO
@@ -905,7 +1433,10 @@
             document.getElementById('montoCrucifijo').value = data.config.montoCrucifijo;
             document.getElementById('modalMontos').classList.add('active');
         }
-        function cerrarModalMontos() { document.getElementById('modalMontos').classList.remove('active'); }
+
+        function cerrarModalMontos() {
+            document.getElementById('modalMontos').classList.remove('active');
+        }
 
         async function guardarMontos() {
             const insc = parseFloat(document.getElementById('montoInscripcion').value);
@@ -927,7 +1458,9 @@
         // ============================================
         // UTILIDADES
         // ============================================
-        function obtenerFechaActual() { return new Date().toISOString().split('T')[0]; }
+        function obtenerFechaActual() {
+            return new Date().toISOString().split('T')[0];
+        }
 
         function formatearFecha(fecha) {
             if (!fecha) return 'Sin fecha';
@@ -947,7 +1480,7 @@
                 if (!isNaN(d.getTime())) {
                     return `${String(d.getDate()).padStart(2, '0')}/${String(d.getMonth() + 1).padStart(2, '0')}/${d.getFullYear()}`;
                 }
-            } catch(e) {}
+            } catch (e) {}
             return fecha;
         }
 
@@ -958,12 +1491,21 @@
                     document.querySelectorAll('.content').forEach(c => c.classList.remove('active'));
                     this.classList.add('active');
                     document.getElementById(this.dataset.tab).classList.add('active');
-                    if (this.dataset.tab === 'finanzas') { renderizarFinanzas(); renderizarResumenFinanzas(); }
+                    if (this.dataset.tab === 'finanzas') {
+                        renderizarFinanzas();
+                        renderizarResumenFinanzas();
+                    }
                 });
             });
         }
-        function configurarBusqueda() { document.getElementById('searchInput').addEventListener('input', renderizarParticipantes); }
-        function configurarFechaFinanzas() { document.getElementById('finFecha').value = obtenerFechaActual(); }
+
+        function configurarBusqueda() {
+            document.getElementById('searchInput').addEventListener('input', renderizarParticipantes);
+        }
+
+        function configurarFechaFinanzas() {
+            document.getElementById('finFecha').value = obtenerFechaActual();
+        }
 
         // ============================================
         // INICIALIZACIÓN
