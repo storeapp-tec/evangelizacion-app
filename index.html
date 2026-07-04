@@ -178,11 +178,10 @@
             background: #e74c3c;
         }
 
-        /* ===== NUEVOS ICONOS DE ESTADO (CÍRCULOS) ===== */
+        /* ===== CÍRCULOS PARA ACTIVO/INACTIVO ===== */
         .status-icon.activo-icon {
             font-size: 14px;
             color: #5cb85c !important;
-            /* Verde limón */;
             background: none !important;
             width: 20px;
             height: 20px;
@@ -195,7 +194,6 @@
         .status-icon.inactivo-icon {
             font-size: 14px;
             color: #88929c !important;
-            /* Gris medio */;
             background: none !important;
             width: 20px;
             height: 20px;
@@ -206,6 +204,7 @@
             font-weight: bold;
         }
 
+        /* ===== CABECERA DE PARTICIPANTES ===== */
         .cabecera-participantes {
             display: flex;
             align-items: center;
@@ -300,7 +299,7 @@
             display: inline-block;
         }
 
-        /* ===== NUEVO RESUMEN EN UNA SOLA LÍNEA ===== */
+        /* ===== RESUMEN EN 2 LÍNEAS ===== */
         .summary {
             background: #1a2634;
             color: white;
@@ -324,11 +323,9 @@
         }
         .summary .fila-superior .activos {
             color: #5cb85c;
-            /* Verde limón */
         }
         .summary .fila-superior .inactivos {
             color: #88929c;
-            /* Gris medio */
         }
 
         .summary .fila-inferior {
@@ -337,7 +334,7 @@
             align-items: center;
             margin-top: 4px;
             font-size: 13px;
-            gap: 4px;
+            gap: 8px;
             flex-wrap: wrap;
         }
         .summary .fila-inferior .item {
@@ -351,10 +348,6 @@
         .summary .fila-inferior .item .numero {
             font-weight: bold;
             font-size: 14px;
-        }
-        .summary .fila-inferior .item .label {
-            opacity: 0.8;
-            font-size: 12px;
         }
 
         .btn {
@@ -884,7 +877,7 @@
             </div>
         </div>
 
-        <!-- ===== NUEVO RESUMEN EN 2 LÍNEAS ===== -->
+        <!-- ===== RESUMEN EN 2 LÍNEAS ===== -->
         <div class="summary" id="summary">
             <div class="fila-superior">
                 <span class="titulo">📊 Resumen</span>
@@ -1201,21 +1194,22 @@
         }
 
         // ============================================
-        // NUEVO RESUMEN EN 2 LÍNEAS
+        // RESUMEN EN 2 LÍNEAS
         // ============================================
         function renderizarResumen() {
             const activos = data.participantes.filter(p => p.activo);
             const inactivos = data.participantes.filter(p => !p.activo);
-            const total = activos.length;
-            const pagadosInsc = activos.filter(p => p.pagos.inscripcion.pagado).length;
-            const pagadosComp = activos.filter(p => p.pagos.compendio.pagado).length;
-            const pagadosCruc = activos.filter(p => p.pagos.crucifijo.pagado).length;
 
             // Primera línea: activos e inactivos
             document.getElementById('resumenActivos').textContent = `${activos.length} activos`;
             document.getElementById('resumenInactivos').textContent = `${inactivos.length} inactivos`;
 
-            // Segunda línea: conceptos con íconos
+            // Segunda línea: conceptos con íconos (sin texto)
+            const pagadosInsc = activos.filter(p => p.pagos.inscripcion.pagado).length;
+            const pagadosComp = activos.filter(p => p.pagos.compendio.pagado).length;
+            const pagadosCruc = activos.filter(p => p.pagos.crucifijo.pagado).length;
+            const total = activos.length;
+
             document.getElementById('summaryContent').innerHTML = `
                 <div class="item">
                     <span class="icono">📝</span>
