@@ -7,13 +7,15 @@
     <style>
         /* ===== RESET Y ESTILOS GLOBALES ===== */
         * { margin: 0; padding: 0; box-sizing: border-box; }
+        html, body {
+            height: 100%;
+            overflow: hidden;
+        }
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
             background: #f0f2f5;
-            padding-bottom: 10px;
             color: #333;
             font-size: 14px;
-            height: 100vh;
             display: flex;
             flex-direction: column;
         }
@@ -22,10 +24,8 @@
             color: white;
             padding: 12px;
             text-align: center;
-            position: sticky;
-            top: 0;
-            z-index: 100;
             flex-shrink: 0;
+            z-index: 100;
         }
         .header h1 { font-size: 17px; font-weight: 600; }
 
@@ -33,10 +33,8 @@
         .tabs {
             display: flex;
             background: #2c3e50;
-            position: sticky;
-            top: 49px;
-            z-index: 99;
             flex-shrink: 0;
+            z-index: 99;
         }
         .tab {
             flex: 1;
@@ -52,6 +50,22 @@
         }
         .tab.active { color: white; border-bottom-color: #3498db; }
 
+        /* ===== SCROLLBARS FINOS ===== */
+        ::-webkit-scrollbar {
+            width: 3px;
+            height: 3px;
+        }
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #c1c7cd;
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #a0a7ae;
+        }
+
         /* ===== CONTENIDO ===== */
         .content {
             display: none;
@@ -60,9 +74,10 @@
             margin: 0 auto;
             flex: 1;
             overflow-y: auto;
-            padding-bottom: 20px;
+            padding-bottom: 12px;
+            min-height: 0;
         }
-        .content.active { display: block; }
+        .content.active { display: flex; flex-direction: column; }
 
         /* ===== TARJETAS ===== */
         .card {
@@ -71,6 +86,7 @@
             padding: 12px;
             margin-bottom: 12px;
             box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+            flex-shrink: 0;
         }
         .card-title {
             font-size: 14px;
@@ -94,9 +110,18 @@
         .search-box:focus { outline: none; border-color: #3498db; }
 
         /* ===== LISTA DE PARTICIPANTES ===== */
-        .participant-list {
-            max-height: 380px;
+        .participant-list-container {
+            flex: 1;
             overflow-y: auto;
+            min-height: 0;
+            max-height: 400px;
+        }
+        .participant-list-container::-webkit-scrollbar {
+            width: 3px;
+        }
+        .participant-list-container::-webkit-scrollbar-thumb {
+            background: #c1c7cd;
+            border-radius: 10px;
         }
         .participant-item {
             display: flex;
@@ -131,7 +156,6 @@
         .status-icon.pagado { background: #27ae60; }
         .status-icon.pendiente { background: #e74c3c; }
 
-        /* ===== ICONO ACTIVO/INACTIVO ===== */
         .status-icon.activo-icon {
             font-size: 14px;
             color: #27ae60 !important;
@@ -165,10 +189,9 @@
             font-weight: 600;
             font-size: 12px;
             color: #555;
+            flex-shrink: 0;
         }
-        .cabecera-participantes .col-nombre {
-            flex: 1;
-        }
+        .cabecera-participantes .col-nombre { flex: 1; }
         .cabecera-participantes .col-iconos {
             display: flex;
             gap: 4px;
@@ -213,9 +236,7 @@
             left: 50%;
             transform: translateX(-50%);
         }
-        .dropdown-filtro.visible {
-            display: block;
-        }
+        .dropdown-filtro.visible { display: block; }
         .dropdown-filtro .opcion {
             padding: 6px 12px;
             cursor: pointer;
@@ -227,13 +248,8 @@
             text-align: left;
             color: #333;
         }
-        .dropdown-filtro .opcion:hover {
-            background: #f0f2f5;
-        }
-        .dropdown-filtro .opcion.activa {
-            background: #e9ecef;
-            font-weight: bold;
-        }
+        .dropdown-filtro .opcion:hover { background: #f0f2f5; }
+        .dropdown-filtro .opcion.activa { background: #e9ecef; font-weight: bold; }
 
         .limpiar-filtro {
             font-size: 11px;
@@ -246,9 +262,7 @@
             display: none;
             margin-left: 4px;
         }
-        .limpiar-filtro.visible {
-            display: inline-block;
-        }
+        .limpiar-filtro.visible { display: inline-block; }
 
         /* ===== RESUMEN COBROS ===== */
         .summary {
@@ -365,14 +379,17 @@
             transition: .3s;
             border-radius: 50%;
         }
-        .switch input:checked + .slider {
-            background-color: #27ae60;
-        }
-        .switch input:checked + .slider:before {
-            transform: translateX(20px);
-        }
+        .switch input:checked + .slider { background-color: #27ae60; }
+        .switch input:checked + .slider:before { transform: translateX(20px); }
 
         /* ===== FINANZAS ===== */
+        .finanzas-container {
+            display: flex;
+            flex-direction: column;
+            flex: 1;
+            min-height: 0;
+            height: 100%;
+        }
         .finanzas-form-row {
             display: flex;
             flex-wrap: wrap;
@@ -384,19 +401,10 @@
             flex: 1;
             min-width: 60px;
         }
-        .finanzas-form-row .form-group.tipo {
-            flex: 0 0 90px;
-        }
-        .finanzas-form-row .form-group.concepto {
-            flex: 2;
-            min-width: 80px;
-        }
-        .finanzas-form-row .form-group.monto {
-            flex: 0 0 70px;
-        }
-        .finanzas-form-row .form-group.fecha {
-            flex: 0 0 75px;
-        }
+        .finanzas-form-row .form-group.tipo { flex: 0 0 90px; }
+        .finanzas-form-row .form-group.concepto { flex: 2; min-width: 80px; }
+        .finanzas-form-row .form-group.monto { flex: 0 0 70px; }
+        .finanzas-form-row .form-group.fecha { flex: 0 0 75px; }
         .finanzas-form-row .btn-guardar {
             flex: 0 0 32px;
             padding: 4px 0;
@@ -409,9 +417,7 @@
             align-items: center;
             justify-content: center;
         }
-        .finanzas-form-row .btn-guardar:hover {
-            color: #1e8449;
-        }
+        .finanzas-form-row .btn-guardar:hover { color: #1e8449; }
         .finanzas-form-row .form-control {
             padding: 5px 6px;
             font-size: 12px;
@@ -419,21 +425,21 @@
             border-radius: 4px;
             width: 100%;
         }
-        .finanzas-form-row .form-control:focus {
-            outline: none;
-            border-color: #3498db;
-        }
-        .finanzas-form-row .form-control.tipo-input {
-            padding: 5px 4px;
-            font-size: 12px;
-        }
+        .finanzas-form-row .form-control:focus { outline: none; border-color: #3498db; }
+        .finanzas-form-row .form-control.tipo-input { padding: 5px 4px; font-size: 12px; }
 
-        /* ===== LISTA DE MOVIMIENTOS ===== */
         .finanzas-scroll-area {
             flex: 1;
             overflow-y: auto;
-            min-height: 150px;
-            max-height: 300px;
+            min-height: 80px;
+            max-height: 400px;
+        }
+        .finanzas-scroll-area::-webkit-scrollbar {
+            width: 3px;
+        }
+        .finanzas-scroll-area::-webkit-scrollbar-thumb {
+            background: #c1c7cd;
+            border-radius: 10px;
         }
         .movimiento-item {
             display: flex;
@@ -500,12 +506,6 @@
         .empty-state { text-align: center; padding: 20px 0; color: #999; font-size: 13px; }
 
         /* ===== MENU INFERIOR FINANZAS - FIJO ===== */
-        .finanzas-container {
-            display: flex;
-            flex-direction: column;
-            height: 100%;
-            max-height: calc(100vh - 180px);
-        }
         .menu-inferior-finanzas {
             background: #1a2634;
             color: white;
@@ -513,8 +513,6 @@
             border-radius: 10px;
             margin-top: 8px;
             flex-shrink: 0;
-            position: sticky;
-            bottom: 0;
         }
         .menu-inferior-finanzas .grid-2col {
             display: grid;
@@ -532,17 +530,9 @@
             border-radius: 4px;
             align-items: center;
         }
-        .menu-inferior-finanzas .fila:hover {
-            background: rgba(255,255,255,0.08);
-        }
-        .menu-inferior-finanzas .fila .etiqueta {
-            font-weight: normal;
-            font-size: 12px;
-        }
-        .menu-inferior-finanzas .fila .valor {
-            font-weight: bold;
-            font-size: 12px;
-        }
+        .menu-inferior-finanzas .fila:hover { background: rgba(255,255,255,0.08); }
+        .menu-inferior-finanzas .fila .etiqueta { font-weight: normal; font-size: 12px; }
+        .menu-inferior-finanzas .fila .valor { font-weight: bold; font-size: 12px; }
         .menu-inferior-finanzas .fila.inscripcion .valor { color: #e67e22; }
         .menu-inferior-finanzas .fila.compendio .valor { color: #27ae60; }
         .menu-inferior-finanzas .fila.crucifijo .valor { color: #3498db; }
@@ -559,12 +549,20 @@
             grid-column: 1 / -1;
         }
 
+        /* ===== ADMIN ===== */
         .resumen-periodo .linea {
             display: flex;
             justify-content: space-between;
             padding: 4px 0;
             border-bottom: 1px solid #eee;
             font-size: 13px;
+        }
+        .resumen-periodo .linea .label { flex: 1; }
+        .resumen-periodo .linea .monto {
+            font-weight: bold;
+            text-align: right;
+            flex-shrink: 0;
+            margin-left: 12px;
         }
         .periodo-item {
             padding: 8px 0;
@@ -619,7 +617,7 @@
             </div>
         </div>
 
-        <div class="card" style="padding: 10px 12px;">
+        <div class="card" style="padding: 10px 12px; flex: 1; display: flex; flex-direction: column; min-height: 0;">
             <div class="cabecera-participantes">
                 <span class="col-nombre" style="font-weight:600; color:#2c3e50;">Participantes</span>
                 <span class="col-iconos">
@@ -658,7 +656,9 @@
                     <span class="limpiar-filtro" id="limpiarFiltroCobros" onclick="limpiarFiltroCobros()">✕ Limpiar</span>
                 </span>
             </div>
-            <div id="participantList" class="participant-list"></div>
+            <div class="participant-list-container" id="participantListContainer">
+                <div id="participantList"></div>
+            </div>
         </div>
 
         <div class="summary" id="summary">
@@ -696,7 +696,7 @@
                 </div>
             </div>
 
-            <div class="card" style="padding: 8px; flex: 1; overflow: hidden; display: flex; flex-direction: column;">
+            <div class="card" style="padding: 8px; flex: 1; overflow: hidden; display: flex; flex-direction: column; min-height: 0;">
                 <div id="finanzasList" class="finanzas-scroll-area"></div>
             </div>
 
@@ -888,6 +888,7 @@
         // ============================================
         function renderizarParticipantes() {
             const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+            const container = document.getElementById('participantListContainer');
             const list = document.getElementById('participantList');
 
             let participantes = data.participantes;
@@ -914,6 +915,7 @@
 
             if (filtrados.length === 0) {
                 list.innerHTML = '<div class="empty-state">No hay participantes</div>';
+                container.style.maxHeight = 'auto';
                 return;
             }
 
@@ -955,6 +957,11 @@
                     </div>
                 </div>`;
             }).join('');
+
+            // Ajustar altura del contenedor según el contenido
+            const totalItems = filtrados.length;
+            const maxHeight = Math.min(totalItems * 42 + 10, 400);
+            container.style.maxHeight = Math.max(150, maxHeight) + 'px';
 
             const limpiarBtn = document.getElementById('limpiarFiltroCobros');
             if (filtroCobrosConcepto && filtroCobrosEstado) {
@@ -1072,7 +1079,7 @@
                             id: `pago_${p.id}_inscripcion`,
                             fecha: pago.fecha,
                             tipo: 'ingreso',
-                            concepto: `${p.nombre} - Inscripción (Parroquia)`,
+                            concepto: p.nombre,
                             monto: data.config.montoInscripcion || 0,
                             esPago: true
                         });
@@ -1189,13 +1196,34 @@
             const disponible = totalComp + totalCruc + totalIngresosManual - totalGastosManual;
 
             document.getElementById('resumenPeriodo').innerHTML = `
-                <div class="linea"><span>👥 Participantes activos</span><span>${total}</span></div>
-                <div class="linea"><span>📝 Inscripción (${pagadosInsc}/${total})</span><span>$${totalInsc.toFixed(2)} (Parroquia)</span></div>
-                <div class="linea"><span>📚 Compendio (${pagadosComp}/${total})</span><span>$${totalComp.toFixed(2)}</span></div>
-                <div class="linea"><span>✝️ Crucifijo (${pagadosCruc}/${total})</span><span>$${totalCruc.toFixed(2)}</span></div>
-                <div class="linea"><span>📊 Ingresos adicionales</span><span>$${totalIngresosManual.toFixed(2)}</span></div>
-                <div class="linea"><span>💸 Gastos</span><span>$${totalGastosManual.toFixed(2)}</span></div>
-                <div class="linea" style="font-weight:bold; font-size:14px; border-top:2px solid #2c3e50; margin-top:6px; padding-top:6px; border-bottom:none; color:#27ae60;"><span>📈 Disponible</span><span>$${disponible.toFixed(2)}</span></div>
+                <div class="linea">
+                    <span class="label">👥 Participantes activos</span>
+                    <span class="monto">${total}</span>
+                </div>
+                <div class="linea">
+                    <span class="label">📝 Inscripción (${pagadosInsc}/${total}) (Parroquia)</span>
+                    <span class="monto">$${totalInsc.toFixed(2)}</span>
+                </div>
+                <div class="linea">
+                    <span class="label">📚 Compendio (${pagadosComp}/${total})</span>
+                    <span class="monto">$${totalComp.toFixed(2)}</span>
+                </div>
+                <div class="linea">
+                    <span class="label">✝️ Crucifijo (${pagadosCruc}/${total})</span>
+                    <span class="monto">$${totalCruc.toFixed(2)}</span>
+                </div>
+                <div class="linea">
+                    <span class="label">📊 Ingresos adicionales</span>
+                    <span class="monto">$${totalIngresosManual.toFixed(2)}</span>
+                </div>
+                <div class="linea">
+                    <span class="label">💸 Gastos</span>
+                    <span class="monto">$${totalGastosManual.toFixed(2)}</span>
+                </div>
+                <div class="linea" style="font-weight:bold; font-size:14px; border-top:2px solid #2c3e50; margin-top:6px; padding-top:6px; border-bottom:none; color:#27ae60;">
+                    <span class="label">📈 Disponible</span>
+                    <span class="monto">$${disponible.toFixed(2)}</span>
+                </div>
             `;
             const historial = data.historial || [];
             const list = document.getElementById('historialPeriodos');
