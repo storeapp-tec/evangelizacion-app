@@ -5,9 +5,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Gestión Evangelización</title>
     <style>
-        /* ===== RESET Y ESTILOS GLOBALES ===== */
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        html, body {
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        html,
+        body {
             height: 100%;
             overflow: hidden;
         }
@@ -27,9 +31,11 @@
             flex-shrink: 0;
             z-index: 100;
         }
-        .header h1 { font-size: 17px; font-weight: 600; }
+        .header h1 {
+            font-size: 17px;
+            font-weight: 600;
+        }
 
-        /* ===== TABS ===== */
         .tabs {
             display: flex;
             background: #2c3e50;
@@ -48,9 +54,11 @@
             cursor: pointer;
             border-bottom: 3px solid transparent;
         }
-        .tab.active { color: white; border-bottom-color: #3498db; }
+        .tab.active {
+            color: white;
+            border-bottom-color: #3498db;
+        }
 
-        /* ===== SCROLLBARS FINOS ===== */
         ::-webkit-scrollbar {
             width: 3px;
             height: 3px;
@@ -66,7 +74,6 @@
             background: #a0a7ae;
         }
 
-        /* ===== CONTENIDO ===== */
         .content {
             display: none;
             padding: 12px;
@@ -77,15 +84,17 @@
             padding-bottom: 12px;
             min-height: 0;
         }
-        .content.active { display: flex; flex-direction: column; }
+        .content.active {
+            display: flex;
+            flex-direction: column;
+        }
 
-        /* ===== TARJETAS ===== */
         .card {
             background: white;
             border-radius: 10px;
             padding: 12px;
             margin-bottom: 12px;
-            box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+            box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
             flex-shrink: 0;
         }
         .card-title {
@@ -98,7 +107,6 @@
             justify-content: space-between;
         }
 
-        /* ===== BUSCADOR ===== */
         .search-box {
             width: 100%;
             padding: 8px 10px;
@@ -107,9 +115,11 @@
             font-size: 14px;
             margin-bottom: 8px;
         }
-        .search-box:focus { outline: none; border-color: #3498db; }
+        .search-box:focus {
+            outline: none;
+            border-color: #3498db;
+        }
 
-        /* ===== LISTA DE PARTICIPANTES ===== */
         .participant-list-container {
             flex: 1;
             overflow-y: auto;
@@ -130,9 +140,18 @@
             border-bottom: 1px solid #f0f0f0;
             cursor: pointer;
         }
-        .participant-item:hover { background: #f8f9fa; }
-        .participant-item.inactive { opacity: 0.7; background: #f5f5f5; }
-        .participant-name { flex: 1; font-size: 13px; font-weight: 500; }
+        .participant-item:hover {
+            background: #f8f9fa;
+        }
+        .participant-item.inactive {
+            opacity: 0.7;
+            background: #f5f5f5;
+        }
+        .participant-name {
+            flex: 1;
+            font-size: 13px;
+            font-weight: 500;
+        }
         .participant-status {
             display: flex;
             gap: 6px;
@@ -140,7 +159,6 @@
             align-items: center;
         }
 
-        /* ===== INDICADORES DE PAGO ===== */
         .status-icon {
             width: 20px;
             height: 20px;
@@ -153,12 +171,18 @@
             color: white;
             flex-shrink: 0;
         }
-        .status-icon.pagado { background: #27ae60; }
-        .status-icon.pendiente { background: #e74c3c; }
+        .status-icon.pagado {
+            background: #27ae60;
+        }
+        .status-icon.pendiente {
+            background: #e74c3c;
+        }
 
+        /* ===== NUEVOS ICONOS DE ESTADO (CÍRCULOS) ===== */
         .status-icon.activo-icon {
             font-size: 14px;
-            color: #27ae60 !important;
+            color: #5cb85c !important;
+            /* Verde limón */;
             background: none !important;
             width: 20px;
             height: 20px;
@@ -166,10 +190,12 @@
             align-items: center;
             justify-content: center;
             flex-shrink: 0;
+            font-weight: bold;
         }
         .status-icon.inactivo-icon {
             font-size: 14px;
-            color: #95a5a6 !important;
+            color: #88929c !important;
+            /* Gris medio */;
             background: none !important;
             width: 20px;
             height: 20px;
@@ -177,9 +203,9 @@
             align-items: center;
             justify-content: center;
             flex-shrink: 0;
+            font-weight: bold;
         }
 
-        /* ===== CABECERA DE PARTICIPANTES ===== */
         .cabecera-participantes {
             display: flex;
             align-items: center;
@@ -191,7 +217,9 @@
             color: #555;
             flex-shrink: 0;
         }
-        .cabecera-participantes .col-nombre { flex: 1; }
+        .cabecera-participantes .col-nombre {
+            flex: 1;
+        }
         .cabecera-participantes .col-iconos {
             display: flex;
             gap: 4px;
@@ -217,7 +245,6 @@
             background: #e9ecef;
         }
 
-        /* ===== FILTROS COBROS ===== */
         .posicion-relativa {
             position: relative;
             display: inline-block;
@@ -227,7 +254,7 @@
             position: absolute;
             background: white;
             border-radius: 8px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
             padding: 6px 0;
             min-width: 120px;
             z-index: 50;
@@ -236,7 +263,9 @@
             left: 50%;
             transform: translateX(-50%);
         }
-        .dropdown-filtro.visible { display: block; }
+        .dropdown-filtro.visible {
+            display: block;
+        }
         .dropdown-filtro .opcion {
             padding: 6px 12px;
             cursor: pointer;
@@ -248,8 +277,13 @@
             text-align: left;
             color: #333;
         }
-        .dropdown-filtro .opcion:hover { background: #f0f2f5; }
-        .dropdown-filtro .opcion.activa { background: #e9ecef; font-weight: bold; }
+        .dropdown-filtro .opcion:hover {
+            background: #f0f2f5;
+        }
+        .dropdown-filtro .opcion.activa {
+            background: #e9ecef;
+            font-weight: bold;
+        }
 
         .limpiar-filtro {
             font-size: 11px;
@@ -262,28 +296,67 @@
             display: none;
             margin-left: 4px;
         }
-        .limpiar-filtro.visible { display: inline-block; }
+        .limpiar-filtro.visible {
+            display: inline-block;
+        }
 
-        /* ===== RESUMEN COBROS ===== */
+        /* ===== NUEVO RESUMEN EN UNA SOLA LÍNEA ===== */
         .summary {
             background: #1a2634;
             color: white;
-            padding: 12px;
+            padding: 10px 12px;
             border-radius: 10px;
             margin-top: 8px;
             flex-shrink: 0;
         }
-        .summary-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr 1fr;
-            gap: 6px;
-            margin-top: 4px;
+        .summary .fila-superior {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 13px;
+            font-weight: bold;
+            flex-wrap: wrap;
+            gap: 4px;
         }
-        .summary-item { text-align: center; }
-        .summary-item .label { font-size: 10px; opacity: 0.8; }
-        .summary-item .value { font-size: 14px; font-weight: bold; }
+        .summary .fila-superior .titulo {
+            font-weight: bold;
+            color: #fff;
+        }
+        .summary .fila-superior .activos {
+            color: #5cb85c;
+            /* Verde limón */
+        }
+        .summary .fila-superior .inactivos {
+            color: #88929c;
+            /* Gris medio */
+        }
 
-        /* ===== BOTONES ===== */
+        .summary .fila-inferior {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            margin-top: 4px;
+            font-size: 13px;
+            gap: 4px;
+            flex-wrap: wrap;
+        }
+        .summary .fila-inferior .item {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+        .summary .fila-inferior .item .icono {
+            font-size: 14px;
+        }
+        .summary .fila-inferior .item .numero {
+            font-weight: bold;
+            font-size: 14px;
+        }
+        .summary .fila-inferior .item .label {
+            opacity: 0.8;
+            font-size: 12px;
+        }
+
         .btn {
             padding: 6px 14px;
             border: none;
@@ -293,26 +366,53 @@
             cursor: pointer;
             transition: all 0.2s;
         }
-        .btn-sm { padding: 4px 10px; font-size: 11px; width: auto; }
-        .btn-primary { background: #3498db; color: white; }
-        .btn-success { background: #27ae60; color: white; }
-        .btn-danger { background: #e74c3c; color: white; }
-        .btn-warning { background: #f39c12; color: white; }
-        .btn-secondary { background: #95a5a6; color: white; }
-        .btn-group { display: flex; gap: 6px; flex-wrap: wrap; }
+        .btn-sm {
+            padding: 4px 10px;
+            font-size: 11px;
+            width: auto;
+        }
+        .btn-primary {
+            background: #3498db;
+            color: white;
+        }
+        .btn-success {
+            background: #27ae60;
+            color: white;
+        }
+        .btn-danger {
+            background: #e74c3c;
+            color: white;
+        }
+        .btn-warning {
+            background: #f39c12;
+            color: white;
+        }
+        .btn-secondary {
+            background: #95a5a6;
+            color: white;
+        }
+        .btn-group {
+            display: flex;
+            gap: 6px;
+            flex-wrap: wrap;
+        }
 
-        /* ===== MODALES ===== */
         .modal-overlay {
             display: none;
             position: fixed;
-            top: 0; left: 0; right: 0; bottom: 0;
-            background: rgba(0,0,0,0.5);
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
             z-index: 1000;
             align-items: center;
             justify-content: center;
             padding: 20px;
         }
-        .modal-overlay.active { display: flex; }
+        .modal-overlay.active {
+            display: flex;
+        }
         .modal {
             background: white;
             border-radius: 14px;
@@ -322,7 +422,11 @@
             max-height: 90vh;
             overflow-y: auto;
         }
-        .modal h2 { font-size: 16px; margin-bottom: 12px; color: #2c3e50; }
+        .modal h2 {
+            font-size: 16px;
+            margin-bottom: 12px;
+            color: #2c3e50;
+        }
         .modal-close {
             float: right;
             background: none;
@@ -331,7 +435,9 @@
             cursor: pointer;
             color: #999;
         }
-        .modal-close:hover { color: #333; }
+        .modal-close:hover {
+            color: #333;
+        }
 
         .pago-item {
             display: flex;
@@ -340,11 +446,20 @@
             padding: 8px 0;
             border-bottom: 1px solid #eee;
         }
-        .pago-item:last-child { border-bottom: none; }
-        .pago-label { font-weight: 500; flex: 1; font-size: 13px; }
-        .pago-fecha { font-size: 11px; color: #666; margin: 0 6px; }
+        .pago-item:last-child {
+            border-bottom: none;
+        }
+        .pago-label {
+            font-weight: 500;
+            flex: 1;
+            font-size: 13px;
+        }
+        .pago-fecha {
+            font-size: 11px;
+            color: #666;
+            margin: 0 6px;
+        }
 
-        /* ===== SWITCH TOGGLE ===== */
         .switch {
             position: relative;
             display: inline-block;
@@ -379,10 +494,13 @@
             transition: .3s;
             border-radius: 50%;
         }
-        .switch input:checked + .slider { background-color: #27ae60; }
-        .switch input:checked + .slider:before { transform: translateX(20px); }
+        .switch input:checked+.slider {
+            background-color: #27ae60;
+        }
+        .switch input:checked+.slider:before {
+            transform: translateX(20px);
+        }
 
-        /* ===== FINANZAS - CONTENEDOR FIJO ===== */
         .finanzas-container {
             display: flex;
             flex-direction: column;
@@ -390,7 +508,6 @@
             min-height: 0;
             height: 100%;
         }
-
         .finanzas-form-row {
             display: flex;
             flex-wrap: wrap;
@@ -402,10 +519,19 @@
             flex: 1;
             min-width: 60px;
         }
-        .finanzas-form-row .form-group.tipo { flex: 0 0 90px; }
-        .finanzas-form-row .form-group.concepto { flex: 2; min-width: 80px; }
-        .finanzas-form-row .form-group.monto { flex: 0 0 70px; }
-        .finanzas-form-row .form-group.fecha { flex: 0 0 75px; }
+        .finanzas-form-row .form-group.tipo {
+            flex: 0 0 90px;
+        }
+        .finanzas-form-row .form-group.concepto {
+            flex: 2;
+            min-width: 80px;
+        }
+        .finanzas-form-row .form-group.monto {
+            flex: 0 0 70px;
+        }
+        .finanzas-form-row .form-group.fecha {
+            flex: 0 0 75px;
+        }
         .finanzas-form-row .btn-guardar {
             flex: 0 0 32px;
             padding: 4px 0;
@@ -418,7 +544,9 @@
             align-items: center;
             justify-content: center;
         }
-        .finanzas-form-row .btn-guardar:hover { color: #1e8449; }
+        .finanzas-form-row .btn-guardar:hover {
+            color: #1e8449;
+        }
         .finanzas-form-row .form-control {
             padding: 5px 6px;
             font-size: 12px;
@@ -426,10 +554,15 @@
             border-radius: 4px;
             width: 100%;
         }
-        .finanzas-form-row .form-control:focus { outline: none; border-color: #3498db; }
-        .finanzas-form-row .form-control.tipo-input { padding: 5px 4px; font-size: 12px; }
+        .finanzas-form-row .form-control:focus {
+            outline: none;
+            border-color: #3498db;
+        }
+        .finanzas-form-row .form-control.tipo-input {
+            padding: 5px 4px;
+            font-size: 12px;
+        }
 
-        /* ===== LISTA DE MOVIMIENTOS CON SCROLL FINO ===== */
         .finanzas-scroll-area {
             flex: 1;
             overflow-y: auto;
@@ -457,15 +590,21 @@
             font-size: 11px;
             flex-shrink: 0;
         }
-        .movimiento-item .concepto { flex: 1; }
+        .movimiento-item .concepto {
+            flex: 1;
+        }
         .movimiento-item .monto {
             font-weight: bold;
             min-width: 50px;
             text-align: right;
             flex-shrink: 0;
         }
-        .movimiento-item .monto.ingreso { color: #27ae60; }
-        .movimiento-item .monto.gasto { color: #e74c3c; }
+        .movimiento-item .monto.ingreso {
+            color: #27ae60;
+        }
+        .movimiento-item .monto.gasto {
+            color: #e74c3c;
+        }
         .btn-accion {
             background: none;
             border: none;
@@ -474,23 +613,40 @@
             padding: 0 3px;
             flex-shrink: 0;
         }
-        .btn-editar { color: #3498db; }
-        .btn-eliminar { color: #e74c3c; }
+        .btn-editar {
+            color: #3498db;
+        }
+        .btn-eliminar {
+            color: #e74c3c;
+        }
 
-        .form-group { margin-bottom: 6px; }
-        .form-group label { display: block; font-size: 11px; font-weight: 600; color: #555; margin-bottom: 2px; }
+        .form-group {
+            margin-bottom: 6px;
+        }
+        .form-group label {
+            display: block;
+            font-size: 11px;
+            font-weight: 600;
+            color: #555;
+            margin-bottom: 2px;
+        }
 
         .loading-overlay {
             display: none;
             position: fixed;
-            top: 0; left: 0; right: 0; bottom: 0;
-            background: rgba(0,0,0,0.7);
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.7);
             z-index: 2000;
             align-items: center;
             justify-content: center;
             flex-direction: column;
         }
-        .loading-overlay.active { display: flex; }
+        .loading-overlay.active {
+            display: flex;
+        }
         .loading-spinner {
             width: 36px;
             height: 36px;
@@ -500,14 +656,26 @@
             animation: spin 1s linear infinite;
         }
         @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
+            0% {
+                transform: rotate(0deg);
+            }
+            100% {
+                transform: rotate(360deg);
+            }
         }
-        .loading-text { color: white; margin-top: 10px; font-size: 13px; }
+        .loading-text {
+            color: white;
+            margin-top: 10px;
+            font-size: 13px;
+        }
 
-        .empty-state { text-align: center; padding: 20px 0; color: #999; font-size: 13px; }
+        .empty-state {
+            text-align: center;
+            padding: 20px 0;
+            color: #999;
+            font-size: 13px;
+        }
 
-        /* ===== MENU INFERIOR FINANZAS - FIJO ABAJO ===== */
         .menu-inferior-finanzas {
             background: #1a2634;
             color: white;
@@ -532,26 +700,46 @@
             border-radius: 4px;
             align-items: center;
         }
-        .menu-inferior-finanzas .fila:hover { background: rgba(255,255,255,0.08); }
-        .menu-inferior-finanzas .fila .etiqueta { font-weight: normal; font-size: 12px; }
-        .menu-inferior-finanzas .fila .valor { font-weight: bold; font-size: 12px; }
-        .menu-inferior-finanzas .fila.inscripcion .valor { color: #e67e22; }
-        .menu-inferior-finanzas .fila.compendio .valor { color: #27ae60; }
-        .menu-inferior-finanzas .fila.crucifijo .valor { color: #3498db; }
-        .menu-inferior-finanzas .fila.ingresos .valor { color: #1e8449; }
-        .menu-inferior-finanzas .fila.gastos .valor { color: #d35400; }
-        .menu-inferior-finanzas .fila.disponible .valor { color: #2ecc71; font-size: 13px; }
+        .menu-inferior-finanzas .fila:hover {
+            background: rgba(255, 255, 255, 0.08);
+        }
+        .menu-inferior-finanzas .fila .etiqueta {
+            font-weight: normal;
+            font-size: 12px;
+        }
+        .menu-inferior-finanzas .fila .valor {
+            font-weight: bold;
+            font-size: 12px;
+        }
+        .menu-inferior-finanzas .fila.inscripcion .valor {
+            color: #e67e22;
+        }
+        .menu-inferior-finanzas .fila.compendio .valor {
+            color: #27ae60;
+        }
+        .menu-inferior-finanzas .fila.crucifijo .valor {
+            color: #3498db;
+        }
+        .menu-inferior-finanzas .fila.ingresos .valor {
+            color: #1e8449;
+        }
+        .menu-inferior-finanzas .fila.gastos .valor {
+            color: #d35400;
+        }
+        .menu-inferior-finanzas .fila.disponible .valor {
+            color: #2ecc71;
+            font-size: 13px;
+        }
         .menu-inferior-finanzas .fila.active {
             background: rgba(52, 152, 219, 0.25);
             border-left: 3px solid #3498db;
         }
         .menu-inferior-finanzas .separador {
-            border-top: 1px solid rgba(255,255,255,0.15);
+            border-top: 1px solid rgba(255, 255, 255, 0.15);
             margin: 3px 0;
             grid-column: 1 / -1;
         }
 
-        /* ===== ADMIN ===== */
         .resumen-periodo .linea {
             display: flex;
             justify-content: space-between;
@@ -559,7 +747,9 @@
             border-bottom: 1px solid #eee;
             font-size: 13px;
         }
-        .resumen-periodo .linea .label { flex: 1; }
+        .resumen-periodo .linea .label {
+            flex: 1;
+        }
         .resumen-periodo .linea .monto {
             font-weight: bold;
             text-align: right;
@@ -571,17 +761,47 @@
             border-bottom: 1px solid #eee;
             font-size: 13px;
         }
-        .periodo-item .total { float: right; font-weight: bold; color: #27ae60; }
+        .periodo-item .total {
+            float: right;
+            font-weight: bold;
+            color: #27ae60;
+        }
 
         @media (max-width: 480px) {
-            .summary-grid { grid-template-columns: 1fr; gap: 3px; }
-            .finanzas-form-row .form-group.tipo { flex: 0 0 75px; }
-            .finanzas-form-row .form-group.monto { flex: 0 0 60px; }
-            .finanzas-form-row .form-group.fecha { flex: 0 0 65px; }
-            .menu-inferior-finanzas .grid-2col { grid-template-columns: 1fr; gap: 0px; }
-            .cabecera-participantes .col-iconos .filtro-icono-cabecera { font-size: 13px; width: 20px; }
-            .status-icon { width: 18px; height: 18px; font-size: 9px; }
-            .status-icon.activo-icon, .status-icon.inactivo-icon { font-size: 12px; width: 18px; height: 18px; }
+            .summary .fila-superior {
+                font-size: 12px;
+            }
+            .summary .fila-inferior {
+                font-size: 12px;
+            }
+            .finanzas-form-row .form-group.tipo {
+                flex: 0 0 75px;
+            }
+            .finanzas-form-row .form-group.monto {
+                flex: 0 0 60px;
+            }
+            .finanzas-form-row .form-group.fecha {
+                flex: 0 0 65px;
+            }
+            .menu-inferior-finanzas .grid-2col {
+                grid-template-columns: 1fr;
+                gap: 0px;
+            }
+            .cabecera-participantes .col-iconos .filtro-icono-cabecera {
+                font-size: 13px;
+                width: 20px;
+            }
+            .status-icon {
+                width: 18px;
+                height: 18px;
+                font-size: 9px;
+            }
+            .status-icon.activo-icon,
+            .status-icon.inactivo-icon {
+                font-size: 12px;
+                width: 18px;
+                height: 18px;
+            }
         }
     </style>
 </head>
@@ -592,7 +812,9 @@
         <div class="loading-text">Cargando datos...</div>
     </div>
 
-    <div class="header"><h1>📋 Gestión Evangelización</h1></div>
+    <div class="header">
+        <h1>📋 Gestión Evangelización</h1>
+    </div>
 
     <div class="tabs">
         <button class="tab active" data-tab="cobros">👥 Cobros</button>
@@ -647,7 +869,7 @@
                         </div>
                     </span>
                     <span class="posicion-relativa">
-                        <button class="filtro-icono-cabecera" data-concepto="activo" onclick="toggleDropdownFiltro(event, 'activo')" title="Filtrar por Estado" style="font-size:15px;">👤</button>
+                        <button class="filtro-icono-cabecera" data-concepto="activo" onclick="toggleDropdownFiltro(event, 'activo')" title="Filtrar por Estado" style="font-size:15px;">●</button>
                         <div class="dropdown-filtro" id="dropdown-activo">
                             <button class="opcion" data-filtro="todos" onclick="aplicarFiltroCobros('activo', 'todos')">📋 Todos</button>
                             <button class="opcion" data-filtro="activos" onclick="aplicarFiltroCobros('activo', 'activos')">🟢 Activos</button>
@@ -662,9 +884,19 @@
             </div>
         </div>
 
+        <!-- ===== NUEVO RESUMEN EN 2 LÍNEAS ===== -->
         <div class="summary" id="summary">
-            <div style="text-align:center; font-weight:bold; margin-bottom:3px; font-size:13px;">📊 Resumen</div>
-            <div id="summaryContent"></div>
+            <div class="fila-superior">
+                <span class="titulo">📊 Resumen</span>
+                <span>
+                    <span class="activos" id="resumenActivos">0 activos</span>
+                    <span style="opacity:0.5; margin:0 4px;">|</span>
+                    <span class="inactivos" id="resumenInactivos">0 inactivos</span>
+                </span>
+            </div>
+            <div class="fila-inferior" id="summaryContent">
+                <!-- Generado por JavaScript -->
+            </div>
         </div>
     </div>
 
@@ -925,9 +1157,10 @@
 
             list.innerHTML = filtrados.map(p => {
                 const statusClass = p.activo ? '' : 'inactive';
+                // CÍRCULO: ● verde para activo, ○ gris para inactivo
                 const iconoActivo = p.activo ?
-                    '<span class="status-icon activo-icon">👤</span>' :
-                    '<span class="status-icon inactivo-icon">👤</span>';
+                    '<span class="status-icon activo-icon">●</span>' :
+                    '<span class="status-icon inactivo-icon">○</span>';
 
                 let iconosHTML = '';
                 if (mostrarUnaColumna) {
@@ -967,6 +1200,9 @@
             }
         }
 
+        // ============================================
+        // NUEVO RESUMEN EN 2 LÍNEAS
+        // ============================================
         function renderizarResumen() {
             const activos = data.participantes.filter(p => p.activo);
             const inactivos = data.participantes.filter(p => !p.activo);
@@ -975,23 +1211,23 @@
             const pagadosComp = activos.filter(p => p.pagos.compendio.pagado).length;
             const pagadosCruc = activos.filter(p => p.pagos.crucifijo.pagado).length;
 
+            // Primera línea: activos e inactivos
+            document.getElementById('resumenActivos').textContent = `${activos.length} activos`;
+            document.getElementById('resumenInactivos').textContent = `${inactivos.length} inactivos`;
+
+            // Segunda línea: conceptos con íconos
             document.getElementById('summaryContent').innerHTML = `
-                <div style="text-align:center; font-size:13px; margin-bottom:3px;">
-                    👥 ${activos.length} activos (${inactivos.length} inactivos)
+                <div class="item">
+                    <span class="icono">📝</span>
+                    <span class="numero">${pagadosInsc}/${total}</span>
                 </div>
-                <div class="summary-grid">
-                    <div class="summary-item">
-                        <div class="label">📝 Inscripción</div>
-                        <div class="value">${pagadosInsc}/${total}</div>
-                    </div>
-                    <div class="summary-item">
-                        <div class="label">📚 Compendio</div>
-                        <div class="value">${pagadosComp}/${total}</div>
-                    </div>
-                    <div class="summary-item">
-                        <div class="label">✝️ Crucifijo</div>
-                        <div class="value">${pagadosCruc}/${total}</div>
-                    </div>
+                <div class="item">
+                    <span class="icono">📚</span>
+                    <span class="numero">${pagadosComp}/${total}</span>
+                </div>
+                <div class="item">
+                    <span class="icono">✝️</span>
+                    <span class="numero">${pagadosCruc}/${total}</span>
                 </div>
             `;
         }
@@ -1603,5 +1839,6 @@
 
         document.addEventListener('DOMContentLoaded', init);
     </script>
+
 </body>
 </html>
