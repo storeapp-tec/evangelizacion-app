@@ -178,10 +178,10 @@
             background: #e74c3c;
         }
 
-        /* ===== CÍRCULOS PARA ACTIVO/INACTIVO ===== */
+        /* ===== CÍRCULOS ACTIVO/INACTIVO ===== */
         .status-icon.activo-icon {
             font-size: 14px;
-            color: #5cb85c !important;
+            color: #22aa44 !important;
             background: none !important;
             width: 20px;
             height: 20px;
@@ -193,7 +193,7 @@
         }
         .status-icon.inactivo-icon {
             font-size: 14px;
-            color: #88929c !important;
+            color: #cc3333 !important;
             background: none !important;
             width: 20px;
             height: 20px;
@@ -204,7 +204,6 @@
             font-weight: bold;
         }
 
-        /* ===== CABECERA DE PARTICIPANTES ===== */
         .cabecera-participantes {
             display: flex;
             align-items: center;
@@ -299,7 +298,6 @@
             display: inline-block;
         }
 
-        /* ===== RESUMEN EN 2 LÍNEAS ===== */
         .summary {
             background: #1a2634;
             color: white;
@@ -322,10 +320,10 @@
             color: #fff;
         }
         .summary .fila-superior .activos {
-            color: #5cb85c;
+            color: #22aa44;
         }
         .summary .fila-superior .inactivos {
-            color: #88929c;
+            color: #cc3333;
         }
 
         .summary .fila-inferior {
@@ -669,6 +667,7 @@
             font-size: 13px;
         }
 
+        /* ===== MENU INFERIOR FINANZAS - 2 COLUMNAS EN MÓVIL ===== */
         .menu-inferior-finanzas {
             background: #1a2634;
             color: white;
@@ -760,6 +759,7 @@
             color: #27ae60;
         }
 
+        /* ===== RESPONSIVE ===== */
         @media (max-width: 480px) {
             .summary .fila-superior {
                 font-size: 12px;
@@ -776,9 +776,10 @@
             .finanzas-form-row .form-group.fecha {
                 flex: 0 0 65px;
             }
+            /* FORZAR 2 COLUMNAS EN MÓVIL */
             .menu-inferior-finanzas .grid-2col {
-                grid-template-columns: 1fr;
-                gap: 0px;
+                grid-template-columns: 1fr 1fr !important;
+                gap: 2px 8px !important;
             }
             .cabecera-participantes .col-iconos .filtro-icono-cabecera {
                 font-size: 13px;
@@ -866,7 +867,7 @@
                         <div class="dropdown-filtro" id="dropdown-activo">
                             <button class="opcion" data-filtro="todos" onclick="aplicarFiltroCobros('activo', 'todos')">📋 Todos</button>
                             <button class="opcion" data-filtro="activos" onclick="aplicarFiltroCobros('activo', 'activos')">🟢 Activos</button>
-                            <button class="opcion" data-filtro="inactivos" onclick="aplicarFiltroCobros('activo', 'inactivos')">⚪ Inactivos</button>
+                            <button class="opcion" data-filtro="inactivos" onclick="aplicarFiltroCobros('activo', 'inactivos')">🔴 Inactivos</button>
                         </div>
                     </span>
                     <span class="limpiar-filtro" id="limpiarFiltroCobros" onclick="limpiarFiltroCobros()">✕ Limpiar</span>
@@ -1150,7 +1151,7 @@
 
             list.innerHTML = filtrados.map(p => {
                 const statusClass = p.activo ? '' : 'inactive';
-                // CÍRCULO: ● verde para activo, ○ gris para inactivo
+                // CÍRCULO: ● verde para activo, ○ rojo para inactivo
                 const iconoActivo = p.activo ?
                     '<span class="status-icon activo-icon">●</span>' :
                     '<span class="status-icon inactivo-icon">○</span>';
@@ -1200,11 +1201,9 @@
             const activos = data.participantes.filter(p => p.activo);
             const inactivos = data.participantes.filter(p => !p.activo);
 
-            // Primera línea: activos e inactivos
             document.getElementById('resumenActivos').textContent = `${activos.length} activos`;
             document.getElementById('resumenInactivos').textContent = `${inactivos.length} inactivos`;
 
-            // Segunda línea: conceptos con íconos (sin texto)
             const pagadosInsc = activos.filter(p => p.pagos.inscripcion.pagado).length;
             const pagadosComp = activos.filter(p => p.pagos.compendio.pagado).length;
             const pagadosCruc = activos.filter(p => p.pagos.crucifijo.pagado).length;
