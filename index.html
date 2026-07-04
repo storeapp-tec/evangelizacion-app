@@ -102,34 +102,55 @@
         .participant-name { flex: 1; font-size: 13px; font-weight: 500; }
         .participant-status {
             display: flex;
-            gap: 8px;
+            gap: 6px;
             margin-left: 6px;
             align-items: center;
         }
 
         /* ===== INDICADORES DE PAGO ===== */
         .status-icon {
-            width: 22px;
-            height: 22px;
+            width: 20px;
+            height: 20px;
             display: flex;
             align-items: center;
             justify-content: center;
             border-radius: 50%;
-            font-size: 11px;
+            font-size: 10px;
             font-weight: bold;
             color: white;
+            flex-shrink: 0;
         }
         .status-icon.pagado { background: #27ae60; }
         .status-icon.pendiente { background: #e74c3c; }
-        .status-icon.activo-icon { color: #27ae60; font-size: 16px; }
-        .status-icon.inactivo-icon { color: #95a5a6; font-size: 16px; }
-        .status-icon.inactivo-icon-filtro { color: #95a5a6; font-size: 20px; }
+        .status-icon.activo-icon {
+            font-size: 14px;
+            color: #27ae60;
+            background: none;
+            width: 20px;
+            height: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+        .status-icon.inactivo-icon {
+            font-size: 14px;
+            color: #95a5a6;
+            background: none;
+            width: 20px;
+            height: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+        .status-icon.inactivo-icon-filtro { color: #95a5a6; font-size: 16px; }
 
-        /* ===== CABECERA DE PARTICIPANTES CON COLUMNAS ===== */
+        /* ===== CABECERA DE PARTICIPANTES ===== */
         .cabecera-participantes {
             display: flex;
             align-items: center;
-            padding: 6px 6px 8px 6px;
+            padding: 4px 6px 6px 6px;
             border-bottom: 2px solid #e0e0e0;
             margin-bottom: 4px;
             font-weight: 600;
@@ -141,19 +162,19 @@
         }
         .cabecera-participantes .col-iconos {
             display: flex;
-            gap: 8px;
+            gap: 4px;
             align-items: center;
         }
         .cabecera-participantes .col-iconos .filtro-icono-cabecera {
-            font-size: 18px;
+            font-size: 15px;
             cursor: pointer;
-            padding: 2px 4px;
+            padding: 2px 3px;
             border-radius: 4px;
             border: 2px solid transparent;
             transition: all 0.2s;
             background: none;
             line-height: 1;
-            width: 28px;
+            width: 24px;
             text-align: center;
         }
         .cabecera-participantes .col-iconos .filtro-icono-cabecera:hover {
@@ -176,7 +197,7 @@
             border-radius: 8px;
             box-shadow: 0 4px 12px rgba(0,0,0,0.15);
             padding: 6px 0;
-            min-width: 130px;
+            min-width: 120px;
             z-index: 50;
             border: 1px solid #e0e0e0;
             top: 100%;
@@ -187,7 +208,7 @@
             display: block;
         }
         .dropdown-filtro .opcion {
-            padding: 6px 14px;
+            padding: 6px 12px;
             cursor: pointer;
             font-size: 12px;
             transition: background 0.2s;
@@ -206,11 +227,11 @@
         }
 
         .limpiar-filtro {
-            font-size: 12px;
+            font-size: 11px;
             color: #e74c3c;
             cursor: pointer;
-            padding: 2px 8px;
-            border-radius: 12px;
+            padding: 2px 6px;
+            border-radius: 10px;
             background: #fde8e8;
             border: 1px solid #f5c6cb;
             display: none;
@@ -369,13 +390,16 @@
             flex: 0 0 75px;
         }
         .finanzas-form-row .btn-guardar {
-            flex: 0 0 36px;
-            padding: 6px 0;
-            font-size: 16px;
+            flex: 0 0 32px;
+            padding: 4px 0;
+            font-size: 18px;
             background: none;
             border: none;
             cursor: pointer;
             color: #27ae60;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
         .finanzas-form-row .btn-guardar:hover {
             color: #1e8449;
@@ -396,6 +420,7 @@
             font-size: 12px;
         }
 
+        /* ===== LISTA DE MOVIMIENTOS ===== */
         .movimiento-item {
             display: flex;
             align-items: center;
@@ -460,7 +485,7 @@
 
         .empty-state { text-align: center; padding: 20px 0; color: #999; font-size: 13px; }
 
-        /* ===== MENU INFERIOR FINANZAS ===== */
+        /* ===== MENU INFERIOR FINANZAS - FIJO ===== */
         .menu-inferior-finanzas {
             background: #1a2634;
             color: white;
@@ -512,14 +537,6 @@
             margin: 3px 0;
             grid-column: 1 / -1;
         }
-        .filtro-activo-indicador {
-            font-size: 11px;
-            color: #bdc3c7;
-            text-align: center;
-            padding: 4px 0 0 0;
-            border-top: 1px solid rgba(255,255,255,0.1);
-            margin-top: 4px;
-        }
 
         .resumen-periodo .linea {
             display: flex;
@@ -535,13 +552,16 @@
         }
         .periodo-item .total { float: right; font-weight: bold; color: #27ae60; }
 
+        /* ===== RESPONSIVE ===== */
         @media (max-width: 480px) {
             .summary-grid { grid-template-columns: 1fr; gap: 3px; }
             .finanzas-form-row .form-group.tipo { flex: 0 0 75px; }
             .finanzas-form-row .form-group.monto { flex: 0 0 60px; }
             .finanzas-form-row .form-group.fecha { flex: 0 0 65px; }
             .menu-inferior-finanzas .grid-2col { grid-template-columns: 1fr; gap: 0px; }
-            .cabecera-participantes .col-iconos .filtro-icono-cabecera { font-size: 16px; width: 24px; }
+            .cabecera-participantes .col-iconos .filtro-icono-cabecera { font-size: 13px; width: 20px; }
+            .status-icon { width: 18px; height: 18px; font-size: 9px; }
+            .status-icon.activo-icon, .status-icon.inactivo-icon { font-size: 12px; width: 18px; height: 18px; }
         }
     </style>
 </head>
@@ -565,7 +585,7 @@
     <!-- ============================================================ -->
     <div id="cobros" class="content active">
         <div class="card">
-            <div class="card-title">
+            <div class="card-title" style="font-size:13px;">
                 🔍 Buscar participante
                 <span style="display:flex; align-items:center; gap:6px;">
                     <span style="font-size:14px; color:#666; cursor:pointer;" onclick="recargarDatos()" title="Sincronizar">🔄</span>
@@ -578,11 +598,10 @@
             </div>
         </div>
 
-        <div class="card">
-            <div class="card-title" style="font-size:13px; margin-bottom:4px;">📋 Participantes</div>
-            <!-- Cabecera con columnas -->
+        <div class="card" style="padding: 10px 12px;">
+            <!-- Cabecera con columnas - UNA SOLA LÍNEA -->
             <div class="cabecera-participantes">
-                <span class="col-nombre">Participante</span>
+                <span class="col-nombre" style="font-weight:600; color:#2c3e50;">Participantes</span>
                 <span class="col-iconos">
                     <span class="posicion-relativa">
                         <button class="filtro-icono-cabecera" data-concepto="inscripcion" onclick="toggleDropdownFiltro(event, 'inscripcion')" title="Filtrar por Inscripción">📝</button>
@@ -609,7 +628,7 @@
                         </div>
                     </span>
                     <span class="posicion-relativa">
-                        <button class="filtro-icono-cabecera" data-concepto="activo" onclick="toggleDropdownFiltro(event, 'activo')" title="Filtrar por Estado" style="font-size:18px;">👤</button>
+                        <button class="filtro-icono-cabecera" data-concepto="activo" onclick="toggleDropdownFiltro(event, 'activo')" title="Filtrar por Estado" style="font-size:15px;">👤</button>
                         <div class="dropdown-filtro" id="dropdown-activo">
                             <button class="opcion" data-filtro="todos" onclick="aplicarFiltroCobros('activo', 'todos')">📋 Todos</button>
                             <button class="opcion" data-filtro="activos" onclick="aplicarFiltroCobros('activo', 'activos')">🟢 Activos</button>
@@ -635,7 +654,7 @@
         <div class="card" style="padding: 10px;">
             <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:6px;">
                 <span style="font-size:13px; font-weight:600; color:#2c3e50;">➕ Agregar movimiento</span>
-                <button class="btn-guardar" onclick="agregarMovimiento()" title="Guardar movimiento">💾</button>
+                <button class="btn-guardar" onclick="agregarMovimiento()" title="Guardar movimiento" style="font-size:18px; background:none; border:none; cursor:pointer; color:#27ae60; padding:0;">💾</button>
             </div>
             <div class="finanzas-form-row">
                 <div class="form-group tipo">
@@ -657,9 +676,10 @@
         </div>
 
         <div class="card" style="padding: 8px;">
-            <div id="finanzasList" class="historial-list" style="max-height:320px; overflow-y:auto;"></div>
+            <div id="finanzasList" class="historial-list" style="max-height:300px; overflow-y:auto;"></div>
         </div>
 
+        <!-- MENU INFERIOR FIJO -->
         <div class="menu-inferior-finanzas" id="menuInferiorFinanzas">
             <div style="text-align:center; font-weight:bold; margin-bottom:4px; font-size:12px; color:#fff;">📊 Resumen de movimientos</div>
             <div class="grid-2col">
@@ -688,7 +708,6 @@
                     <span class="valor" id="menuDisponible">$0</span>
                 </div>
             </div>
-            <div class="filtro-activo-indicador" id="filtroActivoFinanzas">📋 Mostrando: Ingresos adicionales</div>
         </div>
     </div>
 
@@ -772,7 +791,6 @@
         let participanteEditando = null;
         let movimientoEditando = null;
         let cargando = false;
-        let fechaFormatoCorto = true;
 
         // ============================================
         // API
@@ -879,7 +897,6 @@
                 return;
             }
 
-            // Determinar qué columnas mostrar
             const mostrarUnaColumna = filtroCobrosConcepto && filtroCobrosEstado &&
                 filtroCobrosConcepto !== 'activo';
 
@@ -907,7 +924,6 @@
                     `;
                 }
 
-                // Si no es una columna sola, pero el filtro es por activo, mostrar solo el icono de activo
                 if (filtroCobrosConcepto === 'activo' && filtroCobrosEstado) {
                     iconosHTML = iconoActivo;
                 }
@@ -920,7 +936,6 @@
                 </div>`;
             }).join('');
 
-            // Actualizar indicador de filtro activo
             const limpiarBtn = document.getElementById('limpiarFiltroCobros');
             if (filtroCobrosConcepto && filtroCobrosEstado) {
                 limpiarBtn.classList.add('visible');
@@ -963,12 +978,10 @@
         // ============================================
         function toggleDropdownFiltro(event, concepto) {
             event.stopPropagation();
-            // Cerrar otros dropdowns
             document.querySelectorAll('.dropdown-filtro').forEach(d => d.classList.remove('visible'));
             const dropdown = document.getElementById('dropdown-' + concepto);
             dropdown.classList.toggle('visible');
 
-            // Marcar el icono como activo si hay filtro
             document.querySelectorAll('.filtro-icono-cabecera').forEach(icon => {
                 icon.classList.remove('active');
             });
@@ -980,9 +993,7 @@
         function aplicarFiltroCobros(concepto, estado) {
             filtroCobrosConcepto = concepto;
             filtroCobrosEstado = estado;
-            // Cerrar dropdown
             document.querySelectorAll('.dropdown-filtro').forEach(d => d.classList.remove('visible'));
-            // Marcar icono activo
             document.querySelectorAll('.filtro-icono-cabecera').forEach(icon => {
                 icon.classList.remove('active');
             });
@@ -1003,7 +1014,6 @@
             renderizarParticipantes();
         }
 
-        // Cerrar dropdown al hacer clic fuera
         document.addEventListener('click', function() {
             document.querySelectorAll('.dropdown-filtro').forEach(d => d.classList.remove('visible'));
         });
@@ -1086,14 +1096,6 @@
                 list.innerHTML = '<div class="empty-state">No hay movimientos</div>';
                 return;
             }
-
-            let labelFiltro = '';
-            if (filtroFinanzasActual === 'ingreso') labelFiltro = 'Ingresos adicionales';
-            else if (filtroFinanzasActual === 'gasto') labelFiltro = 'Gastos';
-            else if (filtroFinanzasActual === 'inscripcion') labelFiltro = 'Inscripciones';
-            else if (filtroFinanzasActual === 'compendio') labelFiltro = 'Compendios';
-            else if (filtroFinanzasActual === 'crucifijo') labelFiltro = 'Crucifijos';
-            document.getElementById('filtroActivoFinanzas').textContent = `📋 Mostrando: ${labelFiltro}`;
 
             list.innerHTML = movimientos.map(m => {
                 const signo = m.tipo === 'ingreso' ? '+' : '-';
@@ -1348,7 +1350,6 @@
             if (!concepto) { alert('Escribe un concepto.'); return; }
             if (!monto || monto <= 0) { alert('Ingresa un monto válido.'); return; }
 
-            // Convertir fecha corta a ISO si es necesario
             if (fecha) {
                 fecha = convertirFechaCortaAIso(fecha);
             } else {
@@ -1508,9 +1509,7 @@
 
         function convertirFechaCortaAIso(fechaStr) {
             if (!fechaStr) return null;
-            // Si ya es ISO, devolverlo
             if (fechaStr.includes('-') && fechaStr.length === 10) return fechaStr;
-            // Intentar convertir formato 04-jul-26
             const meses = {
                 'ene': 0, 'feb': 1, 'mar': 2, 'abr': 3, 'may': 4, 'jun': 5,
                 'jul': 6, 'ago': 7, 'sep': 8, 'oct': 9, 'nov': 10, 'dic': 11
@@ -1524,7 +1523,6 @@
                     return `${anio}-${String(mes + 1).padStart(2, '0')}-${String(dia).padStart(2, '0')}`;
                 }
             }
-            // Si no se pudo convertir, devolver null
             return null;
         }
 
