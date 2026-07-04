@@ -73,7 +73,7 @@
             max-width: 600px;
             margin: 0 auto;
             flex: 1;
-            overflow-y: auto;
+            overflow: hidden;
             padding-bottom: 12px;
             min-height: 0;
         }
@@ -113,7 +113,7 @@
         .participant-list-container {
             flex: 1;
             overflow-y: auto;
-            min-height: 0;
+            min-height: 100px;
             max-height: 400px;
         }
         .participant-list-container::-webkit-scrollbar {
@@ -382,7 +382,7 @@
         .switch input:checked + .slider { background-color: #27ae60; }
         .switch input:checked + .slider:before { transform: translateX(20px); }
 
-        /* ===== FINANZAS ===== */
+        /* ===== FINANZAS - CONTENEDOR FIJO ===== */
         .finanzas-container {
             display: flex;
             flex-direction: column;
@@ -390,6 +390,7 @@
             min-height: 0;
             height: 100%;
         }
+
         .finanzas-form-row {
             display: flex;
             flex-wrap: wrap;
@@ -428,6 +429,7 @@
         .finanzas-form-row .form-control:focus { outline: none; border-color: #3498db; }
         .finanzas-form-row .form-control.tipo-input { padding: 5px 4px; font-size: 12px; }
 
+        /* ===== LISTA DE MOVIMIENTOS CON SCROLL FINO ===== */
         .finanzas-scroll-area {
             flex: 1;
             overflow-y: auto;
@@ -505,7 +507,7 @@
 
         .empty-state { text-align: center; padding: 20px 0; color: #999; font-size: 13px; }
 
-        /* ===== MENU INFERIOR FINANZAS - FIJO ===== */
+        /* ===== MENU INFERIOR FINANZAS - FIJO ABAJO ===== */
         .menu-inferior-finanzas {
             background: #1a2634;
             color: white;
@@ -571,7 +573,6 @@
         }
         .periodo-item .total { float: right; font-weight: bold; color: #27ae60; }
 
-        /* ===== RESPONSIVE ===== */
         @media (max-width: 480px) {
             .summary-grid { grid-template-columns: 1fr; gap: 3px; }
             .finanzas-form-row .form-group.tipo { flex: 0 0 75px; }
@@ -656,8 +657,8 @@
                     <span class="limpiar-filtro" id="limpiarFiltroCobros" onclick="limpiarFiltroCobros()">✕ Limpiar</span>
                 </span>
             </div>
-            <div class="participant-list-container" id="participantListContainer">
-                <div id="participantList"></div>
+            <div class="participant-list-container" id="participantList">
+                <!-- Lista generada por JavaScript -->
             </div>
         </div>
 
@@ -697,7 +698,9 @@
             </div>
 
             <div class="card" style="padding: 8px; flex: 1; overflow: hidden; display: flex; flex-direction: column; min-height: 0;">
-                <div id="finanzasList" class="finanzas-scroll-area"></div>
+                <div id="finanzasList" class="finanzas-scroll-area">
+                    <!-- Lista generada por JavaScript -->
+                </div>
             </div>
 
             <div class="menu-inferior-finanzas" id="menuInferiorFinanzas">
@@ -888,7 +891,6 @@
         // ============================================
         function renderizarParticipantes() {
             const searchTerm = document.getElementById('searchInput').value.toLowerCase();
-            const container = document.getElementById('participantListContainer');
             const list = document.getElementById('participantList');
 
             let participantes = data.participantes;
@@ -915,7 +917,6 @@
 
             if (filtrados.length === 0) {
                 list.innerHTML = '<div class="empty-state">No hay participantes</div>';
-                container.style.maxHeight = 'auto';
                 return;
             }
 
@@ -957,11 +958,6 @@
                     </div>
                 </div>`;
             }).join('');
-
-            // Ajustar altura del contenedor según el contenido
-            const totalItems = filtrados.length;
-            const maxHeight = Math.min(totalItems * 42 + 10, 400);
-            container.style.maxHeight = Math.max(150, maxHeight) + 'px';
 
             const limpiarBtn = document.getElementById('limpiarFiltroCobros');
             if (filtroCobrosConcepto && filtroCobrosEstado) {
