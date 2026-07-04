@@ -13,6 +13,9 @@
             padding-bottom: 10px;
             color: #333;
             font-size: 14px;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
         }
         .header {
             background: #1a2634;
@@ -22,6 +25,7 @@
             position: sticky;
             top: 0;
             z-index: 100;
+            flex-shrink: 0;
         }
         .header h1 { font-size: 17px; font-weight: 600; }
 
@@ -32,6 +36,7 @@
             position: sticky;
             top: 49px;
             z-index: 99;
+            flex-shrink: 0;
         }
         .tab {
             flex: 1;
@@ -53,6 +58,9 @@
             padding: 12px;
             max-width: 600px;
             margin: 0 auto;
+            flex: 1;
+            overflow-y: auto;
+            padding-bottom: 20px;
         }
         .content.active { display: block; }
 
@@ -122,10 +130,12 @@
         }
         .status-icon.pagado { background: #27ae60; }
         .status-icon.pendiente { background: #e74c3c; }
+
+        /* ===== ICONO ACTIVO/INACTIVO ===== */
         .status-icon.activo-icon {
             font-size: 14px;
-            color: #27ae60;
-            background: none;
+            color: #27ae60 !important;
+            background: none !important;
             width: 20px;
             height: 20px;
             display: flex;
@@ -135,8 +145,8 @@
         }
         .status-icon.inactivo-icon {
             font-size: 14px;
-            color: #95a5a6;
-            background: none;
+            color: #95a5a6 !important;
+            background: none !important;
             width: 20px;
             height: 20px;
             display: flex;
@@ -144,7 +154,6 @@
             justify-content: center;
             flex-shrink: 0;
         }
-        .status-icon.inactivo-icon-filtro { color: #95a5a6; font-size: 16px; }
 
         /* ===== CABECERA DE PARTICIPANTES ===== */
         .cabecera-participantes {
@@ -241,15 +250,14 @@
             display: inline-block;
         }
 
-        /* ===== RESUMEN ===== */
+        /* ===== RESUMEN COBROS ===== */
         .summary {
             background: #1a2634;
             color: white;
             padding: 12px;
             border-radius: 10px;
-            position: sticky;
-            bottom: 0;
             margin-top: 8px;
+            flex-shrink: 0;
         }
         .summary-grid {
             display: grid;
@@ -421,6 +429,12 @@
         }
 
         /* ===== LISTA DE MOVIMIENTOS ===== */
+        .finanzas-scroll-area {
+            flex: 1;
+            overflow-y: auto;
+            min-height: 150px;
+            max-height: 300px;
+        }
         .movimiento-item {
             display: flex;
             align-items: center;
@@ -486,14 +500,21 @@
         .empty-state { text-align: center; padding: 20px 0; color: #999; font-size: 13px; }
 
         /* ===== MENU INFERIOR FINANZAS - FIJO ===== */
+        .finanzas-container {
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+            max-height: calc(100vh - 180px);
+        }
         .menu-inferior-finanzas {
             background: #1a2634;
             color: white;
             padding: 12px;
             border-radius: 10px;
+            margin-top: 8px;
+            flex-shrink: 0;
             position: sticky;
             bottom: 0;
-            margin-top: 8px;
         }
         .menu-inferior-finanzas .grid-2col {
             display: grid;
@@ -599,7 +620,6 @@
         </div>
 
         <div class="card" style="padding: 10px 12px;">
-            <!-- Cabecera con columnas - UNA SOLA LÍNEA -->
             <div class="cabecera-participantes">
                 <span class="col-nombre" style="font-weight:600; color:#2c3e50;">Participantes</span>
                 <span class="col-iconos">
@@ -651,61 +671,62 @@
     <!-- PANTALLA 2: FINANZAS -->
     <!-- ============================================================ -->
     <div id="finanzas" class="content">
-        <div class="card" style="padding: 10px;">
-            <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:6px;">
-                <span style="font-size:13px; font-weight:600; color:#2c3e50;">➕ Agregar movimiento</span>
-                <button class="btn-guardar" onclick="agregarMovimiento()" title="Guardar movimiento" style="font-size:18px; background:none; border:none; cursor:pointer; color:#27ae60; padding:0;">💾</button>
+        <div class="finanzas-container">
+            <div class="card" style="padding: 10px; flex-shrink: 0;">
+                <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:6px;">
+                    <span style="font-size:13px; font-weight:600; color:#2c3e50;">➕ Agregar movimiento</span>
+                    <button class="btn-guardar" onclick="agregarMovimiento()" title="Guardar movimiento" style="font-size:18px; background:none; border:none; cursor:pointer; color:#27ae60; padding:0;">💾</button>
+                </div>
+                <div class="finanzas-form-row">
+                    <div class="form-group tipo">
+                        <select id="finTipo" class="form-control tipo-input">
+                            <option value="ingreso">💰 Ingreso</option>
+                            <option value="gasto">💸 Gasto</option>
+                        </select>
+                    </div>
+                    <div class="form-group concepto">
+                        <input type="text" id="finConcepto" class="form-control" placeholder="Concepto">
+                    </div>
+                    <div class="form-group monto">
+                        <input type="number" id="finMonto" class="form-control" placeholder="Monto" step="0.01">
+                    </div>
+                    <div class="form-group fecha">
+                        <input type="text" id="finFecha" class="form-control" placeholder="04-jul-26" style="font-size:11px;">
+                    </div>
+                </div>
             </div>
-            <div class="finanzas-form-row">
-                <div class="form-group tipo">
-                    <select id="finTipo" class="form-control tipo-input">
-                        <option value="ingreso">💰 Ingreso</option>
-                        <option value="gasto">💸 Gasto</option>
-                    </select>
-                </div>
-                <div class="form-group concepto">
-                    <input type="text" id="finConcepto" class="form-control" placeholder="Concepto">
-                </div>
-                <div class="form-group monto">
-                    <input type="number" id="finMonto" class="form-control" placeholder="Monto" step="0.01">
-                </div>
-                <div class="form-group fecha">
-                    <input type="text" id="finFecha" class="form-control" placeholder="04-jul-26" style="font-size:11px;">
-                </div>
+
+            <div class="card" style="padding: 8px; flex: 1; overflow: hidden; display: flex; flex-direction: column;">
+                <div id="finanzasList" class="finanzas-scroll-area"></div>
             </div>
-        </div>
 
-        <div class="card" style="padding: 8px;">
-            <div id="finanzasList" class="historial-list" style="max-height:300px; overflow-y:auto;"></div>
-        </div>
-
-        <!-- MENU INFERIOR FIJO -->
-        <div class="menu-inferior-finanzas" id="menuInferiorFinanzas">
-            <div style="text-align:center; font-weight:bold; margin-bottom:4px; font-size:12px; color:#fff;">📊 Resumen de movimientos</div>
-            <div class="grid-2col">
-                <div class="fila inscripcion" data-filtro="inscripcion" onclick="filtrarFinanzas('inscripcion')">
-                    <span class="etiqueta">📝 Inscripción</span>
-                    <span class="valor" id="menuInscripcion">0/0 $0</span>
-                </div>
-                <div class="fila compendio" data-filtro="compendio" onclick="filtrarFinanzas('compendio')">
-                    <span class="etiqueta">📚 Compendio</span>
-                    <span class="valor" id="menuCompendio">0/0 $0</span>
-                </div>
-                <div class="fila crucifijo" data-filtro="crucifijo" onclick="filtrarFinanzas('crucifijo')">
-                    <span class="etiqueta">✝️ Crucifijo</span>
-                    <span class="valor" id="menuCrucifijo">0/0 $0</span>
-                </div>
-                <div class="fila ingresos" data-filtro="ingreso" onclick="filtrarFinanzas('ingreso')">
-                    <span class="etiqueta">💰 Ingresos adicionales</span>
-                    <span class="valor" id="menuIngresos">$0</span>
-                </div>
-                <div class="fila gastos" data-filtro="gasto" onclick="filtrarFinanzas('gasto')">
-                    <span class="etiqueta">💸 Gastos</span>
-                    <span class="valor" id="menuGastos">$0</span>
-                </div>
-                <div class="fila disponible" style="cursor:default;">
-                    <span class="etiqueta">📈 Disponible</span>
-                    <span class="valor" id="menuDisponible">$0</span>
+            <div class="menu-inferior-finanzas" id="menuInferiorFinanzas">
+                <div style="text-align:center; font-weight:bold; margin-bottom:4px; font-size:12px; color:#fff;">📊 Resumen de movimientos</div>
+                <div class="grid-2col">
+                    <div class="fila inscripcion" data-filtro="inscripcion" onclick="filtrarFinanzas('inscripcion')">
+                        <span class="etiqueta">📝 Inscripción</span>
+                        <span class="valor" id="menuInscripcion">0/0 $0</span>
+                    </div>
+                    <div class="fila compendio" data-filtro="compendio" onclick="filtrarFinanzas('compendio')">
+                        <span class="etiqueta">📚 Compendio</span>
+                        <span class="valor" id="menuCompendio">0/0 $0</span>
+                    </div>
+                    <div class="fila crucifijo" data-filtro="crucifijo" onclick="filtrarFinanzas('crucifijo')">
+                        <span class="etiqueta">✝️ Crucifijo</span>
+                        <span class="valor" id="menuCrucifijo">0/0 $0</span>
+                    </div>
+                    <div class="fila ingresos" data-filtro="ingreso" onclick="filtrarFinanzas('ingreso')">
+                        <span class="etiqueta">💰 Ingresos adicionales</span>
+                        <span class="valor" id="menuIngresos">$0</span>
+                    </div>
+                    <div class="fila gastos" data-filtro="gasto" onclick="filtrarFinanzas('gasto')">
+                        <span class="etiqueta">💸 Gastos</span>
+                        <span class="valor" id="menuGastos">$0</span>
+                    </div>
+                    <div class="fila disponible" style="cursor:default;">
+                        <span class="etiqueta">📈 Disponible</span>
+                        <span class="valor" id="menuDisponible">$0</span>
+                    </div>
                 </div>
             </div>
         </div>
@@ -871,7 +892,6 @@
 
             let participantes = data.participantes;
 
-            // Aplicar filtro de cobros si está activo
             if (filtroCobrosConcepto && filtroCobrosEstado) {
                 if (filtroCobrosConcepto === 'activo') {
                     if (filtroCobrosEstado === 'activos') {
