@@ -1041,7 +1041,7 @@
         // ============================================
         // CONFIGURACIÓN - URL DE LA API
         // ============================================
-        const API_URL = 'https://script.google.com/macros/s/AKfycbzKrmQFAKkLMaLxlzP5M2P7DNbZ1KvkGDtmS9frrVojBJ2g3AuGMh2CRID4suaz8OZx/exec';
+        const API_URL = 'https://script.google.com/macros/s/AKfycbyqy6bF784Bc-qCrOnkqm8lZzNGxf5hqLi4V4vEtR1WHwienqcQH0fOs4M-1FrvYqyf/exec';
 
         let data = null;
         let filtroFinanzasActual = 'ingreso';
@@ -1064,16 +1064,23 @@
             }
         }
 
+        // ============================================
+        // sendData - CON NO-CORS (LA LÓGICA QUE FUNCIONA)
+        // ============================================
         async function sendData(action, data) {
             try {
-                const params = new URLSearchParams();
-                params.append('action', action);
-                params.append('data', JSON.stringify(data));
-                const response = await fetch(API_URL + '?' + params.toString());
-                return await response.json();
-            } catch (e) {
-                console.error(e);
-                return { success: false, error: e.message };
+                const response = await fetch(API_URL, {
+                    method: 'POST',
+                    mode: 'no-cors',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ action: action, data: data })
+                });
+                return { success: true, message: 'Enviado correctamente' };
+            } catch (error) {
+                console.error('Error en sendData:', error);
+                return { success: false, error: error.message };
             }
         }
 
