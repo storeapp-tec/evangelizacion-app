@@ -310,6 +310,7 @@
             display: inline-block;
         }
 
+        /* ===== NUEVO RESUMEN COBROS EN 3 LÍNEAS ===== */
         .summary {
             background: #1a2634;
             color: white;
@@ -338,11 +339,28 @@
             color: #cc2222;
         }
 
-        .summary .fila-inferior {
+        .summary .fila-nombres {
             display: flex;
             justify-content: space-around;
             align-items: center;
             margin-top: 4px;
+            font-size: 11px;
+            color: #bdc3c7;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+        .summary .fila-nombres .item {
+            flex: 1;
+            text-align: center;
+            font-weight: 500;
+            letter-spacing: 0.3px;
+        }
+
+        .summary .fila-inferior {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            margin-top: 2px;
             font-size: 13px;
             gap: 8px;
             flex-wrap: wrap;
@@ -351,6 +369,8 @@
             display: flex;
             align-items: center;
             gap: 4px;
+            flex: 1;
+            justify-content: center;
         }
         .summary .fila-inferior .item .icono {
             font-size: 14px;
@@ -679,68 +699,91 @@
             font-size: 13px;
         }
 
+        /* ===== NUEVO MENU INFERIOR FINANZAS ===== */
         .menu-inferior-finanzas {
             background: #1a2634;
             color: white;
-            padding: 12px;
+            padding: 10px 12px;
             border-radius: 10px;
             margin-top: 8px;
             flex-shrink: 0;
         }
-        .menu-inferior-finanzas .grid-2col {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 2px 12px;
-            margin-top: 4px;
-        }
-        .menu-inferior-finanzas .fila {
-            display: flex;
-            justify-content: space-between;
-            padding: 3px 4px;
+        .menu-inferior-finanzas .titulo {
+            text-align: center;
+            font-weight: bold;
             font-size: 12px;
-            cursor: pointer;
-            transition: all 0.2s;
-            border-radius: 4px;
-            align-items: center;
+            color: #fff;
+            margin-bottom: 4px;
         }
-        .menu-inferior-finanzas .fila:hover {
+
+        .menu-inferior-finanzas .fila-totales {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 4px;
+            text-align: center;
+            margin-bottom: 4px;
+        }
+        .menu-inferior-finanzas .fila-totales .item {
+            font-size: 11px;
+        }
+        .menu-inferior-finanzas .fila-totales .item .label {
+            opacity: 0.7;
+            font-weight: normal;
+        }
+        .menu-inferior-finanzas .fila-totales .item .valor {
+            font-weight: bold;
+            font-size: 13px;
+        }
+        .menu-inferior-finanzas .fila-totales .item .valor.ingresos {
+            color: #1e8449;
+        }
+        .menu-inferior-finanzas .fila-totales .item .valor.gastos {
+            color: #d35400;
+        }
+        .menu-inferior-finanzas .fila-totales .item .valor.disponible {
+            color: #2ecc71;
+        }
+
+        .menu-inferior-finanzas .fila-conceptos {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 4px;
+            text-align: center;
+            padding-top: 4px;
+            border-top: 1px solid rgba(255, 255, 255, 0.15);
+        }
+        .menu-inferior-finanzas .fila-conceptos .item {
+            font-size: 11px;
+            cursor: pointer;
+            padding: 3px 2px;
+            border-radius: 4px;
+            transition: all 0.2s;
+        }
+        .menu-inferior-finanzas .fila-conceptos .item:hover {
             background: rgba(255, 255, 255, 0.08);
         }
-        .menu-inferior-finanzas .fila .etiqueta {
+        .menu-inferior-finanzas .fila-conceptos .item .label {
+            opacity: 0.7;
             font-weight: normal;
-            font-size: 12px;
+            font-size: 10px;
+            display: block;
         }
-        .menu-inferior-finanzas .fila .valor {
+        .menu-inferior-finanzas .fila-conceptos .item .valor {
             font-weight: bold;
             font-size: 12px;
         }
-        .menu-inferior-finanzas .fila.inscripcion .valor {
+        .menu-inferior-finanzas .fila-conceptos .item .valor.inscripcion {
             color: #e67e22;
         }
-        .menu-inferior-finanzas .fila.compendio .valor {
+        .menu-inferior-finanzas .fila-conceptos .item .valor.compendio {
             color: #27ae60;
         }
-        .menu-inferior-finanzas .fila.crucifijo .valor {
+        .menu-inferior-finanzas .fila-conceptos .item .valor.crucifijo {
             color: #3498db;
         }
-        .menu-inferior-finanzas .fila.ingresos .valor {
-            color: #1e8449;
-        }
-        .menu-inferior-finanzas .fila.gastos .valor {
-            color: #d35400;
-        }
-        .menu-inferior-finanzas .fila.disponible .valor {
-            color: #2ecc71;
-            font-size: 13px;
-        }
-        .menu-inferior-finanzas .fila.active {
-            background: rgba(52, 152, 219, 0.25);
+        .menu-inferior-finanzas .fila-conceptos .item.active {
+            background: rgba(52, 152, 219, 0.2);
             border-left: 3px solid #3498db;
-        }
-        .menu-inferior-finanzas .separador {
-            border-top: 1px solid rgba(255, 255, 255, 0.15);
-            margin: 3px 0;
-            grid-column: 1 / -1;
         }
 
         .resumen-periodo .linea {
@@ -770,9 +813,7 @@
             color: #27ae60;
         }
 
-        /* ============================================================ */
-        /* TOAST NOTIFICACIONES - Aparece en el centro superior */
-        /* ============================================================ */
+        /* ===== TOAST ===== */
         .toast {
             position: fixed;
             top: 70px;
@@ -785,7 +826,7 @@
             font-size: 14px;
             font-weight: 600;
             z-index: 9999;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
             opacity: 0;
             transition: opacity 0.3s ease, transform 0.3s ease;
             pointer-events: none;
@@ -803,6 +844,9 @@
             .summary .fila-superior {
                 font-size: 12px;
             }
+            .summary .fila-nombres {
+                font-size: 10px;
+            }
             .summary .fila-inferior {
                 font-size: 12px;
             }
@@ -815,9 +859,13 @@
             .finanzas-form-row .form-group.fecha {
                 flex: 0 0 65px;
             }
-            .menu-inferior-finanzas .grid-2col {
-                grid-template-columns: 1fr 1fr !important;
-                gap: 2px 8px !important;
+            .menu-inferior-finanzas .fila-totales {
+                grid-template-columns: 1fr 1fr 1fr;
+                gap: 2px;
+            }
+            .menu-inferior-finanzas .fila-conceptos {
+                grid-template-columns: 1fr 1fr 1fr;
+                gap: 2px;
             }
             .cabecera-participantes .col-iconos .filtro-icono-cabecera {
                 font-size: 13px;
@@ -845,7 +893,7 @@
 <body>
 
     <!-- ============================================================ -->
-    <!-- TOAST - Mensaje flotante (aparece en el centro superior) -->
+    <!-- TOAST - Mensaje flotante -->
     <!-- ============================================================ -->
     <div id="toast" class="toast"></div>
 
@@ -926,7 +974,7 @@
             </div>
         </div>
 
-        <!-- ===== RESUMEN EN 2 LÍNEAS ===== -->
+        <!-- ===== RESUMEN COBROS EN 3 LÍNEAS ===== -->
         <div class="summary" id="summary">
             <div class="fila-superior">
                 <span class="titulo">📊 Resumen</span>
@@ -935,6 +983,11 @@
                     <span style="opacity:0.5; margin:0 4px;">|</span>
                     <span class="inactivos" id="resumenInactivos">0 inactivos</span>
                 </span>
+            </div>
+            <div class="fila-nombres" id="summaryNombres">
+                <span class="item">Inscripción</span>
+                <span class="item">Compendio</span>
+                <span class="item">Crucifijo</span>
             </div>
             <div class="fila-inferior" id="summaryContent">
                 <!-- Generado por JavaScript -->
@@ -977,32 +1030,37 @@
                 </div>
             </div>
 
+            <!-- ===== MENU INFERIOR FINANZAS ===== -->
             <div class="menu-inferior-finanzas" id="menuInferiorFinanzas">
-                <div style="text-align:center; font-weight:bold; margin-bottom:4px; font-size:12px; color:#fff;">📊 Resumen de movimientos</div>
-                <div class="grid-2col">
-                    <div class="fila inscripcion" data-filtro="inscripcion" onclick="filtrarFinanzas('inscripcion')">
-                        <span class="etiqueta">📝 Inscripción</span>
-                        <span class="valor" id="menuInscripcion">0/0 $0</span>
+                <div class="titulo">📊 Resumen de movimientos</div>
+
+                <div class="fila-totales">
+                    <div class="item">
+                        <div class="label">💰 Ingresos</div>
+                        <div class="valor ingresos" id="menuIngresos">$0</div>
                     </div>
-                    <div class="fila compendio" data-filtro="compendio" onclick="filtrarFinanzas('compendio')">
-                        <span class="etiqueta">📚 Compendio</span>
-                        <span class="valor" id="menuCompendio">0/0 $0</span>
+                    <div class="item">
+                        <div class="label">💸 Gastos</div>
+                        <div class="valor gastos" id="menuGastos">$0</div>
                     </div>
-                    <div class="fila crucifijo" data-filtro="crucifijo" onclick="filtrarFinanzas('crucifijo')">
-                        <span class="etiqueta">✝️ Crucifijo</span>
-                        <span class="valor" id="menuCrucifijo">0/0 $0</span>
+                    <div class="item">
+                        <div class="label">📈 Disponible</div>
+                        <div class="valor disponible" id="menuDisponible">$0</div>
                     </div>
-                    <div class="fila ingresos" data-filtro="ingreso" onclick="filtrarFinanzas('ingreso')">
-                        <span class="etiqueta">💰 Ingresos adicionales</span>
-                        <span class="valor" id="menuIngresos">$0</span>
+                </div>
+
+                <div class="fila-conceptos">
+                    <div class="item" data-filtro="inscripcion" onclick="filtrarFinanzas('inscripcion')">
+                        <span class="label">📝 Inscripción</span>
+                        <span class="valor inscripcion" id="menuInscripcion">0/0 $0</span>
                     </div>
-                    <div class="fila gastos" data-filtro="gasto" onclick="filtrarFinanzas('gasto')">
-                        <span class="etiqueta">💸 Gastos</span>
-                        <span class="valor" id="menuGastos">$0</span>
+                    <div class="item" data-filtro="compendio" onclick="filtrarFinanzas('compendio')">
+                        <span class="label">📚 Compendio</span>
+                        <span class="valor compendio" id="menuCompendio">0/0 $0</span>
                     </div>
-                    <div class="fila disponible" style="cursor:default;">
-                        <span class="etiqueta">📈 Disponible</span>
-                        <span class="valor" id="menuDisponible">$0</span>
+                    <div class="item" data-filtro="crucifijo" onclick="filtrarFinanzas('crucifijo')">
+                        <span class="label">✝️ Crucifijo</span>
+                        <span class="valor crucifijo" id="menuCrucifijo">0/0 $0</span>
                     </div>
                 </div>
             </div>
@@ -1078,7 +1136,7 @@
 
     <script>
         // ============================================
-        // TOAST - Mensaje flotante
+        // TOAST
         // ============================================
         function showToast(message, type = 'success') {
             const toast = document.getElementById('toast');
@@ -1093,7 +1151,7 @@
         }
 
         // ============================================
-        // CONFIGURACIÓN - URL DE LA API
+        // CONFIGURACIÓN
         // ============================================
         const API_URL = 'https://script.google.com/macros/s/AKfycbyqy6bF784Bc-qCrOnkqm8lZzNGxf5hqLi4V4vEtR1WHwienqcQH0fOs4M-1FrvYqyf/exec';
 
@@ -1268,7 +1326,7 @@
         }
 
         // ============================================
-        // RESUMEN EN 2 LÍNEAS
+        // RESUMEN COBROS EN 3 LÍNEAS
         // ============================================
         function renderizarResumen() {
             const activos = data.participantes.filter(p => p.activo);
@@ -1457,16 +1515,20 @@
             const totalGastos = gastosManuales;
             const disponible = totalIngresos - totalGastos;
 
+            // Totales
+            document.getElementById('menuIngresos').textContent = `$${totalIngresos.toFixed(2)}`;
+            document.getElementById('menuGastos').textContent = `$${totalGastos.toFixed(2)}`;
+            document.getElementById('menuDisponible').textContent = `$${disponible.toFixed(2)}`;
+
+            // Conceptos
             document.getElementById('menuInscripcion').textContent = `${pagadosInsc}/${total} $${totalInsc.toFixed(0)}`;
             document.getElementById('menuCompendio').textContent = `${pagadosComp}/${total} $${totalComp.toFixed(0)}`;
             document.getElementById('menuCrucifijo').textContent = `${pagadosCruc}/${total} $${totalCruc.toFixed(0)}`;
-            document.getElementById('menuIngresos').textContent = `$${ingresosManuales.toFixed(2)}`;
-            document.getElementById('menuGastos').textContent = `$${gastosManuales.toFixed(2)}`;
-            document.getElementById('menuDisponible').textContent = `$${disponible.toFixed(2)}`;
 
-            document.querySelectorAll('.menu-inferior-finanzas .fila[data-filtro]').forEach(fila => {
-                const filtro = fila.dataset.filtro;
-                fila.classList.toggle('active', filtro === filtroFinanzasActual);
+            // Resaltar filtro activo
+            document.querySelectorAll('.fila-conceptos .item').forEach(item => {
+                const filtro = item.dataset.filtro;
+                item.classList.toggle('active', filtro === filtroFinanzasActual);
             });
         }
 
@@ -1772,7 +1834,7 @@
 
         function cerrarModalEditarMovimiento() {
             document.getElementById('modalEditarMovimiento').classList.remove('active');
-            movimentoEditando = null;
+            movimientoEditando = null;
         }
 
         // ============================================
@@ -1910,7 +1972,7 @@
         document.addEventListener('DOMContentLoaded', init);
 
         // ============================================
-        // REGISTRO DEL SERVICE WORKER PARA PWA
+        // SERVICE WORKER
         // ============================================
         if ('serviceWorker' in navigator) {
             navigator.serviceWorker.register('sw.js')
