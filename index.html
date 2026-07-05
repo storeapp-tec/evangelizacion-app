@@ -74,7 +74,6 @@
         .limpiar-filtro { font-size: 11px; color: #e74c3c; cursor: pointer; padding: 2px 6px; border-radius: 10px; background: #fde8e8; border: 1px solid #f5c6cb; display: none; margin-left: 4px; }
         .limpiar-filtro.visible { display: inline-block; }
 
-        /* ===== RESUMEN COBROS EN 3 LÍNEAS ===== */
         .summary { background: #1a2634; color: white; padding: 10px 12px; border-radius: 10px; margin-top: 8px; flex-shrink: 0; }
         .summary .fila-superior { display: flex; justify-content: space-between; align-items: center; font-size: 13px; font-weight: bold; flex-wrap: wrap; gap: 4px; }
         .summary .fila-superior .titulo { font-weight: bold; color: #fff; }
@@ -118,23 +117,26 @@
         /* ===== FINANZAS ===== */
         .finanzas-container { display: flex; flex-direction: column; flex: 1; min-height: 0; height: 100%; }
 
-        .finanzas-form-row { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; }
-        .finanzas-form-row .form-group { margin-bottom: 0; flex: 1; min-width: 60px; }
-        .finanzas-form-row .form-group.tipo { flex: 0 0 100px; }
-        .finanzas-form-row .form-group.concepto { flex: 2; min-width: 80px; }
-        .finanzas-form-row .form-group.monto { flex: 0 0 100px; }
-        .finanzas-form-row .form-group.fecha { flex: 0 0 90px; }
+        .finanzas-form-row { 
+            display: flex; 
+            flex-wrap: nowrap; 
+            align-items: center; 
+            gap: 6px; 
+        }
+        .finanzas-form-row .form-group { margin-bottom: 0; }
+        .finanzas-form-row .form-group.tipo { flex: 0 0 85px; min-width: 70px; }
+        .finanzas-form-row .form-group.concepto { flex: 1; min-width: 70px; }
+        .finanzas-form-row .form-group.monto { flex: 0 0 85px; min-width: 70px; }
+        .finanzas-form-row .form-group.fecha { flex: 0 0 85px; min-width: 70px; }
         .finanzas-form-row .btn-guardar { flex: 0 0 32px; padding: 4px 0; font-size: 18px; background: none; border: none; cursor: pointer; color: #27ae60; display: flex; align-items: center; justify-content: center; }
         .finanzas-form-row .btn-guardar:hover { color: #1e8449; }
         .finanzas-form-row .form-control { padding: 5px 6px; font-size: 12px; border: 1px solid #ddd; border-radius: 4px; width: 100%; }
         .finanzas-form-row .form-control:focus { outline: none; border-color: #3498db; }
         .finanzas-form-row .form-control.tipo-input { padding: 5px 4px; font-size: 12px; }
 
-        /* Formato de moneda */
         .form-control.monto-input { text-align: right; font-weight: 600; }
         .form-control.monto-input::placeholder { text-align: left; font-weight: normal; }
 
-        /* Fecha - ocultar el input nativo y mostrar el texto */
         .fecha-wrapper { position: relative; }
         .fecha-wrapper input[type="date"] {
             position: absolute;
@@ -157,9 +159,7 @@
             color: #333;
             text-align: center;
         }
-        .fecha-wrapper .fecha-display.placeholder {
-            color: #aaa;
-        }
+        .fecha-wrapper .fecha-display.placeholder { color: #aaa; }
 
         .finanzas-scroll-area { flex: 1; overflow-y: auto; min-height: 80px; max-height: 400px; }
         .finanzas-scroll-area::-webkit-scrollbar { width: 3px; }
@@ -186,7 +186,6 @@
 
         .empty-state { text-align: center; padding: 20px 0; color: #999; font-size: 13px; }
 
-        /* ===== MENU INFERIOR FINANZAS - CON NÚMEROS MÁS GRANDES ===== */
         .menu-inferior-finanzas { background: #1a2634; color: white; padding: 10px 12px; border-radius: 10px; margin-top: 8px; flex-shrink: 0; }
         .menu-inferior-finanzas .titulo { text-align: center; font-weight: bold; font-size: 12px; color: #fff; margin-bottom: 4px; }
 
@@ -198,7 +197,6 @@
         .menu-inferior-finanzas .fila-totales .item .valor.gastos { color: #d35400; }
         .menu-inferior-finanzas .fila-totales .item .valor.disponible { color: #2ecc71; }
 
-        /* ===== CONCEPTOS CON NÚMEROS MÁS GRANDES ===== */
         .menu-inferior-finanzas .fila-conceptos { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 4px; text-align: center; padding-top: 4px; border-top: 1px solid rgba(255,255,255,0.15); }
         .menu-inferior-finanzas .fila-conceptos .item { font-size: 11px; cursor: pointer; padding: 3px 2px; border-radius: 4px; transition: all 0.2s; }
         .menu-inferior-finanzas .fila-conceptos .item:hover { background: rgba(255,255,255,0.08); }
@@ -223,9 +221,11 @@
             .summary .fila-superior { font-size: 12px; }
             .summary .fila-nombres { font-size: 10px; }
             .summary .fila-inferior { font-size: 12px; }
-            .finanzas-form-row .form-group.tipo { flex: 0 0 80px; }
-            .finanzas-form-row .form-group.monto { flex: 0 0 80px; }
-            .finanzas-form-row .form-group.fecha { flex: 0 0 75px; }
+            .finanzas-form-row { flex-wrap: wrap; gap: 4px; }
+            .finanzas-form-row .form-group.tipo { flex: 0 0 70px; min-width: 60px; }
+            .finanzas-form-row .form-group.concepto { flex: 1; min-width: 60px; }
+            .finanzas-form-row .form-group.monto { flex: 0 0 70px; min-width: 60px; }
+            .finanzas-form-row .form-group.fecha { flex: 0 0 70px; min-width: 60px; }
             .menu-inferior-finanzas .fila-totales { grid-template-columns: 1fr 1fr 1fr; gap: 2px; }
             .menu-inferior-finanzas .fila-conceptos { grid-template-columns: 1fr 1fr 1fr; gap: 2px; }
             .menu-inferior-finanzas .fila-conceptos .item .valor { font-size: 13px; }
@@ -357,7 +357,7 @@
                     <div class="form-group fecha">
                         <div class="fecha-wrapper">
                             <input type="date" id="finFechaInput" onchange="actualizarFechaDisplay()">
-                            <div class="fecha-display placeholder" id="finFechaDisplay">04-jul-26</div>
+                            <div class="fecha-display placeholder" id="finFechaDisplay">05-jul-26</div>
                         </div>
                     </div>
                 </div>
@@ -488,7 +488,7 @@
                     return;
                 }
             }
-            display.textContent = '04-jul-26';
+            display.textContent = '05-jul-26';
             display.classList.add('placeholder');
         }
 
@@ -1238,9 +1238,7 @@
             const montoInput = document.getElementById('finMonto');
             if (montoInput) {
                 montoInput.addEventListener('input', function() {
-                    // Permitir solo números y punto decimal
                     let valor = this.value.replace(/[^0-9.]/g, '');
-                    // Evitar múltiples puntos decimales
                     const partes = valor.split('.');
                     if (partes.length > 2) {
                         valor = partes[0] + '.' + partes.slice(1).join('');
@@ -1256,7 +1254,6 @@
                     }
                 });
                 montoInput.addEventListener('focus', function() {
-                    // Quitar el signo $ para editar
                     if (this.value.startsWith('$')) {
                         this.value = this.value.substring(1);
                     }
@@ -1289,7 +1286,6 @@
                 renderizarTodo();
                 configurarTabs();
                 configurarBusqueda();
-                // Establecer fecha por defecto
                 const fechaInput = document.getElementById('finFechaInput');
                 if (fechaInput) {
                     fechaInput.value = obtenerFechaISO();
