@@ -193,7 +193,7 @@
         }
         .status-icon.inactivo-icon {
             font-size: 14px;
-            color: #cc3333 !important;
+            color: #cc2222 !important;
             background: none !important;
             width: 20px;
             height: 20px;
@@ -323,7 +323,7 @@
             color: #22aa44;
         }
         .summary .fila-superior .inactivos {
-            color: #cc3333;
+            color: #cc2222;
         }
 
         .summary .fila-inferior {
@@ -667,7 +667,6 @@
             font-size: 13px;
         }
 
-        /* ===== MENU INFERIOR FINANZAS - 2 COLUMNAS EN MÓVIL ===== */
         .menu-inferior-finanzas {
             background: #1a2634;
             color: white;
@@ -759,7 +758,6 @@
             color: #27ae60;
         }
 
-        /* ===== RESPONSIVE ===== */
         @media (max-width: 480px) {
             .summary .fila-superior {
                 font-size: 12px;
@@ -776,7 +774,6 @@
             .finanzas-form-row .form-group.fecha {
                 flex: 0 0 65px;
             }
-            /* FORZAR 2 COLUMNAS EN MÓVIL */
             .menu-inferior-finanzas .grid-2col {
                 grid-template-columns: 1fr 1fr !important;
                 gap: 2px 8px !important;
@@ -863,7 +860,7 @@
                         </div>
                     </span>
                     <span class="posicion-relativa">
-                        <button class="filtro-icono-cabecera" data-concepto="activo" onclick="toggleDropdownFiltro(event, 'activo')" title="Filtrar por Estado" style="font-size:15px;">●</button>
+                        <button class="filtro-icono-cabecera" data-concepto="activo" onclick="toggleDropdownFiltro(event, 'activo')" title="Filtrar por Estado" style="font-size:15px;">👤</button>
                         <div class="dropdown-filtro" id="dropdown-activo">
                             <button class="opcion" data-filtro="todos" onclick="aplicarFiltroCobros('activo', 'todos')">📋 Todos</button>
                             <button class="opcion" data-filtro="activos" onclick="aplicarFiltroCobros('activo', 'activos')">🟢 Activos</button>
@@ -1121,6 +1118,15 @@
 
             let participantes = data.participantes;
 
+            // Ordenar: activos primero, inactivos al final
+            participantes = [...participantes].sort((a, b) => {
+                if (a.activo && !b.activo) return -1;
+                if (!a.activo && b.activo) return 1;
+                return 0;
+            });
+
+            // Si hay un filtro de concepto (inscripcion, compendio, crucifijo)
+            // solo mostrar activos
             if (filtroCobrosConcepto && filtroCobrosEstado) {
                 if (filtroCobrosConcepto === 'activo') {
                     if (filtroCobrosEstado === 'activos') {
@@ -1129,7 +1135,9 @@
                         participantes = participantes.filter(p => p.activo === false);
                     }
                 } else {
+                    // Filtrar por pago (inscripcion, compendio, crucifijo) - SOLO ACTIVOS
                     participantes = participantes.filter(p => {
+                        if (!p.activo) return false;
                         const pago = p.pagos[filtroCobrosConcepto];
                         if (!pago) return false;
                         if (filtroCobrosEstado === 'pagados') return pago.pagado === true;
@@ -1151,7 +1159,6 @@
 
             list.innerHTML = filtrados.map(p => {
                 const statusClass = p.activo ? '' : 'inactive';
-                // CÍRCULO: ● verde para activo, ○ rojo para inactivo
                 const iconoActivo = p.activo ?
                     '<span class="status-icon activo-icon">●</span>' :
                     '<span class="status-icon inactivo-icon">○</span>';
