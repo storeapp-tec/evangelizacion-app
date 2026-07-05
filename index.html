@@ -5,6 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Gestión Evangelización</title>
 
+    <!-- ============================================================ -->
+    <!-- PWA CONFIGURACIÓN -->
+    <!-- ============================================================ -->
     <link rel="manifest" href="manifest.json">
     <link rel="apple-touch-icon" sizes="192x192" href="icon-192.png">
     <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
@@ -71,6 +74,7 @@
         .limpiar-filtro { font-size: 11px; color: #e74c3c; cursor: pointer; padding: 2px 6px; border-radius: 10px; background: #fde8e8; border: 1px solid #f5c6cb; display: none; margin-left: 4px; }
         .limpiar-filtro.visible { display: inline-block; }
 
+        /* ===== RESUMEN COBROS EN 3 LÍNEAS ===== */
         .summary { background: #1a2634; color: white; padding: 10px 12px; border-radius: 10px; margin-top: 8px; flex-shrink: 0; }
         .summary .fila-superior { display: flex; justify-content: space-between; align-items: center; font-size: 13px; font-weight: bold; flex-wrap: wrap; gap: 4px; }
         .summary .fila-superior .titulo { font-weight: bold; color: #fff; }
@@ -111,18 +115,51 @@
         .switch input:checked + .slider { background-color: #27ae60; }
         .switch input:checked + .slider:before { transform: translateX(20px); }
 
+        /* ===== FINANZAS ===== */
         .finanzas-container { display: flex; flex-direction: column; flex: 1; min-height: 0; height: 100%; }
+
         .finanzas-form-row { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; }
         .finanzas-form-row .form-group { margin-bottom: 0; flex: 1; min-width: 60px; }
-        .finanzas-form-row .form-group.tipo { flex: 0 0 90px; }
+        .finanzas-form-row .form-group.tipo { flex: 0 0 100px; }
         .finanzas-form-row .form-group.concepto { flex: 2; min-width: 80px; }
-        .finanzas-form-row .form-group.monto { flex: 0 0 70px; }
-        .finanzas-form-row .form-group.fecha { flex: 0 0 75px; }
+        .finanzas-form-row .form-group.monto { flex: 0 0 100px; }
+        .finanzas-form-row .form-group.fecha { flex: 0 0 90px; }
         .finanzas-form-row .btn-guardar { flex: 0 0 32px; padding: 4px 0; font-size: 18px; background: none; border: none; cursor: pointer; color: #27ae60; display: flex; align-items: center; justify-content: center; }
         .finanzas-form-row .btn-guardar:hover { color: #1e8449; }
         .finanzas-form-row .form-control { padding: 5px 6px; font-size: 12px; border: 1px solid #ddd; border-radius: 4px; width: 100%; }
         .finanzas-form-row .form-control:focus { outline: none; border-color: #3498db; }
         .finanzas-form-row .form-control.tipo-input { padding: 5px 4px; font-size: 12px; }
+
+        /* Formato de moneda */
+        .form-control.monto-input { text-align: right; font-weight: 600; }
+        .form-control.monto-input::placeholder { text-align: left; font-weight: normal; }
+
+        /* Fecha - ocultar el input nativo y mostrar el texto */
+        .fecha-wrapper { position: relative; }
+        .fecha-wrapper input[type="date"] {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            cursor: pointer;
+            z-index: 2;
+        }
+        .fecha-wrapper .fecha-display {
+            padding: 5px 6px;
+            font-size: 12px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            background: white;
+            width: 100%;
+            cursor: pointer;
+            color: #333;
+            text-align: center;
+        }
+        .fecha-wrapper .fecha-display.placeholder {
+            color: #aaa;
+        }
 
         .finanzas-scroll-area { flex: 1; overflow-y: auto; min-height: 80px; max-height: 400px; }
         .finanzas-scroll-area::-webkit-scrollbar { width: 3px; }
@@ -149,8 +186,10 @@
 
         .empty-state { text-align: center; padding: 20px 0; color: #999; font-size: 13px; }
 
+        /* ===== MENU INFERIOR FINANZAS - CON NÚMEROS MÁS GRANDES ===== */
         .menu-inferior-finanzas { background: #1a2634; color: white; padding: 10px 12px; border-radius: 10px; margin-top: 8px; flex-shrink: 0; }
         .menu-inferior-finanzas .titulo { text-align: center; font-weight: bold; font-size: 12px; color: #fff; margin-bottom: 4px; }
+
         .menu-inferior-finanzas .fila-totales { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 4px; text-align: center; margin-bottom: 4px; }
         .menu-inferior-finanzas .fila-totales .item { font-size: 11px; }
         .menu-inferior-finanzas .fila-totales .item .label { opacity: 0.7; font-weight: normal; }
@@ -159,11 +198,12 @@
         .menu-inferior-finanzas .fila-totales .item .valor.gastos { color: #d35400; }
         .menu-inferior-finanzas .fila-totales .item .valor.disponible { color: #2ecc71; }
 
+        /* ===== CONCEPTOS CON NÚMEROS MÁS GRANDES ===== */
         .menu-inferior-finanzas .fila-conceptos { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 4px; text-align: center; padding-top: 4px; border-top: 1px solid rgba(255,255,255,0.15); }
         .menu-inferior-finanzas .fila-conceptos .item { font-size: 11px; cursor: pointer; padding: 3px 2px; border-radius: 4px; transition: all 0.2s; }
         .menu-inferior-finanzas .fila-conceptos .item:hover { background: rgba(255,255,255,0.08); }
         .menu-inferior-finanzas .fila-conceptos .item .label { opacity: 0.7; font-weight: normal; font-size: 10px; display: block; }
-        .menu-inferior-finanzas .fila-conceptos .item .valor { font-weight: bold; font-size: 12px; }
+        .menu-inferior-finanzas .fila-conceptos .item .valor { font-weight: bold; font-size: 15px; }
         .menu-inferior-finanzas .fila-conceptos .item .valor.inscripcion { color: #e67e22; }
         .menu-inferior-finanzas .fila-conceptos .item .valor.compendio { color: #27ae60; }
         .menu-inferior-finanzas .fila-conceptos .item .valor.crucifijo { color: #3498db; }
@@ -183,11 +223,12 @@
             .summary .fila-superior { font-size: 12px; }
             .summary .fila-nombres { font-size: 10px; }
             .summary .fila-inferior { font-size: 12px; }
-            .finanzas-form-row .form-group.tipo { flex: 0 0 75px; }
-            .finanzas-form-row .form-group.monto { flex: 0 0 60px; }
-            .finanzas-form-row .form-group.fecha { flex: 0 0 65px; }
+            .finanzas-form-row .form-group.tipo { flex: 0 0 80px; }
+            .finanzas-form-row .form-group.monto { flex: 0 0 80px; }
+            .finanzas-form-row .form-group.fecha { flex: 0 0 75px; }
             .menu-inferior-finanzas .fila-totales { grid-template-columns: 1fr 1fr 1fr; gap: 2px; }
             .menu-inferior-finanzas .fila-conceptos { grid-template-columns: 1fr 1fr 1fr; gap: 2px; }
+            .menu-inferior-finanzas .fila-conceptos .item .valor { font-size: 13px; }
             .cabecera-participantes .col-iconos .filtro-icono-cabecera { font-size: 13px; width: 20px; }
             .status-icon { width: 18px; height: 18px; font-size: 9px; }
             .status-icon.activo-icon, .status-icon.inactivo-icon { font-size: 12px; width: 18px; height: 18px; }
@@ -212,7 +253,9 @@
         <button class="tab" data-tab="admin">⚙️ Admin</button>
     </div>
 
+    <!-- ============================================================ -->
     <!-- COBROS -->
+    <!-- ============================================================ -->
     <div id="cobros" class="content active">
         <div class="card">
             <div class="card-title" style="font-size:13px;">
@@ -288,7 +331,9 @@
         </div>
     </div>
 
+    <!-- ============================================================ -->
     <!-- FINANZAS -->
+    <!-- ============================================================ -->
     <div id="finanzas" class="content">
         <div class="finanzas-container">
             <div class="card" style="padding: 10px; flex-shrink: 0;">
@@ -299,18 +344,21 @@
                 <div class="finanzas-form-row">
                     <div class="form-group tipo">
                         <select id="finTipo" class="form-control tipo-input">
-                            <option value="ingreso">💰 Ingreso</option>
-                            <option value="gasto">💸 Gasto</option>
+                            <option value="ingreso">Ingreso</option>
+                            <option value="gasto">Gasto</option>
                         </select>
                     </div>
                     <div class="form-group concepto">
                         <input type="text" id="finConcepto" class="form-control" placeholder="Concepto">
                     </div>
                     <div class="form-group monto">
-                        <input type="number" id="finMonto" class="form-control" placeholder="Monto" step="0.01">
+                        <input type="text" id="finMonto" class="form-control monto-input" placeholder="$0.00" inputmode="decimal">
                     </div>
                     <div class="form-group fecha">
-                        <input type="text" id="finFecha" class="form-control" placeholder="04-jul-26" style="font-size:11px;">
+                        <div class="fecha-wrapper">
+                            <input type="date" id="finFechaInput" onchange="actualizarFechaDisplay()">
+                            <div class="fecha-display placeholder" id="finFechaDisplay">04-jul-26</div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -344,7 +392,9 @@
         </div>
     </div>
 
+    <!-- ============================================================ -->
     <!-- ADMIN -->
+    <!-- ============================================================ -->
     <div id="admin" class="content">
         <div class="card">
             <div class="card-title">📊 Resumen del periodo</div>
@@ -358,7 +408,9 @@
         </div>
     </div>
 
+    <!-- ============================================================ -->
     <!-- MODALES -->
+    <!-- ============================================================ -->
     <div id="modalParticipante" class="modal-overlay">
         <div class="modal">
             <button class="modal-close" onclick="cerrarModal()">✕</button>
@@ -408,6 +460,41 @@
     </div>
 
     <script>
+        // ============================================
+        // FORMATO DE MONEDA
+        // ============================================
+        function formatearMoneda(valor) {
+            if (!valor) return '';
+            const numero = parseFloat(valor.replace(/[^0-9.]/g, ''));
+            if (isNaN(numero)) return '';
+            return '$' + numero.toFixed(2);
+        }
+
+        // ============================================
+        // FECHA
+        // ============================================
+        function actualizarFechaDisplay() {
+            const input = document.getElementById('finFechaInput');
+            const display = document.getElementById('finFechaDisplay');
+            if (input.value) {
+                const fecha = new Date(input.value + 'T00:00:00');
+                if (!isNaN(fecha.getTime())) {
+                    const meses = ['ene','feb','mar','abr','may','jun','jul','ago','sep','oct','nov','dic'];
+                    const dia = String(fecha.getDate()).padStart(2,'0');
+                    const mes = meses[fecha.getMonth()];
+                    const anio = String(fecha.getFullYear()).slice(-2);
+                    display.textContent = `${dia}-${mes}-${anio}`;
+                    display.classList.remove('placeholder');
+                    return;
+                }
+            }
+            display.textContent = '04-jul-26';
+            display.classList.add('placeholder');
+        }
+
+        // ============================================
+        // TOAST
+        // ============================================
         function showToast(message, type = 'success') {
             const toast = document.getElementById('toast');
             toast.textContent = message;
@@ -420,6 +507,9 @@
             }, 1500);
         }
 
+        // ============================================
+        // CONFIGURACIÓN
+        // ============================================
         const API_URL = 'https://script.google.com/macros/s/AKfycbyqy6bF784Bc-qCrOnkqm8lZzNGxf5hqLi4V4vEtR1WHwienqcQH0fOs4M-1FrvYqyf/exec';
 
         let data = null;
@@ -430,6 +520,9 @@
         let movimientoEditando = null;
         let cargando = false;
 
+        // ============================================
+        // API
+        // ============================================
         async function fetchData() {
             try {
                 const response = await fetch(API_URL + '?action=getData');
@@ -455,6 +548,9 @@
             }
         }
 
+        // ============================================
+        // CARGA DE DATOS
+        // ============================================
         async function cargarDatos() {
             if (cargando) return;
             cargando = true;
@@ -493,12 +589,14 @@
             renderizarAdmin();
         }
 
+        // ============================================
+        // COBROS
+        // ============================================
         function renderizarParticipantes() {
             const searchTerm = document.getElementById('searchInput').value.toLowerCase();
             const list = document.getElementById('participantList');
 
             let participantes = data.participantes;
-
             participantes = [...participantes].sort((a, b) => {
                 if (a.activo && !b.activo) return -1;
                 if (!a.activo && b.activo) return 1;
@@ -637,6 +735,9 @@
             document.querySelectorAll('.dropdown-filtro').forEach(d => d.classList.remove('visible'));
         });
 
+        // ============================================
+        // FINANZAS
+        // ============================================
         function renderizarFinanzas() {
             const list = document.getElementById('finanzasList');
             let movimientos = [];
@@ -768,6 +869,9 @@
             renderizarResumenFinanzas();
         }
 
+        // ============================================
+        // ADMIN
+        // ============================================
         function renderizarAdmin() {
             const activos = data.participantes.filter(p => p.activo);
             const total = activos.length;
@@ -802,6 +906,9 @@
             ).join('');
         }
 
+        // ============================================
+        // ACCIONES - PARTICIPANTES
+        // ============================================
         async function guardarCambiosParticipante(nombre) {
             const participante = data.participantes.find(p => p.nombre === nombre);
             if (!participante) return;
@@ -947,25 +1054,20 @@
             document.getElementById('modalAgregar').classList.remove('active');
         }
 
+        // ============================================
+        // ACCIONES - FINANZAS
+        // ============================================
         async function agregarMovimiento() {
             const tipo = document.getElementById('finTipo').value;
             const concepto = document.getElementById('finConcepto').value.trim();
-            const monto = parseFloat(document.getElementById('finMonto').value);
-            let fecha = document.getElementById('finFecha').value.trim();
+            const montoStr = document.getElementById('finMonto').value;
+            const monto = parseFloat(montoStr.replace(/[^0-9.]/g, ''));
+            const fechaInput = document.getElementById('finFechaInput');
+            const fecha = fechaInput.value || obtenerFechaISO();
 
             if (!concepto) { showToast('⚠️ Escribe un concepto', 'error'); return; }
             if (!monto || monto <= 0) { showToast('⚠️ Ingresa un monto válido', 'error'); return; }
-
-            if (fecha) {
-                fecha = convertirFechaCortaAIso(fecha);
-            } else {
-                fecha = obtenerFechaISO();
-            }
-
-            if (!fecha) {
-                showToast('⚠️ Fecha inválida (04-jul-26)', 'error');
-                return;
-            }
+            if (!fecha) { showToast('⚠️ Selecciona una fecha', 'error'); return; }
 
             mostrarLoading(true);
             const result = await sendData('addFinanza', { tipo, concepto, monto, fecha });
@@ -974,7 +1076,8 @@
                 await recargarDatos();
                 document.getElementById('finConcepto').value = '';
                 document.getElementById('finMonto').value = '';
-                document.getElementById('finFecha').value = '';
+                document.getElementById('finFechaInput').value = '';
+                actualizarFechaDisplay();
                 showToast('✅ Guardado');
             } else {
                 showToast('❌ Error', 'error');
@@ -1001,7 +1104,7 @@
             const modal = document.getElementById('modalEditarMovimiento');
             const content = document.getElementById('modalEditarMovimientoContent');
             content.innerHTML = `
-                <div class="form-group"><label>Tipo</label><select id="editFinTipo" class="form-control"><option value="ingreso" ${movimiento.tipo === 'ingreso' ? 'selected' : ''}>💰 Ingreso</option><option value="gasto" ${movimiento.tipo === 'gasto' ? 'selected' : ''}>💸 Gasto</option></select></div>
+                <div class="form-group"><label>Tipo</label><select id="editFinTipo" class="form-control"><option value="ingreso" ${movimiento.tipo === 'ingreso' ? 'selected' : ''}>Ingreso</option><option value="gasto" ${movimiento.tipo === 'gasto' ? 'selected' : ''}>Gasto</option></select></div>
                 <div class="form-group"><label>Concepto</label><input type="text" id="editFinConcepto" class="form-control" value="${movimiento.concepto}"></div>
                 <div class="form-row"><div class="form-group"><label>Monto ($)</label><input type="number" id="editFinMonto" class="form-control" value="${movimiento.monto}" step="0.01"></div><div class="form-group"><label>Fecha</label><input type="date" id="editFinFecha" class="form-control" value="${movimiento.fecha}"></div></div>
                 <button class="btn btn-primary" onclick="guardarEdicionMovimiento()" style="width:100%;">💾 Guardar</button>
@@ -1034,6 +1137,9 @@
             movimientoEditando = null;
         }
 
+        // ============================================
+        // ADMIN - CERRAR PERIODO
+        // ============================================
         async function cerrarPeriodo() {
             if (!confirm('¿Cerrar el periodo actual?')) return;
             const activos = data.participantes.filter(p => p.activo);
@@ -1062,6 +1168,9 @@
             }
         }
 
+        // ============================================
+        // CONFIGURACIÓN - MONTOS
+        // ============================================
         function abrirModalMontos() {
             document.getElementById('montoInscripcion').value = data.config.montoInscripcion;
             document.getElementById('montoCompendio').value = data.config.montoCompendio;
@@ -1090,6 +1199,9 @@
             }
         }
 
+        // ============================================
+        // UTILIDADES
+        // ============================================
         function obtenerFechaISO() { return new Date().toISOString().split('T')[0]; }
 
         function formatearFechaCorto(fecha) {
@@ -1121,6 +1233,37 @@
             return null;
         }
 
+        // Manejar el input de monto para mostrar el signo $
+        document.addEventListener('DOMContentLoaded', function() {
+            const montoInput = document.getElementById('finMonto');
+            if (montoInput) {
+                montoInput.addEventListener('input', function() {
+                    // Permitir solo números y punto decimal
+                    let valor = this.value.replace(/[^0-9.]/g, '');
+                    // Evitar múltiples puntos decimales
+                    const partes = valor.split('.');
+                    if (partes.length > 2) {
+                        valor = partes[0] + '.' + partes.slice(1).join('');
+                    }
+                    this.value = valor;
+                });
+                montoInput.addEventListener('blur', function() {
+                    if (this.value) {
+                        const num = parseFloat(this.value);
+                        if (!isNaN(num)) {
+                            this.value = '$' + num.toFixed(2);
+                        }
+                    }
+                });
+                montoInput.addEventListener('focus', function() {
+                    // Quitar el signo $ para editar
+                    if (this.value.startsWith('$')) {
+                        this.value = this.value.substring(1);
+                    }
+                });
+            }
+        });
+
         function configurarTabs() {
             document.querySelectorAll('.tab').forEach(tab => {
                 tab.addEventListener('click', function() {
@@ -1146,6 +1289,12 @@
                 renderizarTodo();
                 configurarTabs();
                 configurarBusqueda();
+                // Establecer fecha por defecto
+                const fechaInput = document.getElementById('finFechaInput');
+                if (fechaInput) {
+                    fechaInput.value = obtenerFechaISO();
+                    actualizarFechaDisplay();
+                }
             }
         }
 
