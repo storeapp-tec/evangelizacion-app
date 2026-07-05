@@ -770,6 +770,35 @@
             color: #27ae60;
         }
 
+        /* ============================================================ */
+        /* TOAST NOTIFICACIONES - Aparece en el centro superior */
+        /* ============================================================ */
+        .toast {
+            position: fixed;
+            top: 70px;
+            left: 50%;
+            transform: translateX(-50%) translateY(-20px);
+            background: #27ae60;
+            color: white;
+            padding: 10px 24px;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            z-index: 9999;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+            opacity: 0;
+            transition: opacity 0.3s ease, transform 0.3s ease;
+            pointer-events: none;
+            white-space: nowrap;
+        }
+        .toast.show {
+            opacity: 1;
+            transform: translateX(-50%) translateY(0);
+        }
+        .toast.error {
+            background: #e74c3c;
+        }
+
         @media (max-width: 480px) {
             .summary .fila-superior {
                 font-size: 12px;
@@ -805,10 +834,20 @@
                 width: 18px;
                 height: 18px;
             }
+            .toast {
+                top: 60px;
+                font-size: 13px;
+                padding: 8px 16px;
+            }
         }
     </style>
 </head>
 <body>
+
+    <!-- ============================================================ -->
+    <!-- TOAST - Mensaje flotante (aparece en el centro superior) -->
+    <!-- ============================================================ -->
+    <div id="toast" class="toast"></div>
 
     <div id="loadingOverlay" class="loading-overlay">
         <div class="loading-spinner"></div>
@@ -1039,6 +1078,21 @@
 
     <script>
         // ============================================
+        // TOAST - Mensaje flotante
+        // ============================================
+        function showToast(message, type = 'success') {
+            const toast = document.getElementById('toast');
+            toast.textContent = message;
+            toast.className = 'toast ' + type;
+            void toast.offsetWidth;
+            toast.classList.add('show');
+            clearTimeout(toast._timeout);
+            toast._timeout = setTimeout(() => {
+                toast.classList.remove('show');
+            }, 1500);
+        }
+
+        // ============================================
         // CONFIGURACIÓN - URL DE LA API
         // ============================================
         const API_URL = 'https://script.google.com/macros/s/AKfycbyqy6bF784Bc-qCrOnkqm8lZzNGxf5hqLi4V4vEtR1WHwienqcQH0fOs4M-1FrvYqyf/exec';
@@ -1064,9 +1118,6 @@
             }
         }
 
-        // ============================================
-        // sendData - CON NO-CORS (LA LÓGICA QUE FUNCIONA)
-        // ============================================
         async function sendData(action, data) {
             try {
                 const response = await fetch(API_URL, {
@@ -1102,7 +1153,7 @@
                 if (!data.historial) data.historial = [];
                 return true;
             } else {
-                alert('❌ Error al cargar datos: ' + (result?.error || ''));
+                showToast('❌ Error al cargar datos', 'error');
                 return false;
             }
         }
@@ -1517,7 +1568,7 @@
                     const result = await sendData('updateActivo', { nombre: nombre, activo: estadoActual });
                     mostrarLoading(false);
                     if (!result || !result.success) {
-                        alert('❌ Error al actualizar el estado');
+                        showToast('❌ Error', 'error');
                         return;
                     }
                     participante.activo = estadoActual;
@@ -1525,7 +1576,7 @@
             }
 
             if (cambios.length === 0) {
-                alert('No hay cambios para guardar');
+                showToast('⚠️ Sin cambios');
                 return;
             }
 
@@ -1546,23 +1597,24 @@
                 });
                 await recargarDatos();
                 cerrarModal();
-                alert('✅ Cambios guardados correctamente');
+                showToast('✅ Guardado');
             } else {
-                alert('❌ Error al guardar: ' + (result?.error || 'desconocido'));
+                showToast('❌ Error', 'error');
             }
         }
 
         async function agregarParticipante() {
             const nombre = document.getElementById('nuevoNombre').value.trim();
-            if (!nombre) { alert('Escribe un nombre'); return; }
+            if (!nombre) { showToast('⚠️ Escribe un nombre', 'error'); return; }
             mostrarLoading(true);
             const result = await sendData('addParticipante', { nombre });
             mostrarLoading(false);
             if (result && result.success) {
                 await recargarDatos();
                 cerrarModalAgregar();
+                showToast('✅ Guardado');
             } else {
-                alert('❌ Error al agregar: ' + (result?.error || 'desconocido'));
+                showToast('❌ Error', 'error');
             }
         }
 
@@ -1642,8 +1694,8 @@
             const monto = parseFloat(document.getElementById('finMonto').value);
             let fecha = document.getElementById('finFecha').value.trim();
 
-            if (!concepto) { alert('Escribe un concepto.'); return; }
-            if (!monto || monto <= 0) { alert('Ingresa un monto válido.'); return; }
+            if (!concepto) { showToast('⚠️ Escribe un concepto', 'error'); return; }
+            if (!monto || monto <= 0) { showToast('⚠️ Ingresa un monto válido', 'error'); return; }
 
             if (fecha) {
                 fecha = convertirFechaCortaAIso(fecha);
@@ -1652,7 +1704,7 @@
             }
 
             if (!fecha) {
-                alert('Fecha inválida. Usa formato: 04-jul-26');
+                showToast('⚠️ Fecha inválida (04-jul-26)', 'error');
                 return;
             }
 
@@ -1664,8 +1716,9 @@
                 document.getElementById('finConcepto').value = '';
                 document.getElementById('finMonto').value = '';
                 document.getElementById('finFecha').value = '';
+                showToast('✅ Guardado');
             } else {
-                alert('❌ Error al agregar: ' + (result?.error || 'desconocido'));
+                showToast('❌ Error', 'error');
             }
         }
 
@@ -1676,8 +1729,9 @@
             mostrarLoading(false);
             if (result && result.success) {
                 await recargarDatos();
+                showToast('✅ Guardado');
             } else {
-                alert('❌ Error al eliminar: ' + (result?.error || 'desconocido'));
+                showToast('❌ Error', 'error');
             }
         }
 
@@ -1701,23 +1755,24 @@
             const concepto = document.getElementById('editFinConcepto').value.trim();
             const monto = parseFloat(document.getElementById('editFinMonto').value);
             const fecha = document.getElementById('editFinFecha').value;
-            if (!concepto) { alert('Escribe un concepto.'); return; }
-            if (!monto || monto <= 0) { alert('Ingresa un monto válido.'); return; }
-            if (!fecha) { alert('Selecciona una fecha.'); return; }
+            if (!concepto) { showToast('⚠️ Escribe un concepto', 'error'); return; }
+            if (!monto || monto <= 0) { showToast('⚠️ Ingresa un monto válido', 'error'); return; }
+            if (!fecha) { showToast('⚠️ Selecciona una fecha', 'error'); return; }
             mostrarLoading(true);
             const result = await sendData('updateFinanza', { id: parseInt(movimientoEditando), tipo, concepto, monto, fecha });
             mostrarLoading(false);
             if (result && result.success) {
                 await recargarDatos();
                 cerrarModalEditarMovimiento();
+                showToast('✅ Guardado');
             } else {
-                alert('❌ Error al actualizar: ' + (result?.error || 'desconocido'));
+                showToast('❌ Error', 'error');
             }
         }
 
         function cerrarModalEditarMovimiento() {
             document.getElementById('modalEditarMovimiento').classList.remove('active');
-            movimientoEditando = null;
+            movimentoEditando = null;
         }
 
         // ============================================
@@ -1745,9 +1800,9 @@
             mostrarLoading(false);
             if (result && result.success) {
                 await recargarDatos();
-                alert('✅ Periodo cerrado');
+                showToast('✅ Guardado');
             } else {
-                alert('❌ Error al cerrar: ' + (result?.error || 'desconocido'));
+                showToast('❌ Error', 'error');
             }
         }
 
@@ -1769,16 +1824,16 @@
             const insc = parseFloat(document.getElementById('montoInscripcion').value);
             const comp = parseFloat(document.getElementById('montoCompendio').value);
             const cruc = parseFloat(document.getElementById('montoCrucifijo').value);
-            if (isNaN(insc) || isNaN(comp) || isNaN(cruc)) { alert('Ingresa montos válidos.'); return; }
+            if (isNaN(insc) || isNaN(comp) || isNaN(cruc)) { showToast('⚠️ Ingresa montos válidos', 'error'); return; }
             mostrarLoading(true);
             const result = await sendData('updateMontos', { montoInscripcion: insc, montoCompendio: comp, montoCrucifijo: cruc });
             mostrarLoading(false);
             if (result && result.success) {
                 await recargarDatos();
                 cerrarModalMontos();
-                alert('✅ Montos actualizados');
+                showToast('✅ Guardado');
             } else {
-                alert('❌ Error al actualizar: ' + (result?.error || 'desconocido'));
+                showToast('❌ Error', 'error');
             }
         }
 
