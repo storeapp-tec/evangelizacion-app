@@ -4,6 +4,19 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Gestión Evangelización</title>
+
+    <!-- ============================================================ -->
+    <!-- PWA CONFIGURACIÓN - PARA INSTALAR COMO APP NATIVA -->
+    <!-- ============================================================ -->
+    <link rel="manifest" href="manifest.json">
+    <link rel="apple-touch-icon" sizes="192x192" href="icon-192.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
+    <link rel="icon" type="image/png" sizes="512x512" href="icon-512.png">
+    <meta name="theme-color" content="#1a2634">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Gestión Evang">
+
     <style>
         * {
             margin: 0;
@@ -178,7 +191,6 @@
             background: #e74c3c;
         }
 
-        /* ===== CÍRCULOS ACTIVO/INACTIVO ===== */
         .status-icon.activo-icon {
             font-size: 14px;
             color: #22aa44 !important;
@@ -1118,15 +1130,12 @@
 
             let participantes = data.participantes;
 
-            // Ordenar: activos primero, inactivos al final
             participantes = [...participantes].sort((a, b) => {
                 if (a.activo && !b.activo) return -1;
                 if (!a.activo && b.activo) return 1;
                 return 0;
             });
 
-            // Si hay un filtro de concepto (inscripcion, compendio, crucifijo)
-            // solo mostrar activos
             if (filtroCobrosConcepto && filtroCobrosEstado) {
                 if (filtroCobrosConcepto === 'activo') {
                     if (filtroCobrosEstado === 'activos') {
@@ -1135,7 +1144,6 @@
                         participantes = participantes.filter(p => p.activo === false);
                     }
                 } else {
-                    // Filtrar por pago (inscripcion, compendio, crucifijo) - SOLO ACTIVOS
                     participantes = participantes.filter(p => {
                         if (!p.activo) return false;
                         const pago = p.pagos[filtroCobrosConcepto];
@@ -1838,6 +1846,19 @@
         }
 
         document.addEventListener('DOMContentLoaded', init);
+
+        // ============================================
+        // REGISTRO DEL SERVICE WORKER PARA PWA
+        // ============================================
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('sw.js')
+                .then(registration => {
+                    console.log('✅ Service Worker registrado:', registration);
+                })
+                .catch(error => {
+                    console.log('❌ Error al registrar Service Worker:', error);
+                });
+        }
     </script>
 
 </body>
