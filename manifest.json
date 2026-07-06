@@ -1,6 +1,6 @@
 {
   "name": "Gestión Evangelización",
-  "short_name": "Gestión Evang",
+  "short_name": "Evangelización",
   "description": "App para gestionar cobros y finanzas del grupo de evangelización",
   "start_url": "index.html",
   "display": "standalone",
