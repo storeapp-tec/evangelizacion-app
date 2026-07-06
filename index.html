@@ -18,7 +18,6 @@
     <meta name="apple-mobile-web-app-title" content="Gestión Evang">
 
     <style>
-        /* ===== RESET Y ESTILOS GLOBALES ===== */
         * { margin: 0; padding: 0; box-sizing: border-box; }
         html, body { height: 100%; overflow: hidden; }
         body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #f0f2f5; color: #333; font-size: 14px; display: flex; flex-direction: column; }
@@ -514,7 +513,7 @@
         const API_URL = 'https://script.google.com/macros/s/AKfycbyqy6bF784Bc-qCrOnkqm8lZzNGxf5hqLi4V4vEtR1WHwienqcQH0fOs4M-1FrvYqyf/exec';
 
         let data = null;
-        let filtroFinanzasActual = 'todos'; // 'todos' por defecto (ingresos + gastos)
+        let filtroFinanzasActual = 'todos';
         let filtroCobrosConcepto = null;
         let filtroCobrosEstado = null;
         let participanteEditando = null;
@@ -737,7 +736,7 @@
         });
 
         // ============================================
-        // FINANZAS - CORREGIDO
+        // FINANZAS - CORREGIDO (cuenta TODOS los participantes)
         // ============================================
         function renderizarFinanzas() {
             const list = document.getElementById('finanzasList');
@@ -745,7 +744,6 @@
 
             // Filtrar según el tipo seleccionado
             if (filtroFinanzasActual === 'todos') {
-                // Mostrar TODOS los movimientos manuales (ingresos + gastos) ordenados por fecha
                 movimientos = (data.finanzas || []).map(m => ({
                     id: m.id,
                     fecha: m.fecha,
@@ -755,7 +753,6 @@
                     esPago: false
                 }));
             } else if (filtroFinanzasActual === 'ingreso') {
-                // Solo ingresos manuales
                 movimientos = (data.finanzas || []).filter(m => m.tipo === 'ingreso').map(m => ({
                     id: m.id,
                     fecha: m.fecha,
@@ -765,7 +762,6 @@
                     esPago: false
                 }));
             } else if (filtroFinanzasActual === 'gasto') {
-                // Solo gastos manuales
                 movimientos = (data.finanzas || []).filter(m => m.tipo === 'gasto').map(m => ({
                     id: m.id,
                     fecha: m.fecha,
@@ -775,7 +771,6 @@
                     esPago: false
                 }));
             } else if (filtroFinanzasActual === 'inscripcion') {
-                // Pagos de inscripción de participantes
                 data.participantes.forEach(p => {
                     if (!p.activo) return;
                     const pago = p.pagos.inscripcion;
@@ -791,7 +786,6 @@
                     }
                 });
             } else if (filtroFinanzasActual === 'compendio') {
-                // Pagos de compendio de participantes
                 data.participantes.forEach(p => {
                     if (!p.activo) return;
                     const pago = p.pagos.compendio;
@@ -807,7 +801,6 @@
                     }
                 });
             } else if (filtroFinanzasActual === 'crucifijo') {
-                // Pagos de crucifijo de participantes
                 data.participantes.forEach(p => {
                     if (!p.activo) return;
                     const pago = p.pagos.crucifijo;
@@ -849,11 +842,14 @@
         }
 
         function renderizarResumenFinanzas() {
-            const activos = data.participantes.filter(p => p.activo);
-            const total = activos.length;
-            const pagadosInsc = activos.filter(p => p.pagos.inscripcion.pagado).length;
-            const pagadosComp = activos.filter(p => p.pagos.compendio.pagado).length;
-            const pagadosCruc = activos.filter(p => p.pagos.crucifijo.pagado).length;
+            // ============================================
+            // CONTAR TODOS LOS PARTICIPANTES (activos E inactivos)
+            // ============================================
+            const todos = data.participantes; // ¡YA NO FILTRAMOS POR ACTIVO!
+            const total = todos.length;
+            const pagadosInsc = todos.filter(p => p.pagos.inscripcion.pagado).length;
+            const pagadosComp = todos.filter(p => p.pagos.compendio.pagado).length;
+            const pagadosCruc = todos.filter(p => p.pagos.crucifijo.pagado).length;
 
             const totalInsc = pagadosInsc * data.config.montoInscripcion;
             const totalComp = pagadosComp * data.config.montoCompendio;
@@ -863,10 +859,12 @@
             const ingresosManuales = finanzas.filter(m => m.tipo === 'ingreso').reduce((sum, m) => sum + m.monto, 0);
             const gastosManuales = finanzas.filter(m => m.tipo === 'gasto').reduce((sum, m) => sum + m.monto, 0);
 
+            // FÓRMULA CORRECTA: Disponible = Ingresos + Compendios + Crucifijos - Gastos
             const totalIngresos = totalComp + totalCruc + ingresosManuales;
             const totalGastos = gastosManuales;
             const disponible = totalIngresos - totalGastos;
 
+            // Mostrar en la interfaz
             document.getElementById('menuIngresos').textContent = `$${totalIngresos.toFixed(2)}`;
             document.getElementById('menuGastos').textContent = `$${totalGastos.toFixed(2)}`;
             document.getElementById('menuDisponible').textContent = `$${disponible.toFixed(2)}`;
