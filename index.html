@@ -736,7 +736,7 @@
         });
 
         // ============================================
-        // FINANZAS - CORREGIDO (cuenta TODOS los participantes)
+        // FINANZAS - CORREGIDO
         // ============================================
         function renderizarFinanzas() {
             const list = document.getElementById('finanzasList');
@@ -817,8 +817,8 @@
                 });
             }
 
-            // Ordenar por fecha (más reciente primero)
-            movimientos.sort((a, b) => b.fecha.localeCompare(a.fecha));
+            // ORDENAR POR FECHA: DE LA MÁS ANTIGUA A LA MÁS RECIENTE
+            movimientos.sort((a, b) => a.fecha.localeCompare(b.fecha));
 
             if (movimientos.length === 0) {
                 list.innerHTML = '<div class="empty-state">No hay movimientos</div>';
@@ -842,10 +842,8 @@
         }
 
         function renderizarResumenFinanzas() {
-            // ============================================
             // CONTAR TODOS LOS PARTICIPANTES (activos E inactivos)
-            // ============================================
-            const todos = data.participantes; // ¡YA NO FILTRAMOS POR ACTIVO!
+            const todos = data.participantes;
             const total = todos.length;
             const pagadosInsc = todos.filter(p => p.pagos.inscripcion.pagado).length;
             const pagadosComp = todos.filter(p => p.pagos.compendio.pagado).length;
@@ -864,7 +862,6 @@
             const totalGastos = gastosManuales;
             const disponible = totalIngresos - totalGastos;
 
-            // Mostrar en la interfaz
             document.getElementById('menuIngresos').textContent = `$${totalIngresos.toFixed(2)}`;
             document.getElementById('menuGastos').textContent = `$${totalGastos.toFixed(2)}`;
             document.getElementById('menuDisponible').textContent = `$${disponible.toFixed(2)}`;
@@ -873,7 +870,6 @@
             document.getElementById('menuCompendio').textContent = `${pagadosComp}/${total} $${totalComp.toFixed(0)}`;
             document.getElementById('menuCrucifijo').textContent = `${pagadosCruc}/${total} $${totalCruc.toFixed(0)}`;
 
-            // Resaltar el filtro activo en el menú inferior
             document.querySelectorAll('.fila-conceptos .item').forEach(item => {
                 const filtro = item.dataset.filtro;
                 item.classList.toggle('active', filtro === filtroFinanzasActual);
