@@ -6,16 +6,25 @@
     <title>Gestión Evangelización</title>
 
     <!-- ============================================================ -->
-    <!-- PWA CONFIGURACIÓN -->
+    <!-- PWA CONFIGURACIÓN - OPTIMIZADA PARA XIAOMI -->
     <!-- ============================================================ -->
     <link rel="manifest" href="manifest.json">
-    <link rel="apple-touch-icon" sizes="192x192" href="icon-192.png">
-    <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
+    
+    <!-- Iconos para PWA -->
+    <link rel="apple-touch-icon" sizes="512x512" href="icon-512.png">
     <link rel="icon" type="image/png" sizes="512x512" href="icon-512.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
+    
+    <!-- Meta tags para PWA -->
     <meta name="theme-color" content="#1a2634">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="Gestión Evang">
+    
+    <!-- ===== ESPECÍFICO PARA XIAOMI (icono más grande) ===== -->
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="x5-fullscreen" content="true">
+    <meta name="x5-page-mode" content="app">
 
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -114,7 +123,6 @@
         .switch input:checked + .slider { background-color: #27ae60; }
         .switch input:checked + .slider:before { transform: translateX(20px); }
 
-        /* ===== FINANZAS ===== */
         .finanzas-container { display: flex; flex-direction: column; flex: 1; min-height: 0; height: 100%; }
 
         .finanzas-form-row { 
@@ -751,7 +759,6 @@
             const list = document.getElementById('finanzasList');
             let movimientos = [];
 
-            // Filtrar según el tipo seleccionado
             if (filtroFinanzasActual === 'todos') {
                 movimientos = (data.finanzas || []).map(m => ({
                     id: m.id,
@@ -826,7 +833,6 @@
                 });
             }
 
-            // ORDENAR POR FECHA: DE LA MÁS ANTIGUA A LA MÁS RECIENTE
             movimientos.sort((a, b) => a.fecha.localeCompare(b.fecha));
 
             if (movimientos.length === 0) {
@@ -851,7 +857,6 @@
         }
 
         function renderizarResumenFinanzas() {
-            // CONTAR TODOS LOS PARTICIPANTES (activos E inactivos)
             const todos = data.participantes;
             const total = todos.length;
             const pagadosInsc = todos.filter(p => p.pagos.inscripcion.pagado).length;
@@ -866,7 +871,6 @@
             const ingresosManuales = finanzas.filter(m => m.tipo === 'ingreso').reduce((sum, m) => sum + m.monto, 0);
             const gastosManuales = finanzas.filter(m => m.tipo === 'gasto').reduce((sum, m) => sum + m.monto, 0);
 
-            // FÓRMULA CORRECTA: Disponible = Ingresos + Compendios + Crucifijos - Gastos
             const totalIngresos = totalComp + totalCruc + ingresosManuales;
             const totalGastos = gastosManuales;
             const disponible = totalIngresos - totalGastos;
@@ -1255,7 +1259,6 @@
             return null;
         }
 
-        // Manejar el input de monto para mostrar el signo $
         document.addEventListener('DOMContentLoaded', function() {
             const montoInput = document.getElementById('finMonto');
             if (montoInput) {
@@ -1291,7 +1294,6 @@
                     this.classList.add('active');
                     document.getElementById(this.dataset.tab).classList.add('active');
                     if (this.dataset.tab === 'finanzas') {
-                        // Resetear filtro a "todos" al volver a la pestaña de finanzas
                         filtroFinanzasActual = 'todos';
                         renderizarFinanzas();
                         renderizarResumenFinanzas();
