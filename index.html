@@ -18,6 +18,7 @@
     <meta name="apple-mobile-web-app-title" content="Gestión Evang">
 
     <style>
+        /* ===== RESET Y ESTILOS GLOBALES ===== */
         * { margin: 0; padding: 0; box-sizing: border-box; }
         html, body { height: 100%; overflow: hidden; }
         body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #f0f2f5; color: #333; font-size: 14px; display: flex; flex-direction: column; }
@@ -513,7 +514,7 @@
         const API_URL = 'https://script.google.com/macros/s/AKfycbyqy6bF784Bc-qCrOnkqm8lZzNGxf5hqLi4V4vEtR1WHwienqcQH0fOs4M-1FrvYqyf/exec';
 
         let data = null;
-        let filtroFinanzasActual = 'ingreso';
+        let filtroFinanzasActual = 'todos'; // 'todos' por defecto (ingresos + gastos)
         let filtroCobrosConcepto = null;
         let filtroCobrosEstado = null;
         let participanteEditando = null;
@@ -736,13 +737,25 @@
         });
 
         // ============================================
-        // FINANZAS
+        // FINANZAS - CORREGIDO
         // ============================================
         function renderizarFinanzas() {
             const list = document.getElementById('finanzasList');
             let movimientos = [];
 
-            if (filtroFinanzasActual === 'ingreso') {
+            // Filtrar según el tipo seleccionado
+            if (filtroFinanzasActual === 'todos') {
+                // Mostrar TODOS los movimientos manuales (ingresos + gastos) ordenados por fecha
+                movimientos = (data.finanzas || []).map(m => ({
+                    id: m.id,
+                    fecha: m.fecha,
+                    tipo: m.tipo,
+                    concepto: m.concepto,
+                    monto: m.monto,
+                    esPago: false
+                }));
+            } else if (filtroFinanzasActual === 'ingreso') {
+                // Solo ingresos manuales
                 movimientos = (data.finanzas || []).filter(m => m.tipo === 'ingreso').map(m => ({
                     id: m.id,
                     fecha: m.fecha,
@@ -752,6 +765,7 @@
                     esPago: false
                 }));
             } else if (filtroFinanzasActual === 'gasto') {
+                // Solo gastos manuales
                 movimientos = (data.finanzas || []).filter(m => m.tipo === 'gasto').map(m => ({
                     id: m.id,
                     fecha: m.fecha,
@@ -761,6 +775,7 @@
                     esPago: false
                 }));
             } else if (filtroFinanzasActual === 'inscripcion') {
+                // Pagos de inscripción de participantes
                 data.participantes.forEach(p => {
                     if (!p.activo) return;
                     const pago = p.pagos.inscripcion;
@@ -776,6 +791,7 @@
                     }
                 });
             } else if (filtroFinanzasActual === 'compendio') {
+                // Pagos de compendio de participantes
                 data.participantes.forEach(p => {
                     if (!p.activo) return;
                     const pago = p.pagos.compendio;
@@ -791,6 +807,7 @@
                     }
                 });
             } else if (filtroFinanzasActual === 'crucifijo') {
+                // Pagos de crucifijo de participantes
                 data.participantes.forEach(p => {
                     if (!p.activo) return;
                     const pago = p.pagos.crucifijo;
@@ -807,6 +824,7 @@
                 });
             }
 
+            // Ordenar por fecha (más reciente primero)
             movimientos.sort((a, b) => b.fecha.localeCompare(a.fecha));
 
             if (movimientos.length === 0) {
@@ -857,6 +875,7 @@
             document.getElementById('menuCompendio').textContent = `${pagadosComp}/${total} $${totalComp.toFixed(0)}`;
             document.getElementById('menuCrucifijo').textContent = `${pagadosCruc}/${total} $${totalCruc.toFixed(0)}`;
 
+            // Resaltar el filtro activo en el menú inferior
             document.querySelectorAll('.fila-conceptos .item').forEach(item => {
                 const filtro = item.dataset.filtro;
                 item.classList.toggle('active', filtro === filtroFinanzasActual);
