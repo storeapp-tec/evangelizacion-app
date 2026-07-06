@@ -190,7 +190,7 @@
         .menu-inferior-finanzas .titulo { text-align: center; font-weight: bold; font-size: 12px; color: #fff; margin-bottom: 4px; }
 
         .menu-inferior-finanzas .fila-totales { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 4px; text-align: center; margin-bottom: 4px; }
-        .menu-inferior-finanzas .fila-totales .item { font-size: 11px; }
+        .menu-inferior-finanzas .fila-totales .item { font-size: 11px; cursor: pointer; }
         .menu-inferior-finanzas .fila-totales .item .label { opacity: 0.7; font-weight: normal; }
         .menu-inferior-finanzas .fila-totales .item .valor { font-weight: bold; font-size: 13px; }
         .menu-inferior-finanzas .fila-totales .item .valor.ingresos { color: #1e8449; }
@@ -370,9 +370,18 @@
             <div class="menu-inferior-finanzas" id="menuInferiorFinanzas">
                 <div class="titulo">📊 Resumen de movimientos</div>
                 <div class="fila-totales">
-                    <div class="item"><div class="label">💰 Ingresos</div><div class="valor ingresos" id="menuIngresos">$0</div></div>
-                    <div class="item"><div class="label">💸 Gastos</div><div class="valor gastos" id="menuGastos">$0</div></div>
-                    <div class="item"><div class="label">📈 Disponible</div><div class="valor disponible" id="menuDisponible">$0</div></div>
+                    <div class="item" onclick="filtrarFinanzas('ingreso')">
+                        <div class="label">💰 Ingresos</div>
+                        <div class="valor ingresos" id="menuIngresos">$0</div>
+                    </div>
+                    <div class="item" onclick="filtrarFinanzas('gasto')">
+                        <div class="label">💸 Gastos</div>
+                        <div class="valor gastos" id="menuGastos">$0</div>
+                    </div>
+                    <div class="item" style="cursor:default;">
+                        <div class="label">📈 Disponible</div>
+                        <div class="valor disponible" id="menuDisponible">$0</div>
+                    </div>
                 </div>
                 <div class="fila-conceptos">
                     <div class="item" data-filtro="inscripcion" onclick="filtrarFinanzas('inscripcion')">
@@ -736,7 +745,7 @@
         });
 
         // ============================================
-        // FINANZAS - CORREGIDO
+        // FINANZAS
         // ============================================
         function renderizarFinanzas() {
             const list = document.getElementById('finanzasList');
@@ -1282,6 +1291,8 @@
                     this.classList.add('active');
                     document.getElementById(this.dataset.tab).classList.add('active');
                     if (this.dataset.tab === 'finanzas') {
+                        // Resetear filtro a "todos" al volver a la pestaña de finanzas
+                        filtroFinanzasActual = 'todos';
                         renderizarFinanzas();
                         renderizarResumenFinanzas();
                     }
