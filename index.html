@@ -188,30 +188,14 @@
 
         .empty-state { text-align: center; padding: 20px 0; color: #999; font-size: 13px; }
 
-        .menu-inferior-finanzas { background: #1a2634; color: white; padding: 10px 12px; border-radius: 10px; margin-top: 8px; flex-shrink: 0; }
-        .menu-inferior-finanzas .titulo { text-align: center; font-weight: bold; font-size: 12px; color: #fff; margin-bottom: 4px; }
+        /* Estilos rediseñados para el menú inferior de finanzas */
+        .menu-inferior-finanzas { background: #ffffff; border-radius: 10px; padding: 12px; margin-top: 8px; flex-shrink: 0; box-shadow: 0 1px 4px rgba(0,0,0,0.08); }
+        .menu-inferior-finanzas .card-title { font-size: 14px; font-weight: 600; margin-bottom: 8px; color: #2c3e50; display: flex; align-items: center; gap: 6px; }
+        .menu-inferior-finanzas .resumen-periodo .linea { display: flex; justify-content: space-between; align-items: center; padding: 6px 0; border-bottom: 1px solid #eee; font-size: 13px; color: #333; cursor: pointer; }
+        .menu-inferior-finanzas .resumen-periodo .linea:hover { background-color: #f8f9fa; }
+        .menu-inferior-finanzas .resumen-periodo .linea .label { display: flex; align-items: center; gap: 8px; }
+        .menu-inferior-finanzas .resumen-periodo .linea .monto { font-weight: bold; text-align: right; flex-shrink: 0; margin-left: 12px; color: #111; }
 
-        .menu-inferior-finanzas .fila-totales { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 4px; text-align: center; margin-bottom: 4px; }
-        .menu-inferior-finanzas .fila-totales .item { font-size: 11px; cursor: pointer; }
-        .menu-inferior-finanzas .fila-totales .item .label { opacity: 0.7; font-weight: normal; }
-        .menu-inferior-finanzas .fila-totales .item .valor { font-weight: bold; font-size: 13px; }
-        .menu-inferior-finanzas .fila-totales .item .valor.ingresos { color: #1e8449; }
-        .menu-inferior-finanzas .fila-totales .item .valor.gastos { color: #d35400; }
-        .menu-inferior-finanzas .fila-totales .item .valor.disponible { color: #2ecc71; }
-
-        .menu-inferior-finanzas .fila-conceptos { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 4px; text-align: center; padding-top: 4px; border-top: 1px solid rgba(255,255,255,0.15); }
-        .menu-inferior-finanzas .fila-conceptos .item { font-size: 11px; cursor: pointer; padding: 3px 2px; border-radius: 4px; transition: all 0.2s; }
-        .menu-inferior-finanzas .fila-conceptos .item:hover { background: rgba(255,255,255,0.08); }
-        .menu-inferior-finanzas .fila-conceptos .item .label { opacity: 0.7; font-weight: normal; font-size: 10px; display: block; }
-        .menu-inferior-finanzas .fila-conceptos .item .valor { font-weight: bold; font-size: 15px; }
-        .menu-inferior-finanzas .fila-conceptos .item .valor.inscripcion { color: #e67e22; }
-        .menu-inferior-finanzas .fila-conceptos .item .valor.compendio { color: #27ae60; }
-        .menu-inferior-finanzas .fila-conceptos .item .valor.crucifijo { color: #3498db; }
-        .menu-inferior-finanzas .fila-conceptos .item.active { background: rgba(52,152,219,0.2); border-left: 3px solid #3498db; }
-
-        .resumen-periodo .linea { display: flex; justify-content: space-between; padding: 4px 0; border-bottom: 1px solid #eee; font-size: 13px; }
-        .resumen-periodo .linea .label { flex: 1; }
-        .resumen-periodo .linea .monto { font-weight: bold; text-align: right; flex-shrink: 0; margin-left: 12px; }
         .periodo-item { padding: 8px 0; border-bottom: 1px solid #eee; font-size: 13px; }
         .periodo-item .total { float: right; font-weight: bold; color: #27ae60; }
 
@@ -228,9 +212,6 @@
             .finanzas-form-row .form-group.concepto { flex: 1; min-width: 60px; }
             .finanzas-form-row .form-group.monto { flex: 0 0 70px; min-width: 60px; }
             .finanzas-form-row .form-group.fecha { flex: 0 0 70px; min-width: 60px; }
-            .menu-inferior-finanzas .fila-totales { grid-template-columns: 1fr 1fr 1fr; gap: 2px; }
-            .menu-inferior-finanzas .fila-conceptos { grid-template-columns: 1fr 1fr 1fr; gap: 2px; }
-            .menu-inferior-finanzas .fila-conceptos .item .valor { font-size: 13px; }
             .cabecera-participantes .col-iconos .filtro-icono-cabecera { font-size: 13px; width: 20px; }
             .status-icon { width: 18px; height: 18px; font-size: 9px; }
             .status-icon.activo-icon, .status-icon.inactivo-icon { font-size: 12px; width: 18px; height: 18px; }
@@ -364,35 +345,9 @@
             </div>
 
             <div class="menu-inferior-finanzas" id="menuInferiorFinanzas">
-                <div class="titulo">📊 Resumen de movimientos</div>
-                <div class="fila-totales">
-                    <div class="item" onclick="filtrarFinanzas('ingreso')">
-                        <div class="label">💰 Ingresos</div>
-                        <div class="valor ingresos" id="menuIngresos">$0</div>
+                <div class="card-title">📊 Resumen del periodo</div>
+                <div class="resumen-periodo" id="resumenPeriodoLista">
                     </div>
-                    <div class="item" onclick="filtrarFinanzas('gasto')">
-                        <div class="label">💸 Gastos</div>
-                        <div class="valor gastos" id="menuGastos">$0</div>
-                    </div>
-                    <div class="item" style="cursor:default;">
-                        <div class="label">📈 Disponible</div>
-                        <div class="valor disponible" id="menuDisponible">$0</div>
-                    </div>
-                </div>
-                <div class="fila-conceptos">
-                    <div class="item" data-filtro="inscripcion" onclick="filtrarFinanzas('inscripcion')">
-                        <span class="label">📝 Inscripción</span>
-                        <span class="valor inscripcion" id="menuInscripcion">0/0 $0</span>
-                    </div>
-                    <div class="item" data-filtro="compendio" onclick="filtrarFinanzas('compendio')">
-                        <span class="label">📚 Compendio</span>
-                        <span class="valor compendio" id="menuCompendio">0/0 $0</span>
-                    </div>
-                    <div class="item" data-filtro="crucifijo" onclick="filtrarFinanzas('crucifijo')">
-                        <span class="label">✝️ Crucifijo</span>
-                        <span class="valor crucifijo" id="menuCrucifijo">0/0 $0</span>
-                    </div>
-                </div>
             </div>
         </div>
     </div>
@@ -839,7 +794,9 @@
 
         function renderizarResumenFinanzas() {
             const todos = data.participantes;
-            const total = todos.length;
+            const activos = todos.filter(p => p.activo);
+            const totalActivos = activos.length;
+
             const pagadosInsc = todos.filter(p => p.pagos.inscripcion.pagado).length;
             const pagadosComp = todos.filter(p => p.pagos.compendio.pagado).length;
             const pagadosCruc = todos.filter(p => p.pagos.crucifijo.pagado).length;
@@ -852,22 +809,46 @@
             const ingresosManuales = finanzas.filter(m => m.tipo === 'ingreso').reduce((sum, m) => sum + m.monto, 0);
             const gastosManuales = finanzas.filter(m => m.tipo === 'gasto').reduce((sum, m) => sum + m.monto, 0);
 
+            // Cálculos del balance
             const totalIngresos = totalComp + totalCruc + ingresosManuales;
             const totalGastos = gastosManuales;
             const disponible = totalIngresos - totalGastos;
 
-            document.getElementById('menuIngresos').textContent = `$${totalIngresos.toFixed(2)}`;
-            document.getElementById('menuGastos').textContent = `$${totalGastos.toFixed(2)}`;
-            document.getElementById('menuDisponible').textContent = `$${disponible.toFixed(2)}`;
+            const listaContainer = document.getElementById('resumenPeriodoLista');
 
-            document.getElementById('menuInscripcion').textContent = `${pagadosInsc}/${total} $${totalInsc.toFixed(0)}`;
-            document.getElementById('menuCompendio').textContent = `${pagadosComp}/${total} $${totalComp.toFixed(0)}`;
-            document.getElementById('menuCrucifijo').textContent = `${pagadosCruc}/${total} $${totalCruc.toFixed(0)}`;
-
-            document.querySelectorAll('.fila-conceptos .item').forEach(item => {
-                const filtro = item.dataset.filtro;
-                item.classList.toggle('active', filtro === filtroFinanzasActual);
-            });
+            listaContainer.innerHTML = `
+                <div class="linea" onclick="filtrarFinanzas('todos')">
+                    <div class="label"><span>👥</span> <span>Participantes activos</span></div>
+                    <span class="monto">${totalActivos}</span>
+                </div>
+                <div class="linea" onclick="filtrarFinanzas('inscripcion')">
+                    <div class="label"><span>📝</span> <span>Inscripción (${pagadosInsc}/${todos.length}) (Parroquia)</span></div>
+                    <span class="monto">$${totalInsc.toFixed(2)}</span>
+                </div>
+                <div class="linea" onclick="filtrarFinanzas('compendio')">
+                    <div class="label"><span>📚</span> <span>Compendio (${pagadosComp}/${todos.length})</span></div>
+                    <span class="monto">$${totalComp.toFixed(2)}</span>
+                </div>
+                <div class="linea" onclick="filtrarFinanzas('crucifijo')">
+                    <div class="label"><span>✝️</span> <span>Crucifijo (${pagadosCruc}/${todos.length})</span></div>
+                    <span class="monto">$${totalCruc.toFixed(2)}</span>
+                </div>
+                <div class="linea" onclick="filtrarFinanzas('ingreso')">
+                    <div class="label"><span>📊</span> <span>Ingresos adicionales</span></div>
+                    <span class="monto">$${ingresosManuales.toFixed(2)}</span>
+                </div>
+                <div class="linea" onclick="filtrarFinanzas('gasto')">
+                    <div class="label"><span>💸</span> <span>Gastos</span></div>
+                    <span class="monto">$${totalGastos.toFixed(2)}</span>
+                </div>
+                
+                <hr style="border: none; border-top: 2px solid #212529; margin: 6px 0 4px 0;">
+                
+                <div class="linea" style="border-bottom: none; color: #2e7d32; cursor: default;">
+                    <div class="label" style="font-weight: bold;"><span>📈</span> <span>Disponible</span></div>
+                    <span class="monto" style="font-weight: bold; color: #2e7d32;">$${disponible.toFixed(2)}</span>
+                </div>
+            `;
         }
 
         function filtrarFinanzas(tipo) {
@@ -1255,26 +1236,10 @@
                 if (isNaN(d.getTime())) return fecha;
                 const meses = ['ene','feb','mar','abr','may','jun','jul','ago','sep','oct','nov','dic'];
                 const dia = String(d.getDate()).padStart(2,'0');
-                const mes = meses[d.getMonth()];
+                const mes = meses[d.getTime() ? d.getMonth() : 0]; // Manejo seguro del mes
                 const anio = String(d.getFullYear()).slice(-2);
                 return `${dia}-${mes}-${anio}`;
             } catch(e) { return fecha; }
-        }
-
-        function convertirFechaCortaAIso(fechaStr) {
-            if (!fechaStr) return null;
-            if (fechaStr.includes('-') && fechaStr.length === 10) return fechaStr;
-            const meses = { 'ene':0,'feb':1,'mar':2,'abr':3,'may':4,'jun':5,'jul':6,'ago':7,'sep':8,'oct':9,'nov':10,'dic':11 };
-            const parts = fechaStr.split('-');
-            if (parts.length === 3) {
-                const dia = parseInt(parts[0]);
-                const mes = meses[parts[1].toLowerCase()];
-                const anio = parseInt(parts[2]) + 2000;
-                if (dia && mes !== undefined && anio) {
-                    return `${anio}-${String(mes+1).padStart(2,'0')}-${String(dia).padStart(2,'0')}`;
-                }
-            }
-            return null;
         }
 
         document.addEventListener('DOMContentLoaded', function() {
