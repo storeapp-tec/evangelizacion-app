@@ -5,23 +5,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Gestión Evangelización</title>
 
-    <!-- ============================================================ -->
-    <!-- PWA CONFIGURACIÓN - OPTIMIZADA PARA XIAOMI -->
-    <!-- ============================================================ -->
     <link rel="manifest" href="manifest.json">
     
-    <!-- Iconos para PWA -->
     <link rel="apple-touch-icon" sizes="512x512" href="icon-512.png">
     <link rel="icon" type="image/png" sizes="512x512" href="icon-512.png">
     <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
     
-    <!-- Meta tags para PWA -->
     <meta name="theme-color" content="#1a2634">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="Gestión Evang">
     
-    <!-- ===== ESPECÍFICO PARA XIAOMI (icono más grande) ===== -->
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="x5-fullscreen" content="true">
     <meta name="x5-page-mode" content="app">
@@ -258,12 +252,9 @@
     <div class="tabs">
         <button class="tab active" data-tab="cobros">👥 Cobros</button>
         <button class="tab" data-tab="finanzas">💰 Finanzas</button>
-        <button class="tab" data-tab="admin">⚙️ Admin</button>
+        <button class="tab" data-tab="historial">⚙️ Historial</button>
     </div>
 
-    <!-- ============================================================ -->
-    <!-- COBROS -->
-    <!-- ============================================================ -->
     <div id="cobros" class="content active">
         <div class="card">
             <div class="card-title" style="font-size:13px;">
@@ -339,9 +330,6 @@
         </div>
     </div>
 
-    <!-- ============================================================ -->
-    <!-- FINANZAS -->
-    <!-- ============================================================ -->
     <div id="finanzas" class="content">
         <div class="finanzas-container">
             <div class="card" style="padding: 10px; flex-shrink: 0;">
@@ -409,14 +397,10 @@
         </div>
     </div>
 
-    <!-- ============================================================ -->
-    <!-- ADMIN -->
-    <!-- ============================================================ -->
-    <div id="admin" class="content">
+    <div id="historial" class="content">
         <div class="card">
-            <div class="card-title">📊 Resumen del periodo</div>
-            <div id="resumenPeriodo" class="resumen-periodo"></div>
-            <button class="btn btn-danger" onclick="cerrarPeriodo()" style="width:100%; font-size:13px; padding:8px;">🔒 CERRAR PERIODO</button>
+            <div id="contenedor-historial"></div>
+            <button class="btn btn-danger" onclick="cerrarPeriodo()" style="width:100%; font-size:13px; padding:8px; margin-top:12px;">🔒 CERRAR PERIODO</button>
             <p style="font-size:11px; color:#666; margin-top:6px; text-align:center;">⚠️ Se guardará el resumen y se creará uno nuevo en blanco.</p>
         </div>
         <div class="card">
@@ -425,9 +409,6 @@
         </div>
     </div>
 
-    <!-- ============================================================ -->
-    <!-- MODALES -->
-    <!-- ============================================================ -->
     <div id="modalParticipante" class="modal-overlay">
         <div class="modal">
             <button class="modal-close" onclick="cerrarModal()">✕</button>
@@ -603,7 +584,7 @@
             renderizarResumen();
             renderizarFinanzas();
             renderizarResumenFinanzas();
-            renderizarAdmin();
+            renderizarHistorial();
         }
 
         // ============================================
@@ -896,31 +877,64 @@
         }
 
         // ============================================
-        // ADMIN
+        // HISTORIAL
         // ============================================
-        function renderizarAdmin() {
-            const activos = data.participantes.filter(p => p.activo);
-            const total = activos.length;
-            const pagadosInsc = activos.filter(p => p.pagos.inscripcion.pagado).length;
-            const pagadosComp = activos.filter(p => p.pagos.compendio.pagado).length;
-            const pagadosCruc = activos.filter(p => p.pagos.crucifijo.pagado).length;
-            const totalInsc = pagadosInsc * data.config.montoInscripcion;
-            const totalComp = pagadosComp * data.config.montoCompendio;
-            const totalCruc = pagadosCruc * data.config.montoCrucifijo;
-            const finanzas = data.finanzas || [];
-            const totalIngresosManual = finanzas.filter(m => m.tipo === 'ingreso').reduce((sum, m) => sum + m.monto, 0);
-            const totalGastosManual = finanzas.filter(m => m.tipo === 'gasto').reduce((sum, m) => sum + m.monto, 0);
-            const disponible = totalComp + totalCruc + totalIngresosManual - totalGastosManual;
+        function renderizarHistorial() {
+            const contenedor = document.getElementById('contenedor-historial');
+            if (!contenedor) return;
 
-            document.getElementById('resumenPeriodo').innerHTML = `
-                <div class="linea"><span class="label">👥 Participantes activos</span><span class="monto">${total}</span></div>
-                <div class="linea"><span class="label">📝 Inscripción (${pagadosInsc}/${total}) (Parroquia)</span><span class="monto">$${totalInsc.toFixed(2)}</span></div>
-                <div class="linea"><span class="label">📚 Compendio (${pagadosComp}/${total})</span><span class="monto">$${totalComp.toFixed(2)}</span></div>
-                <div class="linea"><span class="label">✝️ Crucifijo (${pagadosCruc}/${total})</span><span class="monto">$${totalCruc.toFixed(2)}</span></div>
-                <div class="linea"><span class="label">📊 Ingresos adicionales</span><span class="monto">$${totalIngresosManual.toFixed(2)}</span></div>
-                <div class="linea"><span class="label">💸 Gastos</span><span class="monto">$${totalGastosManual.toFixed(2)}</span></div>
-                <div class="linea" style="font-weight:bold; font-size:14px; border-top:2px solid #2c3e50; margin-top:6px; padding-top:6px; border-bottom:none; color:#27ae60;"><span class="label">📈 Disponible</span><span class="monto">$${disponible.toFixed(2)}</span></div>
+            const activos = data.participantes.filter(p => p.activo);
+            const inactivos = data.participantes.filter(p => !p.activo);
+
+            // Inscripciones ($monto)
+            const inscritosActivos = activos.filter(p => p.pagos.inscripcion.pagado).length;
+            const montoInscActivos = inscritosActivos * data.config.montoInscripcion;
+            const inscritosInactivos = inactivos.filter(p => p.pagos.inscripcion.pagado).length;
+            const montoInscInactivos = inscritosInactivos * data.config.montoInscripcion;
+
+            // Compendios ($monto)
+            const compendiosActivos = activos.filter(p => p.pagos.compendio.pagado).length;
+            const montoCompActivos = compendiosActivos * data.config.montoCompendio;
+            const compendiosInactivos = inactivos.filter(p => p.pagos.compendio.pagado).length;
+            const montoCompInactivos = compendiosInactivos * data.config.montoCompendio;
+
+            // Crucifijos ($monto)
+            const crucifijosActivos = activos.filter(p => p.pagos.crucifijo.pagado).length;
+            const montoCrucActivos = crucifijosActivos * data.config.montoCrucifijo;
+            const crucifijosInactivos = inactivos.filter(p => p.pagos.crucifijo.pagado).length;
+            const montoCrucInactivos = crucifijosInactivos * data.config.montoCrucifijo;
+
+            // Movimientos manuales
+            const finanzas = data.finanzas || [];
+            const ingresos = finanzas.filter(m => m.tipo === 'ingreso').reduce((sum, m) => sum + m.monto, 0);
+            const gastos = finanzas.filter(m => m.tipo === 'gasto').reduce((sum, m) => sum + m.monto, 0);
+
+            // Lógica Global de Caja Real: Activos + Inactivos + Extras - Gastos
+            const totalIngresos = montoCompActivos + montoCompInactivos + montoCrucActivos + montoCrucInactivos + ingresos;
+            const disponible = totalIngresos - gastos;
+
+            contenedor.innerHTML = `
+                <h3>Resumen del Periodo</h3>
+                <p>Participantes: ${activos.length} activos / ${inactivos.length} inactivos</p>
+                
+                <h4>📝 Inscripciones (Parroquia)</h4>
+                <p>Activos (${inscritosActivos}/${activos.length}): $${montoInscActivos.toFixed(2)}<br>(Para entregar)</p>
+                <p>Inactivos (${inscritosInactivos}/${inactivos.length}): $${montoInscInactivos.toFixed(2)}<br>(Fondo grupo)</p>
+                
+                <h4>📚 Compendios</h4>
+                <p>Activos (${compendiosActivos}/${activos.length}): $${montoCompActivos.toFixed(2)}</p>
+                <p>Inactivos (${compendiosInactivos}/${inactivos.length}): $${montoCompInactivos.toFixed(2)}</p>
+                
+                <h4>✝️ Crucifijos</h4>
+                <p>Activos (${crucifijosActivos}/${activos.length}): $${montoCrucActivos.toFixed(2)}</p>
+                <p>Inactivos (${crucifijosInactivos}/${inactivos.length}): $${montoCrucInactivos.toFixed(2)}</p>
+                
+                <p>Ingresos: $${ingresos.toFixed(2)}</p>
+                <p>Gastos: $${gastos.toFixed(2)}</p>
+                
+                <p>Disponible: $${disponible.toFixed(2)}</p>
             `;
+
             const historial = data.historial || [];
             const list = document.getElementById('historialPeriodos');
             if (historial.length === 0) {
@@ -1169,20 +1183,24 @@
         async function cerrarPeriodo() {
             if (!confirm('¿Cerrar el periodo actual?')) return;
             const activos = data.participantes.filter(p => p.activo);
-            const total = activos.length;
-            const pagadosInsc = activos.filter(p => p.pagos.inscripcion.pagado).length;
-            const pagadosComp = activos.filter(p => p.pagos.compendio.pagado).length;
-            const pagadosCruc = activos.filter(p => p.pagos.crucifijo.pagado).length;
-            const totalInsc = pagadosInsc * data.config.montoInscripcion;
-            const totalComp = pagadosComp * data.config.montoCompendio;
-            const totalCruc = pagadosCruc * data.config.montoCrucifijo;
-            const totalGeneral = totalInsc + totalComp + totalCruc;
+            const inactivos = data.participantes.filter(p => !p.activo);
+
+            const pagadosCompActivos = activos.filter(p => p.pagos.compendio.pagado).length;
+            const pagadosCompInactivos = inactivos.filter(p => p.pagos.compendio.pagado).length;
+            const totalComp = (pagadosCompActivos + pagadosCompInactivos) * data.config.montoCompendio;
+
+            const pagadosCrucActivos = activos.filter(p => p.pagos.crucifijo.pagado).length;
+            const pagadosCrucInactivos = inactivos.filter(p => p.pagos.crucifijo.pagado).length;
+            const totalCruc = (pagadosCrucActivos + pagadosCrucInactivos) * data.config.montoCrucifijo;
+
             const finanzas = data.finanzas || [];
             const totalIngresosManual = finanzas.filter(m => m.tipo === 'ingreso').reduce((sum, m) => sum + m.monto, 0);
             const totalGastosManual = finanzas.filter(m => m.tipo === 'gasto').reduce((sum, m) => sum + m.monto, 0);
-            const totalFinal = totalGeneral + totalIngresosManual - totalGastosManual;
+            
+            const totalFinal = totalComp + totalCruc + totalIngresosManual - totalGastosManual;
             const periodoNombre = `Periodo ${new Date().toLocaleDateString()}`;
             const fechaCierre = obtenerFechaISO();
+            
             mostrarLoading(true);
             const result = await sendData('closePeriod', { nombre: periodoNombre, fechaCierre, total: totalFinal });
             mostrarLoading(false);
