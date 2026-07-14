@@ -32,13 +32,13 @@
         /* HEADER */
         /* ============================================ */
         .header { background: #1a2634; color: white; padding: 12px; text-align: center; flex-shrink: 0; z-index: 100; }
-        .header h1 { font-size: 17px; font-weight: 600; }
+        .header h1 { font-size: 18px; font-weight: 600; }
 
         /* ============================================ */
         /* TABS */
         /* ============================================ */
         .tabs { display: flex; background: #2c3e50; flex-shrink: 0; z-index: 99; }
-        .tab { flex: 1; padding: 10px; text-align: center; color: #bdc3c7; background: transparent; border: none; font-size: 13px; font-weight: 600; cursor: pointer; border-bottom: 3px solid transparent; }
+        .tab { flex: 1; padding: 10px; text-align: center; color: #bdc3c7; background: transparent; border: none; font-size: 14px; font-weight: 600; cursor: pointer; border-bottom: 3px solid transparent; }
         .tab.active { color: white; border-bottom-color: #3498db; }
 
         /* ============================================ */
@@ -58,7 +58,7 @@
         /* CARDS */
         /* ============================================ */
         .card { background: white; border-radius: 10px; padding: 12px; margin-bottom: 12px; box-shadow: 0 1px 4px rgba(0,0,0,0.08); flex-shrink: 0; }
-        .card-title { font-size: 14px; font-weight: 600; margin-bottom: 8px; color: #2c3e50; display: flex; align-items: center; justify-content: space-between; }
+        .card-title { font-size: 15px; font-weight: 600; margin-bottom: 8px; color: #2c3e50; display: flex; align-items: center; justify-content: space-between; }
 
         /* ============================================ */
         /* BUSCADOR */
@@ -74,57 +74,57 @@
         .participant-item:hover { background: #f8f9fa; }
         .participant-item.inactive { opacity: 0.7; background: #f5f5f5; }
         .participant-name { flex: 1; font-size: 13px; font-weight: 500; }
-        .participant-status { display: flex; gap: 6px; margin-left: 6px; align-items: center; }
 
         /* ============================================ */
         /* STATUS ICONS */
         /* ============================================ */
-        .status-icon { width: 20px; height: 20px; display: flex; align-items: center; justify-content: center; border-radius: 50%; font-size: 10px; font-weight: bold; color: white; flex-shrink: 0; }
+        .participant-status { display: flex; gap: 6px; margin-left: 6px; align-items: center; }
+        .status-icon { width: 22px; height: 22px; display: flex; align-items: center; justify-content: center; border-radius: 50%; font-size: 11px; font-weight: bold; color: white; flex-shrink: 0; }
         .status-icon.pagado { background: #27ae60; }
         .status-icon.pendiente { background: #e74c3c; }
-        .status-icon.activo-icon { font-size: 14px; color: #22aa44 !important; background: none !important; width: 20px; height: 20px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-weight: bold; }
-        .status-icon.inactivo-icon { font-size: 14px; color: #cc2222 !important; background: none !important; width: 20px; height: 20px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-weight: bold; }
+        .status-icon.activo-icon { font-size: 16px; color: #22aa44 !important; background: none !important; width: 22px; height: 22px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-weight: bold; }
+        .status-icon.inactivo-icon { font-size: 16px; color: #cc2222 !important; background: none !important; width: 22px; height: 22px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-weight: bold; }
 
         /* ============================================ */
         /* CABECERA PARTICIPANTES (FILTROS) */
         /* ============================================ */
-        .cabecera-participantes { display: flex; align-items: center; padding: 4px 6px 6px 6px; border-bottom: 2px solid #e0e0e0; margin-bottom: 4px; font-weight: 600; font-size: 12px; color: #555; flex-shrink: 0; }
-        .cabecera-participantes .col-nombre { flex: 1; }
+        .cabecera-participantes { display: flex; align-items: center; padding: 4px 6px 6px 6px; border-bottom: 2px solid #e0e0e0; margin-bottom: 4px; font-weight: 600; font-size: 13px; color: #555; flex-shrink: 0; }
+        .cabecera-participantes .col-nombre { flex: 1; font-size: 14px; }
         .cabecera-participantes .col-iconos { display: flex; gap: 4px; align-items: center; }
-        .cabecera-participantes .col-iconos .filtro-icono-cabecera { font-size: 15px; cursor: pointer; padding: 2px 3px; border-radius: 4px; border: 2px solid transparent; transition: all 0.2s; background: none; line-height: 1; width: 24px; text-align: center; }
+        .cabecera-participantes .col-iconos .filtro-icono-cabecera { font-size: 17px; cursor: pointer; padding: 2px 3px; border-radius: 4px; border: 2px solid transparent; transition: all 0.2s; background: none; line-height: 1; width: 26px; text-align: center; }
         .cabecera-participantes .col-iconos .filtro-icono-cabecera:hover { background: #e9ecef; }
         .cabecera-participantes .col-iconos .filtro-icono-cabecera.active { border-color: #3498db; background: #e9ecef; }
 
         .posicion-relativa { position: relative; display: inline-block; }
         .dropdown-filtro { display: none; position: absolute; background: white; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.15); padding: 6px 0; min-width: 120px; z-index: 50; border: 1px solid #e0e0e0; top: 100%; left: 50%; transform: translateX(-50%); }
         .dropdown-filtro.visible { display: block; }
-        .dropdown-filtro .opcion { padding: 6px 12px; cursor: pointer; font-size: 12px; transition: background 0.2s; border: none; background: none; width: 100%; text-align: left; color: #333; }
+        .dropdown-filtro .opcion { padding: 6px 12px; cursor: pointer; font-size: 13px; transition: background 0.2s; border: none; background: none; width: 100%; text-align: left; color: #333; }
         .dropdown-filtro .opcion:hover { background: #f0f2f5; }
         .dropdown-filtro .opcion.activa { background: #e9ecef; font-weight: bold; }
 
-        .limpiar-filtro { font-size: 11px; color: #e74c3c; cursor: pointer; padding: 2px 6px; border-radius: 10px; background: #fde8e8; border: 1px solid #f5c6cb; display: none; margin-left: 4px; }
+        .limpiar-filtro { font-size: 12px; color: #e74c3c; cursor: pointer; padding: 2px 6px; border-radius: 10px; background: #fde8e8; border: 1px solid #f5c6cb; display: none; margin-left: 4px; }
         .limpiar-filtro.visible { display: inline-block; }
 
         /* ============================================ */
         /* SUMMARY (COBROS) */
         /* ============================================ */
         .summary { background: #1a2634; color: white; padding: 10px 12px; border-radius: 10px; margin-top: 8px; flex-shrink: 0; }
-        .summary .fila-superior { display: flex; justify-content: space-between; align-items: center; font-size: 13px; font-weight: bold; flex-wrap: wrap; gap: 4px; }
-        .summary .fila-superior .titulo { font-weight: bold; color: #fff; }
+        .summary .fila-superior { display: flex; justify-content: space-between; align-items: center; font-size: 14px; font-weight: bold; flex-wrap: wrap; gap: 4px; }
+        .summary .fila-superior .titulo { font-weight: bold; color: #fff; font-size: 15px; }
         .summary .fila-superior .activos { color: #22aa44; }
         .summary .fila-superior .inactivos { color: #cc2222; }
-        .summary .fila-nombres { display: flex; justify-content: space-around; align-items: center; margin-top: 4px; font-size: 11px; color: #bdc3c7; gap: 8px; flex-wrap: wrap; }
-        .summary .fila-nombres .item { flex: 1; text-align: center; font-weight: 500; letter-spacing: 0.3px; }
-        .summary .fila-inferior { display: flex; justify-content: space-around; align-items: center; margin-top: 2px; font-size: 13px; gap: 8px; flex-wrap: wrap; }
+        .summary .fila-nombres { display: flex; justify-content: space-around; align-items: center; margin-top: 4px; font-size: 13px; color: #bdc3c7; gap: 8px; flex-wrap: wrap; }
+        .summary .fila-nombres .item { flex: 1; text-align: center; font-weight: 500; letter-spacing: 0.3px; font-size: 14px; }
+        .summary .fila-inferior { display: flex; justify-content: space-around; align-items: center; margin-top: 2px; font-size: 14px; gap: 8px; flex-wrap: wrap; }
         .summary .fila-inferior .item { display: flex; align-items: center; gap: 4px; flex: 1; justify-content: center; }
-        .summary .fila-inferior .item .icono { font-size: 14px; }
-        .summary .fila-inferior .item .numero { font-weight: bold; font-size: 14px; }
+        .summary .fila-inferior .item .icono { font-size: 16px; }
+        .summary .fila-inferior .item .numero { font-weight: bold; font-size: 16px; }
 
         /* ============================================ */
         /* BOTONES */
         /* ============================================ */
-        .btn { padding: 6px 14px; border: none; border-radius: 6px; font-size: 12px; font-weight: 600; cursor: pointer; transition: all 0.2s; }
-        .btn-sm { padding: 4px 10px; font-size: 11px; width: auto; }
+        .btn { padding: 6px 14px; border: none; border-radius: 6px; font-size: 13px; font-weight: 600; cursor: pointer; transition: all 0.2s; }
+        .btn-sm { padding: 4px 10px; font-size: 12px; width: auto; }
         .btn-primary { background: #3498db; color: white; }
         .btn-success { background: #27ae60; color: white; }
         .btn-danger { background: #e74c3c; color: white; }
@@ -138,14 +138,14 @@
         .modal-overlay { display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.5); z-index: 1000; align-items: center; justify-content: center; padding: 20px; }
         .modal-overlay.active { display: flex; }
         .modal { background: white; border-radius: 14px; padding: 20px; max-width: 400px; width: 100%; max-height: 90vh; overflow-y: auto; }
-        .modal h2 { font-size: 16px; margin-bottom: 12px; color: #2c3e50; }
-        .modal-close { float: right; background: none; border: none; font-size: 22px; cursor: pointer; color: #999; }
+        .modal h2 { font-size: 17px; margin-bottom: 12px; color: #2c3e50; }
+        .modal-close { float: right; background: none; border: none; font-size: 24px; cursor: pointer; color: #999; }
         .modal-close:hover { color: #333; }
 
         .pago-item { display: flex; align-items: center; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid #eee; }
         .pago-item:last-child { border-bottom: none; }
-        .pago-label { font-weight: 500; flex: 1; font-size: 13px; }
-        .pago-fecha { font-size: 11px; color: #666; margin: 0 6px; }
+        .pago-label { font-weight: 500; flex: 1; font-size: 14px; }
+        .pago-fecha { font-size: 12px; color: #666; margin: 0 6px; }
 
         .switch { position: relative; display: inline-block; width: 44px; height: 24px; flex-shrink: 0; }
         .switch input { opacity: 0; width: 0; height: 0; }
@@ -164,17 +164,17 @@
         .finanzas-form-row .form-group.concepto { flex: 1; min-width: 70px; }
         .finanzas-form-row .form-group.monto { flex: 0 0 85px; min-width: 70px; }
         .finanzas-form-row .form-group.fecha { flex: 0 0 85px; min-width: 70px; }
-        .finanzas-form-row .btn-guardar { flex: 0 0 32px; padding: 4px 0; font-size: 18px; background: none; border: none; cursor: pointer; color: #27ae60; display: flex; align-items: center; justify-content: center; }
+        .finanzas-form-row .btn-guardar { flex: 0 0 32px; padding: 4px 0; font-size: 20px; background: none; border: none; cursor: pointer; color: #27ae60; display: flex; align-items: center; justify-content: center; }
         .finanzas-form-row .btn-guardar:hover { color: #1e8449; }
-        .finanzas-form-row .form-control { padding: 5px 6px; font-size: 12px; border: 1px solid #ddd; border-radius: 4px; width: 100%; }
+        .finanzas-form-row .form-control { padding: 5px 6px; font-size: 13px; border: 1px solid #ddd; border-radius: 4px; width: 100%; }
         .finanzas-form-row .form-control:focus { outline: none; border-color: #3498db; }
-        .finanzas-form-row .form-control.tipo-input { padding: 5px 4px; font-size: 12px; }
+        .finanzas-form-row .form-control.tipo-input { padding: 5px 4px; font-size: 13px; }
         .form-control.monto-input { text-align: right; font-weight: 600; }
         .form-control.monto-input::placeholder { text-align: left; font-weight: normal; }
 
         .fecha-wrapper { position: relative; }
         .fecha-wrapper input[type="date"] { position: absolute; top: 0; left: 0; width: 100%; height: 100%; opacity: 0; cursor: pointer; z-index: 2; }
-        .fecha-wrapper .fecha-display { padding: 5px 6px; font-size: 12px; border: 1px solid #ddd; border-radius: 4px; background: white; width: 100%; cursor: pointer; color: #333; text-align: center; }
+        .fecha-wrapper .fecha-display { padding: 5px 6px; font-size: 13px; border: 1px solid #ddd; border-radius: 4px; background: white; width: 100%; cursor: pointer; color: #333; text-align: center; }
         .fecha-wrapper .fecha-display.placeholder { color: #aaa; }
 
         .finanzas-scroll-area { flex: 1; overflow-y: auto; min-height: 80px; max-height: 400px; }
@@ -182,13 +182,13 @@
         /* ============================================ */
         /* FINANZAS - LISTA DE MOVIMIENTOS */
         /* ============================================ */
-        .movimiento-item { display: flex; align-items: center; padding: 5px 6px; border-bottom: 1px solid #f0f0f0; gap: 6px; font-size: 12px; }
-        .movimiento-item .fecha { color: #666; min-width: 70px; font-size: 11px; flex-shrink: 0; }
-        .movimiento-item .concepto { flex: 1; }
-        .movimiento-item .monto { font-weight: bold; min-width: 50px; text-align: right; flex-shrink: 0; }
+        .movimiento-item { display: flex; align-items: center; padding: 5px 6px; border-bottom: 1px solid #f0f0f0; gap: 6px; font-size: 13px; }
+        .movimiento-item .fecha { color: #666; min-width: 70px; font-size: 12px; flex-shrink: 0; }
+        .movimiento-item .concepto { flex: 1; font-size: 13px; }
+        .movimiento-item .monto { font-weight: bold; min-width: 50px; text-align: right; flex-shrink: 0; font-size: 14px; }
         .movimiento-item .monto.ingreso { color: #27ae60; }
         .movimiento-item .monto.gasto { color: #e74c3c; }
-        .btn-accion { background: none; border: none; font-size: 13px; cursor: pointer; padding: 0 3px; flex-shrink: 0; }
+        .btn-accion { background: none; border: none; font-size: 14px; cursor: pointer; padding: 0 3px; flex-shrink: 0; }
         .btn-editar { color: #3498db; }
         .btn-eliminar { color: #e74c3c; }
 
@@ -196,7 +196,7 @@
         /* FINANZAS - RESUMEN DE MOVIMIENTOS (3 COLUMNAS) */
         /* ============================================ */
         .menu-inferior-finanzas { background: #1a2634; color: white; padding: 10px 12px; border-radius: 10px; margin-top: 8px; flex-shrink: 0; }
-        .menu-inferior-finanzas .titulo { text-align: center; font-weight: bold; font-size: 12px; color: #fff; margin-bottom: 4px; }
+        .menu-inferior-finanzas .titulo { text-align: center; font-weight: bold; font-size: 15px; color: #fff; margin-bottom: 6px; }
 
         .menu-inferior-finanzas .fila-totales {
             display: grid;
@@ -206,7 +206,7 @@
             margin-bottom: 4px;
         }
         .menu-inferior-finanzas .fila-totales .item {
-            font-size: 11px;
+            font-size: 14px;
             cursor: pointer;
         }
         .menu-inferior-finanzas .fila-totales .item .label {
@@ -216,7 +216,7 @@
         }
         .menu-inferior-finanzas .fila-totales .item .valor {
             font-weight: bold;
-            font-size: 15px;
+            font-size: 16px;
             display: block;
         }
 
@@ -229,7 +229,7 @@
             border-top: 1px solid rgba(255,255,255,0.15);
         }
         .menu-inferior-finanzas .fila-conceptos .item {
-            font-size: 11px;
+            font-size: 14px;
             cursor: pointer;
             padding: 3px 2px;
             border-radius: 4px;
@@ -241,12 +241,12 @@
         .menu-inferior-finanzas .fila-conceptos .item .label {
             opacity: 0.7;
             font-weight: normal;
-            font-size: 10px;
+            font-size: 14px;
             display: block;
         }
         .menu-inferior-finanzas .fila-conceptos .item .valor {
             font-weight: bold;
-            font-size: 15px;
+            font-size: 16px;
             display: block;
         }
         .menu-inferior-finanzas .fila-conceptos .item.active {
@@ -258,7 +258,7 @@
         /* FORMULARIOS - GRAL */
         /* ============================================ */
         .form-group { margin-bottom: 6px; }
-        .form-group label { display: block; font-size: 11px; font-weight: 600; color: #555; margin-bottom: 2px; }
+        .form-group label { display: block; font-size: 12px; font-weight: 600; color: #555; margin-bottom: 2px; }
 
         /* ============================================ */
         /* LOADING */
@@ -267,9 +267,9 @@
         .loading-overlay.active { display: flex; }
         .loading-spinner { width: 36px; height: 36px; border: 3px solid #f3f3f3; border-top: 3px solid #3498db; border-radius: 50%; animation: spin 1s linear infinite; }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-        .loading-text { color: white; margin-top: 10px; font-size: 13px; }
+        .loading-text { color: white; margin-top: 10px; font-size: 14px; }
 
-        .empty-state { text-align: center; padding: 20px 0; color: #999; font-size: 13px; }
+        .empty-state { text-align: center; padding: 20px 0; color: #999; font-size: 14px; }
 
         /* ============================================ */
         /* TOAST */
@@ -282,7 +282,8 @@
         /* HISTORIAL */
         /* ============================================ */
         .periodo-item { padding: 6px 0; border-bottom: 1px solid #eee; display: flex; justify-content: space-between; align-items: center; }
-        .periodo-item .total { font-weight: bold; color: #27ae60; }
+        .periodo-item .total { font-weight: bold; color: #27ae60; font-size: 16px; }
+        .periodo-item strong { font-size: 14px; }
 
         .disponible-box {
             background: #1a2634;
@@ -290,7 +291,7 @@
             padding: 10px 12px;
             border-radius: 8px;
             text-align: center;
-            font-size: 16px;
+            font-size: 18px;
             font-weight: bold;
             width: 100%;
             margin-top: 8px;
@@ -302,21 +303,24 @@
             display: flex;
             justify-content: space-between;
             padding: 1px 0;
-            font-size: 13px;
-            line-height: 1.2;
+            font-size: 14px;
+            line-height: 1.3;
         }
-        .historial-line .label { flex: 1; }
-        .historial-line .monto { font-weight: bold; text-align: right; flex-shrink: 0; margin-left: 20px; }
+        .historial-line .label { flex: 1; font-size: 14px; }
+        .historial-line .monto { font-weight: bold; text-align: right; flex-shrink: 0; margin-left: 20px; font-size: 16px; }
 
-        .historial-monto-azul { color: #2563EB; font-weight: bold; }
+        #resumenPeriodo strong { font-size: 14px; }
+
+        .historial-monto-azul { color: #2563EB; font-weight: bold; font-size: 16px; }
 
         /* ============================================ */
         /* RESPONSIVE */
         /* ============================================ */
         @media (max-width: 480px) {
-            .summary .fila-superior { font-size: 12px; }
-            .summary .fila-nombres { font-size: 10px; }
-            .summary .fila-inferior { font-size: 12px; }
+            .summary .fila-superior { font-size: 13px; }
+            .summary .fila-nombres { font-size: 12px; }
+            .summary .fila-inferior { font-size: 13px; }
+            .summary .fila-inferior .item .numero { font-size: 14px; }
             .finanzas-form-row { flex-wrap: wrap; gap: 4px; }
             .finanzas-form-row .form-group.tipo { flex: 0 0 70px; min-width: 60px; }
             .finanzas-form-row .form-group.concepto { flex: 1; min-width: 60px; }
@@ -324,13 +328,30 @@
             .finanzas-form-row .form-group.fecha { flex: 0 0 70px; min-width: 60px; }
             .menu-inferior-finanzas .fila-totales { grid-template-columns: 1fr 1fr 1fr; gap: 2px; }
             .menu-inferior-finanzas .fila-conceptos { grid-template-columns: 1fr 1fr 1fr; gap: 2px; }
-            .menu-inferior-finanzas .fila-conceptos .item .valor { font-size: 13px; }
-            .menu-inferior-finanzas .fila-totales .item .valor { font-size: 13px; }
-            .cabecera-participantes .col-iconos .filtro-icono-cabecera { font-size: 13px; width: 20px; }
-            .status-icon { width: 18px; height: 18px; font-size: 9px; }
-            .status-icon.activo-icon, .status-icon.inactivo-icon { font-size: 12px; width: 18px; height: 18px; }
+            .menu-inferior-finanzas .fila-conceptos .item .valor { font-size: 15px; }
+            .menu-inferior-finanzas .fila-totales .item .valor { font-size: 15px; }
+            .menu-inferior-finanzas .titulo { font-size: 14px; }
+            .menu-inferior-finanzas .fila-totales .item { font-size: 13px; }
+            .menu-inferior-finanzas .fila-conceptos .item { font-size: 13px; }
+            .menu-inferior-finanzas .fila-conceptos .item .label { font-size: 13px; }
+            .cabecera-participantes .col-iconos .filtro-icono-cabecera { font-size: 15px; width: 22px; }
+            .cabecera-participantes .col-nombre { font-size: 13px; }
+            .status-icon { width: 20px; height: 20px; font-size: 10px; }
+            .status-icon.activo-icon, .status-icon.inactivo-icon { font-size: 14px; width: 20px; height: 20px; }
             .toast { top: 60px; font-size: 13px; padding: 8px 16px; }
-            .historial-line { font-size: 12px; }
+            .historial-line { font-size: 13px; }
+            .historial-line .label { font-size: 13px; }
+            .historial-line .monto { font-size: 15px; }
+            .historial-monto-azul { font-size: 15px; }
+            .disponible-box { font-size: 17px; }
+            .card-title { font-size: 14px; }
+            .search-box { font-size: 13px; }
+            .participant-name { font-size: 13px; }
+            .btn { font-size: 12px; }
+            .btn-sm { font-size: 11px; }
+            .periodo-item strong { font-size: 13px; }
+            .periodo-item .total { font-size: 15px; }
+            #resumenPeriodo strong { font-size: 13px; }
         }
     </style>
 </head>
@@ -1051,7 +1072,7 @@
             const disponible = ingresosDisponibles - gastos;
 
             document.getElementById('resumenPeriodo').innerHTML = `
-                <div style="font-size:13px; line-height:1.3;">
+                <div style="font-size:14px; line-height:1.4;">
                     <div style="background:#f0f2f5; padding:6px 10px; border-radius:8px; margin-bottom:8px; font-weight:bold; text-align:center;">
                         👥 Participantes: ${totalActivos} activos / ${totalInactivos} inactivos
                     </div>
@@ -1119,8 +1140,8 @@
             list.innerHTML = historial.slice().reverse().map(h =>
                 `<div class="periodo-item">
                     <div>
-                        <strong style="font-size:13px;">${h.nombre}</strong>
-                        <div style="color:#999; font-size:11px;">${formatearFechaCorto(h.fechaCierre)}</div>
+                        <strong style="font-size:14px;">${h.nombre}</strong>
+                        <div style="color:#999; font-size:12px;">${formatearFechaCorto(h.fechaCierre)}</div>
                     </div>
                     <span class="total">$${h.total.toFixed(2)}</span>
                 </div>`
