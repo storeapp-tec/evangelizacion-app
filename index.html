@@ -5,17 +5,23 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Gestión Evangelización</title>
 
+    <!-- ============================================================ -->
+    <!-- PWA CONFIGURACIÓN - OPTIMIZADA PARA XIAOMI -->
+    <!-- ============================================================ -->
     <link rel="manifest" href="manifest.json">
     
+    <!-- Iconos para PWA -->
     <link rel="apple-touch-icon" sizes="512x512" href="icon-512.png">
     <link rel="icon" type="image/png" sizes="512x512" href="icon-512.png">
     <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
     
+    <!-- Meta tags para PWA -->
     <meta name="theme-color" content="#1a2634">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="Gestión Evang">
     
+    <!-- ===== ESPECÍFICO PARA XIAOMI (icono más grande) ===== -->
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="x5-fullscreen" content="true">
     <meta name="x5-page-mode" content="app">
@@ -188,20 +194,71 @@
 
         .empty-state { text-align: center; padding: 20px 0; color: #999; font-size: 13px; }
 
-        /* Estilos rediseñados para el menú inferior de finanzas */
-        .menu-inferior-finanzas { background: #ffffff; border-radius: 10px; padding: 12px; margin-top: 8px; flex-shrink: 0; box-shadow: 0 1px 4px rgba(0,0,0,0.08); }
-        .menu-inferior-finanzas .card-title { font-size: 14px; font-weight: 600; margin-bottom: 8px; color: #2c3e50; display: flex; align-items: center; gap: 6px; }
-        .menu-inferior-finanzas .resumen-periodo .linea { display: flex; justify-content: space-between; align-items: center; padding: 6px 0; border-bottom: 1px solid #eee; font-size: 13px; color: #333; cursor: pointer; }
-        .menu-inferior-finanzas .resumen-periodo .linea:hover { background-color: #f8f9fa; }
-        .menu-inferior-finanzas .resumen-periodo .linea .label { display: flex; align-items: center; gap: 8px; }
-        .menu-inferior-finanzas .resumen-periodo .linea .monto { font-weight: bold; text-align: right; flex-shrink: 0; margin-left: 12px; color: #111; }
+        .menu-inferior-finanzas { background: #1a2634; color: white; padding: 10px 12px; border-radius: 10px; margin-top: 8px; flex-shrink: 0; }
+        .menu-inferior-finanzas .titulo { text-align: center; font-weight: bold; font-size: 12px; color: #fff; margin-bottom: 4px; }
 
+        .menu-inferior-finanzas .fila-totales { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 4px; text-align: center; margin-bottom: 4px; }
+        .menu-inferior-finanzas .fila-totales .item { font-size: 11px; cursor: pointer; }
+        .menu-inferior-finanzas .fila-totales .item .label { opacity: 0.7; font-weight: normal; }
+        .menu-inferior-finanzas .fila-totales .item .valor { font-weight: bold; font-size: 13px; }
+        .menu-inferior-finanzas .fila-totales .item .valor.ingresos { color: #1e8449; }
+        .menu-inferior-finanzas .fila-totales .item .valor.gastos { color: #d35400; }
+        .menu-inferior-finanzas .fila-totales .item .valor.disponible { color: #2ecc71; }
+
+        .menu-inferior-finanzas .fila-conceptos { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 4px; text-align: center; padding-top: 4px; border-top: 1px solid rgba(255,255,255,0.15); }
+        .menu-inferior-finanzas .fila-conceptos .item { font-size: 11px; cursor: pointer; padding: 3px 2px; border-radius: 4px; transition: all 0.2s; }
+        .menu-inferior-finanzas .fila-conceptos .item:hover { background: rgba(255,255,255,0.08); }
+        .menu-inferior-finanzas .fila-conceptos .item .label { opacity: 0.7; font-weight: normal; font-size: 10px; display: block; }
+        .menu-inferior-finanzas .fila-conceptos .item .valor { font-weight: bold; font-size: 15px; }
+        .menu-inferior-finanzas .fila-conceptos .item .valor.inscripcion { color: #e67e22; }
+        .menu-inferior-finanzas .fila-conceptos .item .valor.compendio { color: #27ae60; }
+        .menu-inferior-finanzas .fila-conceptos .item .valor.crucifijo { color: #3498db; }
+        .menu-inferior-finanzas .fila-conceptos .item.active { background: rgba(52,152,219,0.2); border-left: 3px solid #3498db; }
+
+        .resumen-periodo .linea { display: flex; justify-content: space-between; padding: 4px 0; border-bottom: 1px solid #eee; font-size: 13px; }
+        .resumen-periodo .linea .label { flex: 1; }
+        .resumen-periodo .linea .monto { font-weight: bold; text-align: right; flex-shrink: 0; margin-left: 12px; }
         .periodo-item { padding: 8px 0; border-bottom: 1px solid #eee; font-size: 13px; }
         .periodo-item .total { float: right; font-weight: bold; color: #27ae60; }
 
         .toast { position: fixed; top: 70px; left: 50%; transform: translateX(-50%) translateY(-20px); background: #27ae60; color: white; padding: 10px 24px; border-radius: 8px; font-size: 14px; font-weight: 600; z-index: 9999; box-shadow: 0 4px 12px rgba(0,0,0,0.2); opacity: 0; transition: opacity 0.3s ease, transform 0.3s ease; pointer-events: none; white-space: nowrap; }
         .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
         .toast.error { background: #e74c3c; }
+
+        /* ============================================ */
+        /* ESTILOS PARA EL DISPONIBLE EN HISTORIAL */
+        /* ============================================ */
+        .disponible-box {
+            background: #1a2634;
+            color: #2ecc71;
+            padding: 10px 12px;
+            border-radius: 8px;
+            text-align: center;
+            font-size: 16px;
+            font-weight: bold;
+            width: 100%;
+            margin-top: 8px;
+        }
+
+        /* Alineación de montos a la derecha en Historial */
+        .historial-line {
+            display: flex;
+            justify-content: space-between;
+            padding: 2px 0;
+            font-size: 13px;
+        }
+        .historial-line .label { 
+            flex: 1; 
+        }
+        .historial-line .monto { 
+            font-weight: bold; 
+            text-align: right; 
+            flex-shrink: 0; 
+            margin-left: 20px;
+        }
+        .historial-line .monto.amarillo {
+            color: #f1c40f;
+        }
 
         @media (max-width: 480px) {
             .summary .fila-superior { font-size: 12px; }
@@ -212,10 +269,14 @@
             .finanzas-form-row .form-group.concepto { flex: 1; min-width: 60px; }
             .finanzas-form-row .form-group.monto { flex: 0 0 70px; min-width: 60px; }
             .finanzas-form-row .form-group.fecha { flex: 0 0 70px; min-width: 60px; }
+            .menu-inferior-finanzas .fila-totales { grid-template-columns: 1fr 1fr 1fr; gap: 2px; }
+            .menu-inferior-finanzas .fila-conceptos { grid-template-columns: 1fr 1fr 1fr; gap: 2px; }
+            .menu-inferior-finanzas .fila-conceptos .item .valor { font-size: 13px; }
             .cabecera-participantes .col-iconos .filtro-icono-cabecera { font-size: 13px; width: 20px; }
             .status-icon { width: 18px; height: 18px; font-size: 9px; }
             .status-icon.activo-icon, .status-icon.inactivo-icon { font-size: 12px; width: 18px; height: 18px; }
             .toast { top: 60px; font-size: 13px; padding: 8px 16px; }
+            .historial-line { font-size: 12px; }
         }
     </style>
 </head>
@@ -233,9 +294,12 @@
     <div class="tabs">
         <button class="tab active" data-tab="cobros">👥 Cobros</button>
         <button class="tab" data-tab="finanzas">💰 Finanzas</button>
-        <button class="tab" data-tab="historial">⚙️ Historial</button>
+        <button class="tab" data-tab="admin">📜 Historial</button>
     </div>
 
+    <!-- ============================================================ -->
+    <!-- COBROS -->
+    <!-- ============================================================ -->
     <div id="cobros" class="content active">
         <div class="card">
             <div class="card-title" style="font-size:13px;">
@@ -311,6 +375,9 @@
         </div>
     </div>
 
+    <!-- ============================================================ -->
+    <!-- FINANZAS -->
+    <!-- ============================================================ -->
     <div id="finanzas" class="content">
         <div class="finanzas-container">
             <div class="card" style="padding: 10px; flex-shrink: 0;">
@@ -345,17 +412,47 @@
             </div>
 
             <div class="menu-inferior-finanzas" id="menuInferiorFinanzas">
-                <div class="card-title">📊 Resumen del periodo</div>
-                <div class="resumen-periodo" id="resumenPeriodoLista">
+                <div class="titulo">📊 Resumen de movimientos</div>
+                <div class="fila-totales">
+                    <div class="item" onclick="filtrarFinanzas('ingreso')">
+                        <div class="label">💰 Ingresos</div>
+                        <div class="valor ingresos" id="menuIngresos">$0</div>
                     </div>
+                    <div class="item" onclick="filtrarFinanzas('gasto')">
+                        <div class="label">💸 Gastos</div>
+                        <div class="valor gastos" id="menuGastos">$0</div>
+                    </div>
+                    <div class="item" style="cursor:default;">
+                        <div class="label">📈 Disponible</div>
+                        <div class="valor disponible" id="menuDisponible">$0</div>
+                    </div>
+                </div>
+                <div class="fila-conceptos">
+                    <div class="item" data-filtro="inscripcion" onclick="filtrarFinanzas('inscripcion')">
+                        <span class="label">📝 Inscripción</span>
+                        <span class="valor inscripcion" id="menuInscripcion">0/0 $0</span>
+                    </div>
+                    <div class="item" data-filtro="compendio" onclick="filtrarFinanzas('compendio')">
+                        <span class="label">📚 Compendio</span>
+                        <span class="valor compendio" id="menuCompendio">0/0 $0</span>
+                    </div>
+                    <div class="item" data-filtro="crucifijo" onclick="filtrarFinanzas('crucifijo')">
+                        <span class="label">✝️ Crucifijo</span>
+                        <span class="valor crucifijo" id="menuCrucifijo">0/0 $0</span>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
 
-    <div id="historial" class="content">
+    <!-- ============================================================ -->
+    <!-- HISTORIAL -->
+    <!-- ============================================================ -->
+    <div id="admin" class="content">
         <div class="card">
-            <div id="contenedor-historial"></div>
-            <button class="btn btn-danger" onclick="cerrarPeriodo()" style="width:100%; font-size:13px; padding:8px; margin-top:12px;">🔒 CERRAR PERIODO</button>
+            <div class="card-title">📊 Resumen del periodo</div>
+            <div id="resumenPeriodo" class="resumen-periodo"></div>
+            <button class="btn btn-danger" onclick="cerrarPeriodo()" style="width:100%; font-size:13px; padding:8px; margin-top:10px;">🔒 CERRAR PERIODO</button>
             <p style="font-size:11px; color:#666; margin-top:6px; text-align:center;">⚠️ Se guardará el resumen y se creará uno nuevo en blanco.</p>
         </div>
         <div class="card">
@@ -364,6 +461,9 @@
         </div>
     </div>
 
+    <!-- ============================================================ -->
+    <!-- MODALES -->
+    <!-- ============================================================ -->
     <div id="modalParticipante" class="modal-overlay">
         <div class="modal">
             <button class="modal-close" onclick="cerrarModal()">✕</button>
@@ -539,7 +639,7 @@
             renderizarResumen();
             renderizarFinanzas();
             renderizarResumenFinanzas();
-            renderizarHistorial();
+            renderizarAdmin();
         }
 
         // ============================================
@@ -792,63 +892,57 @@
             }).join('');
         }
 
+        // ============================================
+        // RENDERIZAR RESUMEN FINANZAS (CORREGIDO)
+        // ============================================
         function renderizarResumenFinanzas() {
+            const activos = data.participantes.filter(p => p.activo);
+            const inactivos = data.participantes.filter(p => !p.activo);
             const todos = data.participantes;
-            const activos = todos.filter(p => p.activo);
-            const totalActivos = activos.length;
+            const total = todos.length;
 
-            const pagadosInsc = todos.filter(p => p.pagos.inscripcion.pagado).length;
-            const pagadosComp = todos.filter(p => p.pagos.compendio.pagado).length;
-            const pagadosCruc = todos.filter(p => p.pagos.crucifijo.pagado).length;
+            // Pagos de activos
+            const pagadosInscAct = activos.filter(p => p.pagos.inscripcion.pagado).length;
+            const pagadosCompAct = activos.filter(p => p.pagos.compendio.pagado).length;
+            const pagadosCrucAct = activos.filter(p => p.pagos.crucifijo.pagado).length;
 
-            const totalInsc = pagadosInsc * data.config.montoInscripcion;
-            const totalComp = pagadosComp * data.config.montoCompendio;
-            const totalCruc = pagadosCruc * data.config.montoCrucifijo;
+            // Pagos de inactivos
+            const pagadosInscInact = inactivos.filter(p => p.pagos.inscripcion.pagado).length;
+            const pagadosCompInact = inactivos.filter(p => p.pagos.compendio.pagado).length;
+            const pagadosCrucInact = inactivos.filter(p => p.pagos.crucifijo.pagado).length;
+
+            const montoInsc = data.config.montoInscripcion || 50;
+            const montoComp = data.config.montoCompendio || 80;
+            const montoCruc = data.config.montoCrucifijo || 50;
+
+            // Totales por concepto (activos + inactivos)
+            const totalInsc = (pagadosInscAct + pagadosInscInact) * montoInsc;
+            const totalComp = (pagadosCompAct + pagadosCompInact) * montoComp;
+            const totalCruc = (pagadosCrucAct + pagadosCrucInact) * montoCruc;
 
             const finanzas = data.finanzas || [];
             const ingresosManuales = finanzas.filter(m => m.tipo === 'ingreso').reduce((sum, m) => sum + m.monto, 0);
             const gastosManuales = finanzas.filter(m => m.tipo === 'gasto').reduce((sum, m) => sum + m.monto, 0);
 
-            // Cálculos del balance
-            const totalIngresos = totalComp + totalCruc + ingresosManuales;
+            // 🔥 CORRECCIÓN: Solo se suman: inscripción de INACTIVOS + compendios + crucifijos + manuales
+            const inscInactivos = pagadosInscInact * montoInsc;
+            const totalIngresos = inscInactivos + totalComp + totalCruc + ingresosManuales;
             const totalGastos = gastosManuales;
             const disponible = totalIngresos - totalGastos;
 
-            const listaContainer = document.getElementById('resumenPeriodoLista');
+            document.getElementById('menuIngresos').textContent = `$${totalIngresos.toFixed(2)}`;
+            document.getElementById('menuGastos').textContent = `$${totalGastos.toFixed(2)}`;
+            document.getElementById('menuDisponible').textContent = `$${disponible.toFixed(2)}`;
 
-            listaContainer.innerHTML = `
-                <div class="linea" onclick="filtrarFinanzas('todos')">
-                    <div class="label"><span>👥</span> <span>Participantes activos</span></div>
-                    <span class="monto">${totalActivos}</span>
-                </div>
-                <div class="linea" onclick="filtrarFinanzas('inscripcion')">
-                    <div class="label"><span>📝</span> <span>Inscripción (${pagadosInsc}/${todos.length}) (Parroquia)</span></div>
-                    <span class="monto">$${totalInsc.toFixed(2)}</span>
-                </div>
-                <div class="linea" onclick="filtrarFinanzas('compendio')">
-                    <div class="label"><span>📚</span> <span>Compendio (${pagadosComp}/${todos.length})</span></div>
-                    <span class="monto">$${totalComp.toFixed(2)}</span>
-                </div>
-                <div class="linea" onclick="filtrarFinanzas('crucifijo')">
-                    <div class="label"><span>✝️</span> <span>Crucifijo (${pagadosCruc}/${todos.length})</span></div>
-                    <span class="monto">$${totalCruc.toFixed(2)}</span>
-                </div>
-                <div class="linea" onclick="filtrarFinanzas('ingreso')">
-                    <div class="label"><span>📊</span> <span>Ingresos adicionales</span></div>
-                    <span class="monto">$${ingresosManuales.toFixed(2)}</span>
-                </div>
-                <div class="linea" onclick="filtrarFinanzas('gasto')">
-                    <div class="label"><span>💸</span> <span>Gastos</span></div>
-                    <span class="monto">$${totalGastos.toFixed(2)}</span>
-                </div>
-                
-                <hr style="border: none; border-top: 2px solid #212529; margin: 6px 0 4px 0;">
-                
-                <div class="linea" style="border-bottom: none; color: #2e7d32; cursor: default;">
-                    <div class="label" style="font-weight: bold;"><span>📈</span> <span>Disponible</span></div>
-                    <span class="monto" style="font-weight: bold; color: #2e7d32;">$${disponible.toFixed(2)}</span>
-                </div>
-            `;
+            // Mostrar también los totales por concepto
+            document.getElementById('menuInscripcion').textContent = `${pagadosInscAct + pagadosInscInact}/${total} $${totalInsc.toFixed(0)}`;
+            document.getElementById('menuCompendio').textContent = `${pagadosCompAct + pagadosCompInact}/${total} $${totalComp.toFixed(0)}`;
+            document.getElementById('menuCrucifijo').textContent = `${pagadosCrucAct + pagadosCrucInact}/${total} $${totalCruc.toFixed(0)}`;
+
+            document.querySelectorAll('.fila-conceptos .item').forEach(item => {
+                const filtro = item.dataset.filtro;
+                item.classList.toggle('active', filtro === filtroFinanzasActual);
+            });
         }
 
         function filtrarFinanzas(tipo) {
@@ -858,72 +952,139 @@
         }
 
         // ============================================
-        // HISTORIAL
+        // HISTORIAL (CORREGIDO)
         // ============================================
-        function renderizarHistorial() {
-            const contenedor = document.getElementById('contenedor-historial');
-            if (!contenedor) return;
-
+        function renderizarAdmin() {
             const activos = data.participantes.filter(p => p.activo);
             const inactivos = data.participantes.filter(p => !p.activo);
 
-            // Inscripciones ($monto)
-            const inscritosActivos = activos.filter(p => p.pagos.inscripcion.pagado).length;
-            const montoInscActivos = inscritosActivos * data.config.montoInscripcion;
-            const inscritosInactivos = inactivos.filter(p => p.pagos.inscripcion.pagado).length;
-            const montoInscInactivos = inscritosInactivos * data.config.montoInscripcion;
+            const totalActivos = activos.length;
+            const totalInactivos = inactivos.length;
 
-            // Compendios ($monto)
-            const compendiosActivos = activos.filter(p => p.pagos.compendio.pagado).length;
-            const montoCompActivos = compendiosActivos * data.config.montoCompendio;
-            const compendiosInactivos = inactivos.filter(p => p.pagos.compendio.pagado).length;
-            const montoCompInactivos = compendiosInactivos * data.config.montoCompendio;
+            // Pagos de activos
+            const pagadosInscAct = activos.filter(p => p.pagos.inscripcion.pagado).length;
+            const pagadosCompAct = activos.filter(p => p.pagos.compendio.pagado).length;
+            const pagadosCrucAct = activos.filter(p => p.pagos.crucifijo.pagado).length;
 
-            // Crucifijos ($monto)
-            const crucifijosActivos = activos.filter(p => p.pagos.crucifijo.pagado).length;
-            const montoCrucActivos = crucifijosActivos * data.config.montoCrucifijo;
-            const crucifijosInactivos = inactivos.filter(p => p.pagos.crucifijo.pagado).length;
-            const montoCrucInactivos = crucifijosInactivos * data.config.montoCrucifijo;
+            // Pagos de inactivos
+            const pagadosInscInact = inactivos.filter(p => p.pagos.inscripcion.pagado).length;
+            const pagadosCompInact = inactivos.filter(p => p.pagos.compendio.pagado).length;
+            const pagadosCrucInact = inactivos.filter(p => p.pagos.crucifijo.pagado).length;
 
-            // Movimientos manuales
+            // Montos unitarios
+            const montoInsc = data.config.montoInscripcion || 50;
+            const montoComp = data.config.montoCompendio || 80;
+            const montoCruc = data.config.montoCrucifijo || 50;
+
+            // Cálculo de montos
+            const inscActivos = pagadosInscAct * montoInsc;
+            const inscInactivos = pagadosInscInact * montoInsc;
+            const compActivos = pagadosCompAct * montoComp;
+            const compInactivos = pagadosCompInact * montoComp;
+            const crucActivos = pagadosCrucAct * montoCruc;
+            const crucInactivos = pagadosCrucInact * montoCruc;
+
+            // ============================================
+            // DATOS REALES DE FINANZAS
+            // ============================================
             const finanzas = data.finanzas || [];
-            const ingresos = finanzas.filter(m => m.tipo === 'ingreso').reduce((sum, m) => sum + m.monto, 0);
-            const gastos = finanzas.filter(m => m.tipo === 'gasto').reduce((sum, m) => sum + m.monto, 0);
 
-            // Lógica Global de Caja Real: Activos + Inactivos + Extras - Gastos
-            const totalIngresos = montoCompActivos + montoCompInactivos + montoCrucActivos + montoCrucInactivos + ingresos;
-            const disponible = totalIngresos - gastos;
+            const ingresos = finanzas
+                .filter(m => m.tipo === 'ingreso')
+                .reduce((sum, m) => sum + m.monto, 0);
 
-            contenedor.innerHTML = `
-                <h3>Resumen del Periodo</h3>
-                <p>Participantes: ${activos.length} activos / ${inactivos.length} inactivos</p>
-                
-                <h4>📝 Inscripciones (Parroquia)</h4>
-                <p>Activos (${inscritosActivos}/${activos.length}): $${montoInscActivos.toFixed(2)}<br>(Para entregar)</p>
-                <p>Inactivos (${inscritosInactivos}/${inactivos.length}): $${montoInscInactivos.toFixed(2)}<br>(Fondo grupo)</p>
-                
-                <h4>📚 Compendios</h4>
-                <p>Activos (${compendiosActivos}/${activos.length}): $${montoCompActivos.toFixed(2)}</p>
-                <p>Inactivos (${compendiosInactivos}/${inactivos.length}): $${montoCompInactivos.toFixed(2)}</p>
-                
-                <h4>✝️ Crucifijos</h4>
-                <p>Activos (${crucifijosActivos}/${activos.length}): $${montoCrucActivos.toFixed(2)}</p>
-                <p>Inactivos (${crucifijosInactivos}/${inactivos.length}): $${montoCrucInactivos.toFixed(2)}</p>
-                
-                <p>Ingresos: $${ingresos.toFixed(2)}</p>
-                <p>Gastos: $${gastos.toFixed(2)}</p>
-                
-                <p>Disponible: $${disponible.toFixed(2)}</p>
+            const gastos = finanzas
+                .filter(m => m.tipo === 'gasto')
+                .reduce((sum, m) => sum + m.monto, 0);
+
+            // ============================================
+            // INGRESOS DISPONIBLES = 
+            //   INSCRIPCIÓN INACTIVOS +
+            //   COMPENDIOS (activos + inactivos) +
+            //   CRUCIFIJOS (activos + inactivos) +
+            //   INGRESOS MANUALES
+            // ============================================
+            const totalInscInactivos = inscInactivos;
+            const totalCompendios = compActivos + compInactivos;
+            const totalCrucifijos = crucActivos + crucInactivos;
+            const ingresosDisponibles = totalInscInactivos + totalCompendios + totalCrucifijos + ingresos;
+            const disponible = ingresosDisponibles - gastos;
+
+            document.getElementById('resumenPeriodo').innerHTML = `
+                <div style="font-size:13px; line-height:1.8;">
+                    <div style="background:#f0f2f5; padding:8px 10px; border-radius:8px; margin-bottom:10px; font-weight:bold; text-align:center;">
+                        👥 Participantes: ${totalActivos} activos / ${totalInactivos} inactivos
+                    </div>
+
+                    <div style="margin-bottom:6px;">
+                        <strong>📝 Inscripciones</strong>
+                        <div class="historial-line">
+                            <span class="label">Activos (${pagadosInscAct}/${totalActivos}): (Entregar parroquia)</span>
+                            <span class="monto amarillo">$${inscActivos.toFixed(2)}</span>
+                        </div>
+                        <div class="historial-line">
+                            <span class="label">Inactivos (${pagadosInscInact}/${totalInactivos}): (Fondo grupo)</span>
+                            <span class="monto">$${inscInactivos.toFixed(2)}</span>
+                        </div>
+                    </div>
+
+                    <div style="margin-bottom:6px;">
+                        <strong>📚 Compendios</strong>
+                        <div class="historial-line">
+                            <span class="label">Activos (${pagadosCompAct}/${totalActivos})</span>
+                            <span class="monto">$${compActivos.toFixed(2)}</span>
+                        </div>
+                        <div class="historial-line">
+                            <span class="label">Inactivos (${pagadosCompInact}/${totalInactivos}): (Fondo grupo)</span>
+                            <span class="monto">$${compInactivos.toFixed(2)}</span>
+                        </div>
+                    </div>
+
+                    <div style="margin-bottom:6px;">
+                        <strong>✝️ Crucifijos</strong>
+                        <div class="historial-line">
+                            <span class="label">Activos (${pagadosCrucAct}/${totalActivos})</span>
+                            <span class="monto">$${crucActivos.toFixed(2)}</span>
+                        </div>
+                        <div class="historial-line">
+                            <span class="label">Inactivos (${pagadosCrucInact}/${totalInactivos}): (Fondo grupo)</span>
+                            <span class="monto">$${crucInactivos.toFixed(2)}</span>
+                        </div>
+                    </div>
+
+                    <hr style="margin:10px 0; border-color:#ddd;">
+
+                    <div class="historial-line">
+                        <span class="label">💰 Ingresos:</span>
+                        <span class="monto" style="color:#27ae60;">+$${ingresos.toFixed(2)}</span>
+                    </div>
+
+                    <div class="historial-line" style="margin-bottom:8px;">
+                        <span class="label">💸 Gastos:</span>
+                        <span class="monto" style="color:#e74c3c;">-$${gastos.toFixed(2)}</span>
+                    </div>
+
+                    <div class="disponible-box">
+                        📈 Disponible: $${disponible.toFixed(2)}
+                    </div>
+                </div>
             `;
 
+            // Historial de periodos
             const historial = data.historial || [];
             const list = document.getElementById('historialPeriodos');
             if (historial.length === 0) {
                 list.innerHTML = '<div class="empty-state">No hay períodos cerrados</div>';
                 return;
             }
-            list.innerHTML = historial.map(h =>
-                `<div class="periodo-item"><div><strong>${h.nombre}</strong><span class="total">$${h.total.toFixed(2)}</span></div><div style="color:#666; font-size:11px;">Cerrado: ${formatearFechaCorto(h.fechaCierre)}</div></div>`
+            list.innerHTML = historial.slice().reverse().map(h =>
+                `<div class="periodo-item" style="display:flex; justify-content:space-between; align-items:center; padding:8px 0; border-bottom:1px solid #eee;">
+                    <div>
+                        <strong style="font-size:13px;">${h.nombre}</strong>
+                        <div style="color:#999; font-size:11px;">${formatearFechaCorto(h.fechaCierre)}</div>
+                    </div>
+                    <span style="font-weight:bold; color:#27ae60; font-size:14px;">$${h.total.toFixed(2)}</span>
+                </div>`
             ).join('');
         }
 
@@ -1164,24 +1325,20 @@
         async function cerrarPeriodo() {
             if (!confirm('¿Cerrar el periodo actual?')) return;
             const activos = data.participantes.filter(p => p.activo);
-            const inactivos = data.participantes.filter(p => !p.activo);
-
-            const pagadosCompActivos = activos.filter(p => p.pagos.compendio.pagado).length;
-            const pagadosCompInactivos = inactivos.filter(p => p.pagos.compendio.pagado).length;
-            const totalComp = (pagadosCompActivos + pagadosCompInactivos) * data.config.montoCompendio;
-
-            const pagadosCrucActivos = activos.filter(p => p.pagos.crucifijo.pagado).length;
-            const pagadosCrucInactivos = inactivos.filter(p => p.pagos.crucifijo.pagado).length;
-            const totalCruc = (pagadosCrucActivos + pagadosCrucInactivos) * data.config.montoCrucifijo;
-
+            const total = activos.length;
+            const pagadosInsc = activos.filter(p => p.pagos.inscripcion.pagado).length;
+            const pagadosComp = activos.filter(p => p.pagos.compendio.pagado).length;
+            const pagadosCruc = activos.filter(p => p.pagos.crucifijo.pagado).length;
+            const totalInsc = pagadosInsc * data.config.montoInscripcion;
+            const totalComp = pagadosComp * data.config.montoCompendio;
+            const totalCruc = pagadosCruc * data.config.montoCrucifijo;
+            const totalGeneral = totalInsc + totalComp + totalCruc;
             const finanzas = data.finanzas || [];
             const totalIngresosManual = finanzas.filter(m => m.tipo === 'ingreso').reduce((sum, m) => sum + m.monto, 0);
             const totalGastosManual = finanzas.filter(m => m.tipo === 'gasto').reduce((sum, m) => sum + m.monto, 0);
-            
-            const totalFinal = totalComp + totalCruc + totalIngresosManual - totalGastosManual;
+            const totalFinal = totalGeneral + totalIngresosManual - totalGastosManual;
             const periodoNombre = `Periodo ${new Date().toLocaleDateString()}`;
             const fechaCierre = obtenerFechaISO();
-            
             mostrarLoading(true);
             const result = await sendData('closePeriod', { nombre: periodoNombre, fechaCierre, total: totalFinal });
             mostrarLoading(false);
@@ -1236,10 +1393,26 @@
                 if (isNaN(d.getTime())) return fecha;
                 const meses = ['ene','feb','mar','abr','may','jun','jul','ago','sep','oct','nov','dic'];
                 const dia = String(d.getDate()).padStart(2,'0');
-                const mes = meses[d.getTime() ? d.getMonth() : 0]; // Manejo seguro del mes
+                const mes = meses[d.getMonth()];
                 const anio = String(d.getFullYear()).slice(-2);
                 return `${dia}-${mes}-${anio}`;
             } catch(e) { return fecha; }
+        }
+
+        function convertirFechaCortaAIso(fechaStr) {
+            if (!fechaStr) return null;
+            if (fechaStr.includes('-') && fechaStr.length === 10) return fechaStr;
+            const meses = { 'ene':0,'feb':1,'mar':2,'abr':3,'may':4,'jun':5,'jul':6,'ago':7,'sep':8,'oct':9,'nov':10,'dic':11 };
+            const parts = fechaStr.split('-');
+            if (parts.length === 3) {
+                const dia = parseInt(parts[0]);
+                const mes = meses[parts[1].toLowerCase()];
+                const anio = parseInt(parts[2]) + 2000;
+                if (dia && mes !== undefined && anio) {
+                    return `${anio}-${String(mes+1).padStart(2,'0')}-${String(dia).padStart(2,'0')}`;
+                }
+            }
+            return null;
         }
 
         document.addEventListener('DOMContentLoaded', function() {
