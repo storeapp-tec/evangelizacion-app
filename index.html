@@ -6,66 +6,88 @@
     <title>Gestión Evangelización</title>
 
     <!-- ============================================================ -->
-    <!-- PWA CONFIGURACIÓN - OPTIMIZADA PARA XIAOMI -->
+    <!-- PWA CONFIGURACIÓN -->
     <!-- ============================================================ -->
     <link rel="manifest" href="manifest.json">
-    
-    <!-- Iconos para PWA -->
     <link rel="apple-touch-icon" sizes="512x512" href="icon-512.png">
     <link rel="icon" type="image/png" sizes="512x512" href="icon-512.png">
     <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
-    
-    <!-- Meta tags para PWA -->
     <meta name="theme-color" content="#1a2634">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="Gestión Evang">
-    
-    <!-- ===== ESPECÍFICO PARA XIAOMI (icono más grande) ===== -->
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="x5-fullscreen" content="true">
     <meta name="x5-page-mode" content="app">
 
     <style>
+        /* ============================================ */
+        /* RESET Y BASE */
+        /* ============================================ */
         * { margin: 0; padding: 0; box-sizing: border-box; }
         html, body { height: 100%; overflow: hidden; }
         body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #f0f2f5; color: #333; font-size: 14px; display: flex; flex-direction: column; }
+        
+        /* ============================================ */
+        /* HEADER */
+        /* ============================================ */
         .header { background: #1a2634; color: white; padding: 12px; text-align: center; flex-shrink: 0; z-index: 100; }
         .header h1 { font-size: 17px; font-weight: 600; }
 
+        /* ============================================ */
+        /* TABS */
+        /* ============================================ */
         .tabs { display: flex; background: #2c3e50; flex-shrink: 0; z-index: 99; }
         .tab { flex: 1; padding: 10px; text-align: center; color: #bdc3c7; background: transparent; border: none; font-size: 13px; font-weight: 600; cursor: pointer; border-bottom: 3px solid transparent; }
         .tab.active { color: white; border-bottom-color: #3498db; }
 
+        /* ============================================ */
+        /* SCROLLBAR */
+        /* ============================================ */
         ::-webkit-scrollbar { width: 3px; height: 3px; }
         ::-webkit-scrollbar-track { background: transparent; }
         ::-webkit-scrollbar-thumb { background: #c1c7cd; border-radius: 10px; }
 
+        /* ============================================ */
+        /* CONTENT */
+        /* ============================================ */
         .content { display: none; padding: 12px; max-width: 600px; margin: 0 auto; flex: 1; overflow: hidden; padding-bottom: 12px; min-height: 0; }
         .content.active { display: flex; flex-direction: column; }
 
+        /* ============================================ */
+        /* CARDS */
+        /* ============================================ */
         .card { background: white; border-radius: 10px; padding: 12px; margin-bottom: 12px; box-shadow: 0 1px 4px rgba(0,0,0,0.08); flex-shrink: 0; }
         .card-title { font-size: 14px; font-weight: 600; margin-bottom: 8px; color: #2c3e50; display: flex; align-items: center; justify-content: space-between; }
 
+        /* ============================================ */
+        /* BUSCADOR */
+        /* ============================================ */
         .search-box { width: 100%; padding: 8px 10px; border: 1px solid #ddd; border-radius: 6px; font-size: 14px; margin-bottom: 8px; }
         .search-box:focus { outline: none; border-color: #3498db; }
 
+        /* ============================================ */
+        /* LISTA DE PARTICIPANTES */
+        /* ============================================ */
         .participant-list-container { flex: 1; overflow-y: auto; min-height: 100px; max-height: 400px; }
-        .participant-list-container::-webkit-scrollbar { width: 3px; }
-        .participant-list-container::-webkit-scrollbar-thumb { background: #c1c7cd; border-radius: 10px; }
-
         .participant-item { display: flex; align-items: center; padding: 8px 6px; border-bottom: 1px solid #f0f0f0; cursor: pointer; }
         .participant-item:hover { background: #f8f9fa; }
         .participant-item.inactive { opacity: 0.7; background: #f5f5f5; }
         .participant-name { flex: 1; font-size: 13px; font-weight: 500; }
         .participant-status { display: flex; gap: 6px; margin-left: 6px; align-items: center; }
 
+        /* ============================================ */
+        /* STATUS ICONS */
+        /* ============================================ */
         .status-icon { width: 20px; height: 20px; display: flex; align-items: center; justify-content: center; border-radius: 50%; font-size: 10px; font-weight: bold; color: white; flex-shrink: 0; }
         .status-icon.pagado { background: #27ae60; }
         .status-icon.pendiente { background: #e74c3c; }
         .status-icon.activo-icon { font-size: 14px; color: #22aa44 !important; background: none !important; width: 20px; height: 20px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-weight: bold; }
         .status-icon.inactivo-icon { font-size: 14px; color: #cc2222 !important; background: none !important; width: 20px; height: 20px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-weight: bold; }
 
+        /* ============================================ */
+        /* CABECERA PARTICIPANTES (FILTROS) */
+        /* ============================================ */
         .cabecera-participantes { display: flex; align-items: center; padding: 4px 6px 6px 6px; border-bottom: 2px solid #e0e0e0; margin-bottom: 4px; font-weight: 600; font-size: 12px; color: #555; flex-shrink: 0; }
         .cabecera-participantes .col-nombre { flex: 1; }
         .cabecera-participantes .col-iconos { display: flex; gap: 4px; align-items: center; }
@@ -83,6 +105,9 @@
         .limpiar-filtro { font-size: 11px; color: #e74c3c; cursor: pointer; padding: 2px 6px; border-radius: 10px; background: #fde8e8; border: 1px solid #f5c6cb; display: none; margin-left: 4px; }
         .limpiar-filtro.visible { display: inline-block; }
 
+        /* ============================================ */
+        /* SUMMARY (COBROS) */
+        /* ============================================ */
         .summary { background: #1a2634; color: white; padding: 10px 12px; border-radius: 10px; margin-top: 8px; flex-shrink: 0; }
         .summary .fila-superior { display: flex; justify-content: space-between; align-items: center; font-size: 13px; font-weight: bold; flex-wrap: wrap; gap: 4px; }
         .summary .fila-superior .titulo { font-weight: bold; color: #fff; }
@@ -95,6 +120,9 @@
         .summary .fila-inferior .item .icono { font-size: 14px; }
         .summary .fila-inferior .item .numero { font-weight: bold; font-size: 14px; }
 
+        /* ============================================ */
+        /* BOTONES */
+        /* ============================================ */
         .btn { padding: 6px 14px; border: none; border-radius: 6px; font-size: 12px; font-weight: 600; cursor: pointer; transition: all 0.2s; }
         .btn-sm { padding: 4px 10px; font-size: 11px; width: auto; }
         .btn-primary { background: #3498db; color: white; }
@@ -104,6 +132,9 @@
         .btn-secondary { background: #95a5a6; color: white; }
         .btn-group { display: flex; gap: 6px; flex-wrap: wrap; }
 
+        /* ============================================ */
+        /* MODALES */
+        /* ============================================ */
         .modal-overlay { display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.5); z-index: 1000; align-items: center; justify-content: center; padding: 20px; }
         .modal-overlay.active { display: flex; }
         .modal { background: white; border-radius: 14px; padding: 20px; max-width: 400px; width: 100%; max-height: 90vh; overflow-y: auto; }
@@ -123,14 +154,11 @@
         .switch input:checked + .slider { background-color: #27ae60; }
         .switch input:checked + .slider:before { transform: translateX(20px); }
 
+        /* ============================================ */
+        /* FINANZAS - FORMULARIO */
+        /* ============================================ */
         .finanzas-container { display: flex; flex-direction: column; flex: 1; min-height: 0; height: 100%; }
-
-        .finanzas-form-row { 
-            display: flex; 
-            flex-wrap: nowrap; 
-            align-items: center; 
-            gap: 6px; 
-        }
+        .finanzas-form-row { display: flex; flex-wrap: nowrap; align-items: center; gap: 6px; }
         .finanzas-form-row .form-group { margin-bottom: 0; }
         .finanzas-form-row .form-group.tipo { flex: 0 0 85px; min-width: 70px; }
         .finanzas-form-row .form-group.concepto { flex: 1; min-width: 70px; }
@@ -141,38 +169,19 @@
         .finanzas-form-row .form-control { padding: 5px 6px; font-size: 12px; border: 1px solid #ddd; border-radius: 4px; width: 100%; }
         .finanzas-form-row .form-control:focus { outline: none; border-color: #3498db; }
         .finanzas-form-row .form-control.tipo-input { padding: 5px 4px; font-size: 12px; }
-
         .form-control.monto-input { text-align: right; font-weight: 600; }
         .form-control.monto-input::placeholder { text-align: left; font-weight: normal; }
 
         .fecha-wrapper { position: relative; }
-        .fecha-wrapper input[type="date"] {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            opacity: 0;
-            cursor: pointer;
-            z-index: 2;
-        }
-        .fecha-wrapper .fecha-display {
-            padding: 5px 6px;
-            font-size: 12px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            background: white;
-            width: 100%;
-            cursor: pointer;
-            color: #333;
-            text-align: center;
-        }
+        .fecha-wrapper input[type="date"] { position: absolute; top: 0; left: 0; width: 100%; height: 100%; opacity: 0; cursor: pointer; z-index: 2; }
+        .fecha-wrapper .fecha-display { padding: 5px 6px; font-size: 12px; border: 1px solid #ddd; border-radius: 4px; background: white; width: 100%; cursor: pointer; color: #333; text-align: center; }
         .fecha-wrapper .fecha-display.placeholder { color: #aaa; }
 
         .finanzas-scroll-area { flex: 1; overflow-y: auto; min-height: 80px; max-height: 400px; }
-        .finanzas-scroll-area::-webkit-scrollbar { width: 3px; }
-        .finanzas-scroll-area::-webkit-scrollbar-thumb { background: #c1c7cd; border-radius: 10px; }
 
+        /* ============================================ */
+        /* FINANZAS - LISTA DE MOVIMIENTOS */
+        /* ============================================ */
         .movimiento-item { display: flex; align-items: center; padding: 5px 6px; border-bottom: 1px solid #f0f0f0; gap: 6px; font-size: 12px; }
         .movimiento-item .fecha { color: #666; min-width: 70px; font-size: 11px; flex-shrink: 0; }
         .movimiento-item .concepto { flex: 1; }
@@ -183,9 +192,77 @@
         .btn-editar { color: #3498db; }
         .btn-eliminar { color: #e74c3c; }
 
+        /* ============================================ */
+        /* FINANZAS - RESUMEN DE MOVIMIENTOS (3 COLUMNAS) */
+        /* ============================================ */
+        .menu-inferior-finanzas { background: #1a2634; color: white; padding: 10px 12px; border-radius: 10px; margin-top: 8px; flex-shrink: 0; }
+        .menu-inferior-finanzas .titulo { text-align: center; font-weight: bold; font-size: 12px; color: #fff; margin-bottom: 4px; }
+
+        .menu-inferior-finanzas .fila-totales {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 4px;
+            text-align: center;
+            margin-bottom: 4px;
+        }
+        .menu-inferior-finanzas .fila-totales .item {
+            font-size: 11px;
+            cursor: pointer;
+        }
+        .menu-inferior-finanzas .fila-totales .item .label {
+            opacity: 0.7;
+            font-weight: normal;
+            display: block;
+        }
+        .menu-inferior-finanzas .fila-totales .item .valor {
+            font-weight: bold;
+            font-size: 15px;
+            display: block;
+        }
+
+        .menu-inferior-finanzas .fila-conceptos {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 4px;
+            text-align: center;
+            padding-top: 4px;
+            border-top: 1px solid rgba(255,255,255,0.15);
+        }
+        .menu-inferior-finanzas .fila-conceptos .item {
+            font-size: 11px;
+            cursor: pointer;
+            padding: 3px 2px;
+            border-radius: 4px;
+            transition: all 0.2s;
+        }
+        .menu-inferior-finanzas .fila-conceptos .item:hover {
+            background: rgba(255,255,255,0.08);
+        }
+        .menu-inferior-finanzas .fila-conceptos .item .label {
+            opacity: 0.7;
+            font-weight: normal;
+            font-size: 10px;
+            display: block;
+        }
+        .menu-inferior-finanzas .fila-conceptos .item .valor {
+            font-weight: bold;
+            font-size: 15px;
+            display: block;
+        }
+        .menu-inferior-finanzas .fila-conceptos .item.active {
+            background: rgba(52,152,219,0.2);
+            border-left: 3px solid #3498db;
+        }
+
+        /* ============================================ */
+        /* FORMULARIOS - GRAL */
+        /* ============================================ */
         .form-group { margin-bottom: 6px; }
         .form-group label { display: block; font-size: 11px; font-weight: 600; color: #555; margin-bottom: 2px; }
 
+        /* ============================================ */
+        /* LOADING */
+        /* ============================================ */
         .loading-overlay { display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.7); z-index: 2000; align-items: center; justify-content: center; flex-direction: column; }
         .loading-overlay.active { display: flex; }
         .loading-spinner { width: 36px; height: 36px; border: 3px solid #f3f3f3; border-top: 3px solid #3498db; border-radius: 50%; animation: spin 1s linear infinite; }
@@ -194,40 +271,19 @@
 
         .empty-state { text-align: center; padding: 20px 0; color: #999; font-size: 13px; }
 
-        .menu-inferior-finanzas { background: #1a2634; color: white; padding: 10px 12px; border-radius: 10px; margin-top: 8px; flex-shrink: 0; }
-        .menu-inferior-finanzas .titulo { text-align: center; font-weight: bold; font-size: 12px; color: #fff; margin-bottom: 4px; }
-
-        .menu-inferior-finanzas .fila-totales { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 4px; text-align: center; margin-bottom: 4px; }
-        .menu-inferior-finanzas .fila-totales .item { font-size: 11px; cursor: pointer; }
-        .menu-inferior-finanzas .fila-totales .item .label { opacity: 0.7; font-weight: normal; }
-        .menu-inferior-finanzas .fila-totales .item .valor { font-weight: bold; font-size: 13px; }
-        .menu-inferior-finanzas .fila-totales .item .valor.ingresos { color: #1e8449; }
-        .menu-inferior-finanzas .fila-totales .item .valor.gastos { color: #d35400; }
-        .menu-inferior-finanzas .fila-totales .item .valor.disponible { color: #2ecc71; }
-
-        .menu-inferior-finanzas .fila-conceptos { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 4px; text-align: center; padding-top: 4px; border-top: 1px solid rgba(255,255,255,0.15); }
-        .menu-inferior-finanzas .fila-conceptos .item { font-size: 11px; cursor: pointer; padding: 3px 2px; border-radius: 4px; transition: all 0.2s; }
-        .menu-inferior-finanzas .fila-conceptos .item:hover { background: rgba(255,255,255,0.08); }
-        .menu-inferior-finanzas .fila-conceptos .item .label { opacity: 0.7; font-weight: normal; font-size: 10px; display: block; }
-        .menu-inferior-finanzas .fila-conceptos .item .valor { font-weight: bold; font-size: 15px; }
-        .menu-inferior-finanzas .fila-conceptos .item .valor.inscripcion { color: #e67e22; }
-        .menu-inferior-finanzas .fila-conceptos .item .valor.compendio { color: #27ae60; }
-        .menu-inferior-finanzas .fila-conceptos .item .valor.crucifijo { color: #3498db; }
-        .menu-inferior-finanzas .fila-conceptos .item.active { background: rgba(52,152,219,0.2); border-left: 3px solid #3498db; }
-
-        .resumen-periodo .linea { display: flex; justify-content: space-between; padding: 4px 0; border-bottom: 1px solid #eee; font-size: 13px; }
-        .resumen-periodo .linea .label { flex: 1; }
-        .resumen-periodo .linea .monto { font-weight: bold; text-align: right; flex-shrink: 0; margin-left: 12px; }
-        .periodo-item { padding: 8px 0; border-bottom: 1px solid #eee; font-size: 13px; }
-        .periodo-item .total { float: right; font-weight: bold; color: #27ae60; }
-
+        /* ============================================ */
+        /* TOAST */
+        /* ============================================ */
         .toast { position: fixed; top: 70px; left: 50%; transform: translateX(-50%) translateY(-20px); background: #27ae60; color: white; padding: 10px 24px; border-radius: 8px; font-size: 14px; font-weight: 600; z-index: 9999; box-shadow: 0 4px 12px rgba(0,0,0,0.2); opacity: 0; transition: opacity 0.3s ease, transform 0.3s ease; pointer-events: none; white-space: nowrap; }
         .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
         .toast.error { background: #e74c3c; }
 
         /* ============================================ */
-        /* ESTILOS PARA EL DISPONIBLE EN HISTORIAL */
+        /* HISTORIAL */
         /* ============================================ */
+        .periodo-item { padding: 6px 0; border-bottom: 1px solid #eee; display: flex; justify-content: space-between; align-items: center; }
+        .periodo-item .total { font-weight: bold; color: #27ae60; }
+
         .disponible-box {
             background: #1a2634;
             color: #2ecc71;
@@ -238,28 +294,25 @@
             font-weight: bold;
             width: 100%;
             margin-top: 8px;
+            box-sizing: border-box;
+            display: block;
         }
 
-        /* Alineación de montos a la derecha en Historial */
         .historial-line {
             display: flex;
             justify-content: space-between;
-            padding: 2px 0;
+            padding: 1px 0;
             font-size: 13px;
+            line-height: 1.2;
         }
-        .historial-line .label { 
-            flex: 1; 
-        }
-        .historial-line .monto { 
-            font-weight: bold; 
-            text-align: right; 
-            flex-shrink: 0; 
-            margin-left: 20px;
-        }
-        .historial-line .monto.amarillo {
-            color: #f1c40f;
-        }
+        .historial-line .label { flex: 1; }
+        .historial-line .monto { font-weight: bold; text-align: right; flex-shrink: 0; margin-left: 20px; }
 
+        .historial-monto-azul { color: #2563EB; font-weight: bold; }
+
+        /* ============================================ */
+        /* RESPONSIVE */
+        /* ============================================ */
         @media (max-width: 480px) {
             .summary .fila-superior { font-size: 12px; }
             .summary .fila-nombres { font-size: 10px; }
@@ -272,6 +325,7 @@
             .menu-inferior-finanzas .fila-totales { grid-template-columns: 1fr 1fr 1fr; gap: 2px; }
             .menu-inferior-finanzas .fila-conceptos { grid-template-columns: 1fr 1fr 1fr; gap: 2px; }
             .menu-inferior-finanzas .fila-conceptos .item .valor { font-size: 13px; }
+            .menu-inferior-finanzas .fila-totales .item .valor { font-size: 13px; }
             .cabecera-participantes .col-iconos .filtro-icono-cabecera { font-size: 13px; width: 20px; }
             .status-icon { width: 18px; height: 18px; font-size: 9px; }
             .status-icon.activo-icon, .status-icon.inactivo-icon { font-size: 12px; width: 18px; height: 18px; }
@@ -283,7 +337,6 @@
 <body>
 
     <div id="toast" class="toast"></div>
-
     <div id="loadingOverlay" class="loading-overlay">
         <div class="loading-spinner"></div>
         <div class="loading-text">Cargando datos...</div>
@@ -415,30 +468,30 @@
                 <div class="titulo">📊 Resumen de movimientos</div>
                 <div class="fila-totales">
                     <div class="item" onclick="filtrarFinanzas('ingreso')">
-                        <div class="label">💰 Ingresos</div>
-                        <div class="valor ingresos" id="menuIngresos">$0</div>
+                        <span class="label">💰 Ingresos</span>
+                        <span class="valor" id="menuIngresos">$0</span>
                     </div>
                     <div class="item" onclick="filtrarFinanzas('gasto')">
-                        <div class="label">💸 Gastos</div>
-                        <div class="valor gastos" id="menuGastos">$0</div>
+                        <span class="label">💸 Gastos</span>
+                        <span class="valor" id="menuGastos">$0</span>
                     </div>
                     <div class="item" style="cursor:default;">
-                        <div class="label">📈 Disponible</div>
-                        <div class="valor disponible" id="menuDisponible">$0</div>
+                        <span class="label">📈 Disponible</span>
+                        <span class="valor" id="menuDisponible">$0</span>
                     </div>
                 </div>
                 <div class="fila-conceptos">
                     <div class="item" data-filtro="inscripcion" onclick="filtrarFinanzas('inscripcion')">
                         <span class="label">📝 Inscripción</span>
-                        <span class="valor inscripcion" id="menuInscripcion">0/0 $0</span>
+                        <span class="valor" id="menuInscripcion">0/0 $0</span>
                     </div>
                     <div class="item" data-filtro="compendio" onclick="filtrarFinanzas('compendio')">
                         <span class="label">📚 Compendio</span>
-                        <span class="valor compendio" id="menuCompendio">0/0 $0</span>
+                        <span class="valor" id="menuCompendio">0/0 $0</span>
                     </div>
                     <div class="item" data-filtro="crucifijo" onclick="filtrarFinanzas('crucifijo')">
                         <span class="label">✝️ Crucifijo</span>
-                        <span class="valor crucifijo" id="menuCrucifijo">0/0 $0</span>
+                        <span class="valor" id="menuCrucifijo">0/0 $0</span>
                     </div>
                 </div>
             </div>
@@ -452,7 +505,7 @@
         <div class="card">
             <div class="card-title">📊 Resumen del periodo</div>
             <div id="resumenPeriodo" class="resumen-periodo"></div>
-            <button class="btn btn-danger" onclick="cerrarPeriodo()" style="width:100%; font-size:13px; padding:8px; margin-top:10px;">🔒 CERRAR PERIODO</button>
+            <button class="btn btn-danger" onclick="cerrarPeriodo()" style="width:100%; font-size:13px; padding:10px 12px; margin-top:10px; border-radius:8px; display:block; box-sizing:border-box;">🔒 CERRAR PERIODO</button>
             <p style="font-size:11px; color:#666; margin-top:6px; text-align:center;">⚠️ Se guardará el resumen y se creará uno nuevo en blanco.</p>
         </div>
         <div class="card">
@@ -893,7 +946,7 @@
         }
 
         // ============================================
-        // RENDERIZAR RESUMEN FINANZAS (CORREGIDO)
+        // RENDERIZAR RESUMEN FINANZAS
         // ============================================
         function renderizarResumenFinanzas() {
             const activos = data.participantes.filter(p => p.activo);
@@ -901,12 +954,10 @@
             const todos = data.participantes;
             const total = todos.length;
 
-            // Pagos de activos
             const pagadosInscAct = activos.filter(p => p.pagos.inscripcion.pagado).length;
             const pagadosCompAct = activos.filter(p => p.pagos.compendio.pagado).length;
             const pagadosCrucAct = activos.filter(p => p.pagos.crucifijo.pagado).length;
 
-            // Pagos de inactivos
             const pagadosInscInact = inactivos.filter(p => p.pagos.inscripcion.pagado).length;
             const pagadosCompInact = inactivos.filter(p => p.pagos.compendio.pagado).length;
             const pagadosCrucInact = inactivos.filter(p => p.pagos.crucifijo.pagado).length;
@@ -915,7 +966,6 @@
             const montoComp = data.config.montoCompendio || 80;
             const montoCruc = data.config.montoCrucifijo || 50;
 
-            // Totales por concepto (activos + inactivos)
             const totalInsc = (pagadosInscAct + pagadosInscInact) * montoInsc;
             const totalComp = (pagadosCompAct + pagadosCompInact) * montoComp;
             const totalCruc = (pagadosCrucAct + pagadosCrucInact) * montoCruc;
@@ -924,20 +974,24 @@
             const ingresosManuales = finanzas.filter(m => m.tipo === 'ingreso').reduce((sum, m) => sum + m.monto, 0);
             const gastosManuales = finanzas.filter(m => m.tipo === 'gasto').reduce((sum, m) => sum + m.monto, 0);
 
-            // 🔥 CORRECCIÓN: Solo se suman: inscripción de INACTIVOS + compendios + crucifijos + manuales
             const inscInactivos = pagadosInscInact * montoInsc;
             const totalIngresos = inscInactivos + totalComp + totalCruc + ingresosManuales;
             const totalGastos = gastosManuales;
             const disponible = totalIngresos - totalGastos;
 
-            document.getElementById('menuIngresos').textContent = `$${totalIngresos.toFixed(2)}`;
-            document.getElementById('menuGastos').textContent = `$${totalGastos.toFixed(2)}`;
-            document.getElementById('menuDisponible').textContent = `$${disponible.toFixed(2)}`;
+            // 💜 Ingresos en MORADO
+            document.getElementById('menuIngresos').innerHTML = `<span style="color:#8B5CF6; font-weight:bold;">$${totalIngresos.toFixed(2)}</span>`;
+            // 🟠 Gastos en NARANJA
+            document.getElementById('menuGastos').innerHTML = `<span style="color:#d35400; font-weight:bold;">$${totalGastos.toFixed(2)}</span>`;
+            // 🟢 Disponible en VERDE
+            document.getElementById('menuDisponible').innerHTML = `<span style="color:#2ecc71; font-weight:bold;">$${disponible.toFixed(2)}</span>`;
 
-            // Mostrar también los totales por concepto
-            document.getElementById('menuInscripcion').textContent = `${pagadosInscAct + pagadosInscInact}/${total} $${totalInsc.toFixed(0)}`;
-            document.getElementById('menuCompendio').textContent = `${pagadosCompAct + pagadosCompInact}/${total} $${totalComp.toFixed(0)}`;
-            document.getElementById('menuCrucifijo').textContent = `${pagadosCrucAct + pagadosCrucInact}/${total} $${totalCruc.toFixed(0)}`;
+            // 🔵 Inscripción en AZUL REY
+            document.getElementById('menuInscripcion').innerHTML = `${pagadosInscAct + pagadosInscInact}/${total} <span style="color:#2563EB; font-weight:bold;">$${totalInsc.toFixed(0)}</span>`;
+            // 🟡 Compendio en AMARILLO PURO
+            document.getElementById('menuCompendio').innerHTML = `${pagadosCompAct + pagadosCompInact}/${total} <span style="color:#FFFF00; font-weight:bold; text-shadow: 0 0 4px rgba(255,255,0,0.3);">$${totalComp.toFixed(0)}</span>`;
+            // 🩷 Crucifijo en ROSA
+            document.getElementById('menuCrucifijo').innerHTML = `${pagadosCrucAct + pagadosCrucInact}/${total} <span style="color:#EC4899; font-weight:bold;">$${totalCruc.toFixed(0)}</span>`;
 
             document.querySelectorAll('.fila-conceptos .item').forEach(item => {
                 const filtro = item.dataset.filtro;
@@ -952,7 +1006,7 @@
         }
 
         // ============================================
-        // HISTORIAL (CORREGIDO)
+        // HISTORIAL
         // ============================================
         function renderizarAdmin() {
             const activos = data.participantes.filter(p => p.activo);
@@ -961,22 +1015,18 @@
             const totalActivos = activos.length;
             const totalInactivos = inactivos.length;
 
-            // Pagos de activos
             const pagadosInscAct = activos.filter(p => p.pagos.inscripcion.pagado).length;
             const pagadosCompAct = activos.filter(p => p.pagos.compendio.pagado).length;
             const pagadosCrucAct = activos.filter(p => p.pagos.crucifijo.pagado).length;
 
-            // Pagos de inactivos
             const pagadosInscInact = inactivos.filter(p => p.pagos.inscripcion.pagado).length;
             const pagadosCompInact = inactivos.filter(p => p.pagos.compendio.pagado).length;
             const pagadosCrucInact = inactivos.filter(p => p.pagos.crucifijo.pagado).length;
 
-            // Montos unitarios
             const montoInsc = data.config.montoInscripcion || 50;
             const montoComp = data.config.montoCompendio || 80;
             const montoCruc = data.config.montoCrucifijo || 50;
 
-            // Cálculo de montos
             const inscActivos = pagadosInscAct * montoInsc;
             const inscInactivos = pagadosInscInact * montoInsc;
             const compActivos = pagadosCompAct * montoComp;
@@ -984,9 +1034,6 @@
             const crucActivos = pagadosCrucAct * montoCruc;
             const crucInactivos = pagadosCrucInact * montoCruc;
 
-            // ============================================
-            // DATOS REALES DE FINANZAS
-            // ============================================
             const finanzas = data.finanzas || [];
 
             const ingresos = finanzas
@@ -997,13 +1044,6 @@
                 .filter(m => m.tipo === 'gasto')
                 .reduce((sum, m) => sum + m.monto, 0);
 
-            // ============================================
-            // INGRESOS DISPONIBLES = 
-            //   INSCRIPCIÓN INACTIVOS +
-            //   COMPENDIOS (activos + inactivos) +
-            //   CRUCIFIJOS (activos + inactivos) +
-            //   INGRESOS MANUALES
-            // ============================================
             const totalInscInactivos = inscInactivos;
             const totalCompendios = compActivos + compInactivos;
             const totalCrucifijos = crucActivos + crucInactivos;
@@ -1011,16 +1051,16 @@
             const disponible = ingresosDisponibles - gastos;
 
             document.getElementById('resumenPeriodo').innerHTML = `
-                <div style="font-size:13px; line-height:1.8;">
-                    <div style="background:#f0f2f5; padding:8px 10px; border-radius:8px; margin-bottom:10px; font-weight:bold; text-align:center;">
+                <div style="font-size:13px; line-height:1.3;">
+                    <div style="background:#f0f2f5; padding:6px 10px; border-radius:8px; margin-bottom:8px; font-weight:bold; text-align:center;">
                         👥 Participantes: ${totalActivos} activos / ${totalInactivos} inactivos
                     </div>
 
-                    <div style="margin-bottom:6px;">
+                    <div style="margin-bottom:4px;">
                         <strong>📝 Inscripciones</strong>
                         <div class="historial-line">
                             <span class="label">Activos (${pagadosInscAct}/${totalActivos}): (Entregar parroquia)</span>
-                            <span class="monto amarillo">$${inscActivos.toFixed(2)}</span>
+                            <span class="historial-monto-azul">$${inscActivos.toFixed(2)}</span>
                         </div>
                         <div class="historial-line">
                             <span class="label">Inactivos (${pagadosInscInact}/${totalInactivos}): (Fondo grupo)</span>
@@ -1028,7 +1068,7 @@
                         </div>
                     </div>
 
-                    <div style="margin-bottom:6px;">
+                    <div style="margin-bottom:4px;">
                         <strong>📚 Compendios</strong>
                         <div class="historial-line">
                             <span class="label">Activos (${pagadosCompAct}/${totalActivos})</span>
@@ -1040,7 +1080,7 @@
                         </div>
                     </div>
 
-                    <div style="margin-bottom:6px;">
+                    <div style="margin-bottom:4px;">
                         <strong>✝️ Crucifijos</strong>
                         <div class="historial-line">
                             <span class="label">Activos (${pagadosCrucAct}/${totalActivos})</span>
@@ -1052,14 +1092,14 @@
                         </div>
                     </div>
 
-                    <hr style="margin:10px 0; border-color:#ddd;">
+                    <hr style="margin:6px 0; border-color:#ddd;">
 
                     <div class="historial-line">
                         <span class="label">💰 Ingresos:</span>
                         <span class="monto" style="color:#27ae60;">+$${ingresos.toFixed(2)}</span>
                     </div>
 
-                    <div class="historial-line" style="margin-bottom:8px;">
+                    <div class="historial-line" style="margin-bottom:4px;">
                         <span class="label">💸 Gastos:</span>
                         <span class="monto" style="color:#e74c3c;">-$${gastos.toFixed(2)}</span>
                     </div>
@@ -1070,7 +1110,6 @@
                 </div>
             `;
 
-            // Historial de periodos
             const historial = data.historial || [];
             const list = document.getElementById('historialPeriodos');
             if (historial.length === 0) {
@@ -1078,12 +1117,12 @@
                 return;
             }
             list.innerHTML = historial.slice().reverse().map(h =>
-                `<div class="periodo-item" style="display:flex; justify-content:space-between; align-items:center; padding:8px 0; border-bottom:1px solid #eee;">
+                `<div class="periodo-item">
                     <div>
                         <strong style="font-size:13px;">${h.nombre}</strong>
                         <div style="color:#999; font-size:11px;">${formatearFechaCorto(h.fechaCierre)}</div>
                     </div>
-                    <span style="font-weight:bold; color:#27ae60; font-size:14px;">$${h.total.toFixed(2)}</span>
+                    <span class="total">$${h.total.toFixed(2)}</span>
                 </div>`
             ).join('');
         }
@@ -1397,22 +1436,6 @@
                 const anio = String(d.getFullYear()).slice(-2);
                 return `${dia}-${mes}-${anio}`;
             } catch(e) { return fecha; }
-        }
-
-        function convertirFechaCortaAIso(fechaStr) {
-            if (!fechaStr) return null;
-            if (fechaStr.includes('-') && fechaStr.length === 10) return fechaStr;
-            const meses = { 'ene':0,'feb':1,'mar':2,'abr':3,'may':4,'jun':5,'jul':6,'ago':7,'sep':8,'oct':9,'nov':10,'dic':11 };
-            const parts = fechaStr.split('-');
-            if (parts.length === 3) {
-                const dia = parseInt(parts[0]);
-                const mes = meses[parts[1].toLowerCase()];
-                const anio = parseInt(parts[2]) + 2000;
-                if (dia && mes !== undefined && anio) {
-                    return `${anio}-${String(mes+1).padStart(2,'0')}-${String(dia).padStart(2,'0')}`;
-                }
-            }
-            return null;
         }
 
         document.addEventListener('DOMContentLoaded', function() {
