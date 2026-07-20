@@ -326,6 +326,12 @@
             background: #e9ecef;
         }
 
+        .historial-comentario {
+            font-size: 12px;
+            color: #999;
+            margin-top: 2px;
+        }
+
         /* ============================================ */
         /* RESPONSIVE */
         /* ============================================ */
@@ -540,10 +546,10 @@
             <div class="card-title">📊 Resumen del periodo</div>
             <div id="resumenPeriodo" class="resumen-periodo"></div>
             <button class="btn btn-danger" onclick="cerrarPeriodo()" style="width:100%; font-size:13px; padding:10px 12px; margin-top:10px; border-radius:8px; display:block; box-sizing:border-box;">🔒 CERRAR PERIODO</button>
-            <p style="font-size:11px; color:#666; margin-top:6px; text-align:center;">⚠️ Se guardará el resumen en CSV y se limpiarán los datos.</p>
+            <p style="font-size:11px; color:#666; margin-top:6px; text-align:center;">⚠️ Se descargará un CSV con el resumen y se limpiarán los datos.</p>
         </div>
         <div class="card">
-            <div class="card-title">📂 Períodos anteriores</div>
+            <div class="card-title">📂 Periodos anteriores</div>
             <div id="historialPeriodos" class="historial-periodos"></div>
         </div>
     </div>
@@ -600,10 +606,10 @@
     </div>
 
     <script>
-        // ============================================
+        // ============================================================
         // CONFIGURACIÓN
-        // ============================================
-        const API_URL = 'https://script.google.com/macros/s/AKfycbxWn_Y1v2wsW-EkuTk1Uht-hoHtUux-ZXnMNTgdbdCs1Lc0y8N2-JV1y2cSQ5_sMJPc/exec';
+        // ============================================================
+        const API_URL = 'https://script.google.com/macros/s/AKfycbzc76J5Z8BhqFqAoomoOwvkpb2U6ZEv9SfiPhUsMNZeYrtt8PuLqAvK2KLmmMDfFgRO/exec';
 
         let data = null;
         let filtroFinanzasActual = 'todos';
@@ -613,9 +619,9 @@
         let movimientoEditando = null;
         let cargando = false;
 
-        // ============================================
-        // TOAST
-        // ============================================
+        // ============================================================
+        // FUNCIONES DE UTILIDAD
+        // ============================================================
         function showToast(message, type = 'success') {
             const toast = document.getElementById('toast');
             toast.textContent = message;
@@ -628,17 +634,31 @@
             }, 3000);
         }
 
-        // ============================================
-        // FECHA
-        // ============================================
+        function obtenerFechaISO() {
+            return new Date().toISOString().split('T')[0];
+        }
+
+        function formatearFechaCorto(fecha) {
+            if (!fecha) return 'Sin fecha';
+            try {
+                const d = new Date(fecha);
+                if (isNaN(d.getTime())) return fecha;
+                const meses = ['ene', 'feb', 'mar', 'abr', 'may', 'jun', 'jul', 'ago', 'sep', 'oct', 'nov', 'dic'];
+                const dia = String(d.getDate()).padStart(2, '0');
+                const mes = meses[d.getMonth()];
+                const anio = String(d.getFullYear()).slice(-2);
+                return `${dia}-${mes}-${anio}`;
+            } catch (e) { return fecha; }
+        }
+
         function actualizarFechaDisplay() {
             const input = document.getElementById('finFechaInput');
             const display = document.getElementById('finFechaDisplay');
             if (input.value) {
                 const fecha = new Date(input.value + 'T00:00:00');
                 if (!isNaN(fecha.getTime())) {
-                    const meses = ['ene','feb','mar','abr','may','jun','jul','ago','sep','oct','nov','dic'];
-                    const dia = String(fecha.getDate()).padStart(2,'0');
+                    const meses = ['ene', 'feb', 'mar', 'abr', 'may', 'jun', 'jul', 'ago', 'sep', 'oct', 'nov', 'dic'];
+                    const dia = String(fecha.getDate()).padStart(2, '0');
                     const mes = meses[fecha.getMonth()];
                     const anio = String(fecha.getFullYear()).slice(-2);
                     display.textContent = `${dia}-${mes}-${anio}`;
@@ -650,33 +670,13 @@
             display.classList.add('placeholder');
         }
 
-        function obtenerFechaISO() {
-            return new Date().toISOString().split('T')[0];
-        }
-
-        function formatearFechaCorto(fecha) {
-            if (!fecha) return 'Sin fecha';
-            try {
-                const d = new Date(fecha);
-                if (isNaN(d.getTime())) return fecha;
-                const meses = ['ene','feb','mar','abr','may','jun','jul','ago','sep','oct','nov','dic'];
-                const dia = String(d.getDate()).padStart(2,'0');
-                const mes = meses[d.getMonth()];
-                const anio = String(d.getFullYear()).slice(-2);
-                return `${dia}-${mes}-${anio}`;
-            } catch(e) { return fecha; }
-        }
-
-        // ============================================
-        // LOADING
-        // ============================================
         function mostrarLoading(show) {
             document.getElementById('loadingOverlay').classList.toggle('active', show);
         }
 
-        // ============================================
+        // ============================================================
         // API
-        // ============================================
+        // ============================================================
         async function fetchData() {
             try {
                 const response = await fetch(API_URL + '?action=getData');
@@ -702,9 +702,9 @@
             }
         }
 
-        // ============================================
+        // ============================================================
         // CARGA DE DATOS
-        // ============================================
+        // ============================================================
         async function cargarDatos() {
             if (cargando) return;
             cargando = true;
@@ -739,9 +739,9 @@
             renderizarAdmin();
         }
 
-        // ============================================
-        // COBROS
-        // ============================================
+        // ============================================================
+        // RENDERIZAR - COBROS
+        // ============================================================
         function renderizarParticipantes() {
             const searchTerm = document.getElementById('searchInput').value.toLowerCase();
             const list = document.getElementById('participantList');
@@ -843,9 +843,9 @@
             `;
         }
 
-        // ============================================
+        // ============================================================
         // FILTROS - COBROS
-        // ============================================
+        // ============================================================
         function toggleDropdownFiltro(event, concepto) {
             event.stopPropagation();
             document.querySelectorAll('.dropdown-filtro').forEach(d => d.classList.remove('visible'));
@@ -888,9 +888,9 @@
             document.querySelectorAll('.dropdown-filtro').forEach(d => d.classList.remove('visible'));
         });
 
-        // ============================================
-        // FINANZAS
-        // ============================================
+        // ============================================================
+        // RENDERIZAR - FINANZAS
+        // ============================================================
         function renderizarFinanzas() {
             const list = document.getElementById('finanzasList');
             let movimientos = [];
@@ -1023,18 +1023,12 @@
             const totalGastos = gastosManuales;
             const disponible = totalIngresos - totalGastos;
 
-            // 💜 Ingresos en MORADO
             document.getElementById('menuIngresos').innerHTML = `<span style="color:#8B5CF6; font-weight:bold;">$${totalIngresos.toFixed(2)}</span>`;
-            // 🟠 Gastos en NARANJA
             document.getElementById('menuGastos').innerHTML = `<span style="color:#d35400; font-weight:bold;">$${totalGastos.toFixed(2)}</span>`;
-            // 🟢 Disponible en VERDE
             document.getElementById('menuDisponible').innerHTML = `<span style="color:#2ecc71; font-weight:bold;">$${disponible.toFixed(2)}</span>`;
 
-            // 🔵 Inscripción en AZUL REY
             document.getElementById('menuInscripcion').innerHTML = `${pagadosInscAct + pagadosInscInact}/${total} <span style="color:#2563EB; font-weight:bold;">$${totalInsc.toFixed(0)}</span>`;
-            // 🟡 Compendio en AMARILLO PURO
             document.getElementById('menuCompendio').innerHTML = `${pagadosCompAct + pagadosCompInact}/${total} <span style="color:#FFFF00; font-weight:bold; text-shadow: 0 0 4px rgba(255,255,0,0.3);">$${totalComp.toFixed(0)}</span>`;
-            // 🩷 Crucifijo en ROSA
             document.getElementById('menuCrucifijo').innerHTML = `${pagadosCrucAct + pagadosCrucInact}/${total} <span style="color:#EC4899; font-weight:bold;">$${totalCruc.toFixed(0)}</span>`;
 
             document.querySelectorAll('.fila-conceptos .item').forEach(item => {
@@ -1049,9 +1043,9 @@
             renderizarResumenFinanzas();
         }
 
-        // ============================================
-        // HISTORIAL
-        // ============================================
+        // ============================================================
+        // RENDERIZAR - HISTORIAL
+        // ============================================================
         function renderizarAdmin() {
             const activos = data.participantes.filter(p => p.activo);
             const inactivos = data.participantes.filter(p => !p.activo);
@@ -1093,9 +1087,6 @@
             const totalCrucifijos = crucActivos + crucInactivos;
             const ingresosDisponibles = totalInscInactivos + totalCompendios + totalCrucifijos + ingresos;
             const disponible = ingresosDisponibles - gastos;
-
-            // Calcular total de participantes para el resumen
-            const totalParticipantes = data.participantes.length;
 
             document.getElementById('resumenPeriodo').innerHTML = `
                 <div style="font-size:14px; line-height:1.4;">
@@ -1161,44 +1152,63 @@
             const historial = data.historial || [];
             const list = document.getElementById('historialPeriodos');
             if (historial.length === 0) {
-                list.innerHTML = '<div class="empty-state">No hay períodos cerrados</div>';
+                list.innerHTML = '<div class="empty-state">No hay periodos cerrados aún.</div>';
                 return;
             }
             list.innerHTML = historial.slice().reverse().map(h =>
                 `<div class="periodo-item">
                     <div>
-                        <strong style="font-size:14px;">${h.nombre}</strong>
-                        <div style="color:#999; font-size:12px;">${formatearFechaCorto(h.fechaCierre)}</div>
-                    </div>
-                    <div style="display:flex; align-items:center; gap:8px;">
-                        <span class="total">$${h.total.toFixed(2)}</span>
-                        ${h.urlCSV ? `<button class="btn-descargar" onclick="descargarCSV('${h.urlCSV}')" title="Descargar CSV">⬇️</button>` : ''}
+                        <div style="font-weight:bold; font-size:14px;">
+                            📅 ${h.fecha || 'Sin fecha'} - ${h.periodo || 'Periodo'}
+                        </div>
+                        <div style="color:#27ae60; font-weight:bold; font-size:15px;">
+                            💰 Total: $${(h.total || 0).toFixed(2)}
+                        </div>
+                        <div class="historial-comentario">
+                            📱 ${h.comentario || 'Descargado localmente'}
+                        </div>
                     </div>
                 </div>`
             ).join('');
         }
 
-        // ============================================
-        // DESCARGAR CSV
-        // ============================================
-        function descargarCSV(url) {
-            if (url) {
-                window.open(url, '_blank');
-            } else {
-                showToast('❌ No hay archivo disponible', 'error');
-            }
+        // ============================================================
+        // FUNCIÓN PARA DESCARGAR CSV (CON BOM PARA ACENTOS)
+        // ============================================================
+        function descargarCSV(csvContent, nombreArchivo) {
+            const BOM = '\uFEFF';
+            const contenidoConBOM = BOM + csvContent;
+            const blob = new Blob([contenidoConBOM], { type: 'text/csv;charset=utf-8;' });
+            const link = document.createElement('a');
+            const url = URL.createObjectURL(blob);
+            link.setAttribute('href', url);
+            link.setAttribute('download', nombreArchivo);
+            link.style.display = 'none';
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            URL.revokeObjectURL(url);
         }
 
-        // ============================================
+        // ============================================================
         // CERRAR PERIODO
-        // ============================================
+        // ============================================================
         async function cerrarPeriodo() {
-            if (!confirm('⚠️ ¿Cerrar el periodo actual?\n\nSe guardará un CSV con todos los datos y se limpiará el periodo.')) return;
+            if (!data || !data.participantes || data.participantes.length === 0) {
+                showToast('⚠️ No hay participantes para cerrar el periodo', 'error');
+                return;
+            }
+
+            if (!confirm('⚠️ ¿Cerrar el periodo actual?\n\nSe descargará un CSV con el resumen y se limpiarán los datos.')) {
+                return;
+            }
 
             mostrarLoading(true);
 
             try {
-                // 1. Calcular resumen
+                // ============================================================
+                // 1. CALCULAR RESUMEN
+                // ============================================================
                 const activos = data.participantes.filter(p => p.activo);
                 const inactivos = data.participantes.filter(p => !p.activo);
                 const totalParticipantes = data.participantes.length;
@@ -1250,38 +1260,111 @@
                     parroquia: inscActivos
                 };
 
-                // 2. Enviar a la API
-                const payload = {
+                // ============================================================
+                // 2. GENERAR CSV
+                // ============================================================
+                let csvContent = '';
+
+                csvContent += '=== RESUMEN DEL PERIODO ===\n';
+                csvContent += `Nombre del periodo,${periodoNombre}\n`;
+                csvContent += `Fecha de cierre,${fechaCierre}\n`;
+                csvContent += `Total participantes,${resumen.participantes}\n`;
+                csvContent += `Activos,${resumen.activos}\n`;
+                csvContent += `Inactivos,${resumen.inactivos}\n`;
+                csvContent += `Inscripción (total),${resumen.inscripcion.total}\n`;
+                csvContent += `  Activos (a parroquia),${resumen.inscripcion.activos}\n`;
+                csvContent += `  Inactivos (fondo),${resumen.inscripcion.inactivos}\n`;
+                csvContent += `Compendios,${resumen.compendio}\n`;
+                csvContent += `Crucifijos,${resumen.crucifijo}\n`;
+                csvContent += `Ingresos manuales,${resumen.ingresosManuales}\n`;
+                csvContent += `TOTAL INGRESOS,${resumen.totalIngresos}\n`;
+                csvContent += `Gastos manuales,${resumen.gastos}\n`;
+                csvContent += `Disponible final,${resumen.disponible}\n`;
+                csvContent += `Inscripción de activos (parroquia),${resumen.parroquia}\n\n`;
+
+                csvContent += '=== PARTICIPANTES ===\n';
+                csvContent += 'Nombre,Activo,Ins_Pagado,Ins_Fecha,Comp_Pagado,Comp_Fecha,Cru_Pagado,Cru_Fecha\n';
+                data.participantes.forEach(p => {
+                    const nombre = p.nombre.includes(',') ? `"${p.nombre}"` : p.nombre;
+                    csvContent += [
+                        nombre,
+                        p.activo ? 'True' : 'False',
+                        p.pagos.inscripcion.pagado ? 'True' : 'False',
+                        p.pagos.inscripcion.fecha || '',
+                        p.pagos.compendio.pagado ? 'True' : 'False',
+                        p.pagos.compendio.fecha || '',
+                        p.pagos.crucifijo.pagado ? 'True' : 'False',
+                        p.pagos.crucifijo.fecha || ''
+                    ].join(',') + '\n';
+                });
+                csvContent += '\n';
+
+                csvContent += '=== FINANZAS ===\n';
+                csvContent += 'Fecha,Tipo,Concepto,Monto\n';
+                data.finanzas.forEach(m => {
+                    const concepto = m.concepto.includes(',') ? `"${m.concepto}"` : m.concepto;
+                    csvContent += `${m.fecha},${m.tipo},${concepto},${m.monto}\n`;
+                });
+                csvContent += '\n';
+
+                csvContent += '=== CONFIGURACIÓN ===\n';
+                csvContent += 'Concepto,Monto\n';
+                csvContent += `Inscripción,${data.config?.montoInscripcion || 50}\n`;
+                csvContent += `Compendio,${data.config?.montoCompendio || 80}\n`;
+                csvContent += `Crucifijo,${data.config?.montoCrucifijo || 50}\n`;
+
+                // ============================================================
+                // 3. DESCARGAR CSV
+                // ============================================================
+                const nombreArchivo = `Evangelizacion_${fechaCierre}.csv`;
+                descargarCSV(csvContent, nombreArchivo);
+
+                // ============================================================
+                // 4. GUARDAR HISTORIAL EN GOOGLE SHEETS
+                // ============================================================
+                await sendData('guardarHistorial', {
                     periodoNombre: periodoNombre,
                     fechaCierre: fechaCierre,
-                    resumen: resumen,
-                    participantes: data.participantes,
-                    finanzas: data.finanzas,
-                    config: data.config
-                };
+                    total: disponible
+                });
 
-                const result = await sendData('closePeriodWithCSV', payload);
-
-                mostrarLoading(false);
-
-                if (result && result.success) {
-                    showToast('✅ Periodo cerrado. CSV guardado.');
-                    // Recargar datos (el Excel ya está limpio)
-                    await recargarDatos();
-                } else {
-                    showToast('❌ Error al cerrar el periodo', 'error');
+                // ============================================================
+                // 5. LIMPIAR DATOS EN GOOGLE SHEETS
+                // ============================================================
+                // Limpiar participantes
+                for (const p of data.participantes) {
+                    await sendData('updateMultiplePagos', {
+                        nombre: p.nombre,
+                        cambios: [
+                            { concepto: 'inscripcion', pagado: false, fecha: null },
+                            { concepto: 'compendio', pagado: false, fecha: null },
+                            { concepto: 'crucifijo', pagado: false, fecha: null }
+                        ]
+                    });
                 }
 
+                // Limpiar finanzas
+                for (const m of data.finanzas) {
+                    await sendData('deleteFinanza', { id: m.id });
+                }
+
+                // ============================================================
+                // 6. RECARGAR DATOS Y MOSTRAR MENSAJE
+                // ============================================================
+                await recargarDatos();
+                mostrarLoading(false);
+                showToast(`✅ Periodo cerrado. CSV descargado: ${nombreArchivo}`);
+
             } catch (error) {
+                console.error('❌ Error en cerrarPeriodo:', error);
                 mostrarLoading(false);
                 showToast('❌ Error: ' + error.message, 'error');
-                console.error(error);
             }
         }
 
-        // ============================================
+        // ============================================================
         // ACCIONES - PARTICIPANTES
-        // ============================================
+        // ============================================================
         async function guardarCambiosParticipante(nombre) {
             const participante = data.participantes.find(p => p.nombre === nombre);
             if (!participante) return;
@@ -1427,9 +1510,9 @@
             document.getElementById('modalAgregar').classList.remove('active');
         }
 
-        // ============================================
+        // ============================================================
         // ACCIONES - FINANZAS
-        // ============================================
+        // ============================================================
         async function agregarMovimiento() {
             const tipo = document.getElementById('finTipo').value;
             const concepto = document.getElementById('finConcepto').value.trim();
@@ -1510,9 +1593,9 @@
             movimientoEditando = null;
         }
 
-        // ============================================
+        // ============================================================
         // CONFIGURACIÓN - MONTOS
-        // ============================================
+        // ============================================================
         function abrirModalMontos() {
             document.getElementById('montoInscripcion').value = data.config.montoInscripcion;
             document.getElementById('montoCompendio').value = data.config.montoCompendio;
@@ -1541,9 +1624,9 @@
             }
         }
 
-        // ============================================
+        // ============================================================
         // INICIALIZACIÓN
-        // ============================================
+        // ============================================================
         document.addEventListener('DOMContentLoaded', function() {
             const montoInput = document.getElementById('finMonto');
             if (montoInput) {
@@ -1570,7 +1653,6 @@
                 });
             }
 
-            // Configurar tabs
             document.querySelectorAll('.tab').forEach(tab => {
                 tab.addEventListener('click', function() {
                     document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
@@ -1585,10 +1667,7 @@
                 });
             });
 
-            // Buscador
             document.getElementById('searchInput').addEventListener('input', renderizarParticipantes);
-
-            // Inicializar
             init();
         });
 
@@ -1604,9 +1683,9 @@
             }
         }
 
-        // ============================================
+        // ============================================================
         // SERVICE WORKER (PWA)
-        // ============================================
+        // ============================================================
         if ('serviceWorker' in navigator) {
             navigator.serviceWorker.register('sw.js')
                 .then(registration => { console.log('✅ Service Worker registrado:', registration); })
