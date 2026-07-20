@@ -609,7 +609,7 @@
         // ============================================================
         // CONFIGURACIÓN
         // ============================================================
-        const API_URL = 'https://script.google.com/macros/s/AKfycbzc76J5Z8BhqFqAoomoOwvkpb2U6ZEv9SfiPhUsMNZeYrtt8PuLqAvK2KLmmMDfFgRO/exec';
+        const API_URL = 'https://script.google.com/macros/s/AKfycbxk2M0bd_72e-oFAX3rBRv_j4nZ6yWHTIHL4sGYrVnzzdyVJJR93Hr0I_u-Yls3YW4r/exec';
 
         let data = null;
         let filtroFinanzasActual = 'todos';
@@ -1191,7 +1191,7 @@
         }
 
         // ============================================================
-        // CERRAR PERIODO
+        // CERRAR PERIODO (VERSIÓN CORREGIDA)
         // ============================================================
         async function cerrarPeriodo() {
             if (!data || !data.participantes || data.participantes.length === 0) {
@@ -1329,27 +1329,27 @@
                 });
 
                 // ============================================================
-                // 5. LIMPIAR DATOS EN GOOGLE SHEETS
+                // 5. ELIMINAR TODOS LOS PARTICIPANTES
                 // ============================================================
-                // Limpiar participantes
-                for (const p of data.participantes) {
-                    await sendData('updateMultiplePagos', {
-                        nombre: p.nombre,
-                        cambios: [
-                            { concepto: 'inscripcion', pagado: false, fecha: null },
-                            { concepto: 'compendio', pagado: false, fecha: null },
-                            { concepto: 'crucifijo', pagado: false, fecha: null }
-                        ]
-                    });
-                }
-
-                // Limpiar finanzas
-                for (const m of data.finanzas) {
-                    await sendData('deleteFinanza', { id: m.id });
-                }
+                await sendData('eliminarTodosParticipantes', {});
 
                 // ============================================================
-                // 6. RECARGAR DATOS Y MOSTRAR MENSAJE
+                // 6. ELIMINAR TODOS LOS MOVIMIENTOS DE FINANZAS
+                // ============================================================
+                await sendData('eliminarTodosFinanzas', {});
+
+                // ============================================================
+                // 7. AGREGAR EL FONDO DE ENTRADA
+                // ============================================================
+                await sendData('addFinanza', {
+                    fecha: fechaCierre,
+                    tipo: 'ingreso',
+                    concepto: 'Fondo de entrada (cierre periodo anterior)',
+                    monto: disponible
+                });
+
+                // ============================================================
+                // 8. RECARGAR DATOS Y MOSTRAR MENSAJE
                 // ============================================================
                 await recargarDatos();
                 mostrarLoading(false);
