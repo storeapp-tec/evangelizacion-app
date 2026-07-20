@@ -193,7 +193,7 @@
         .btn-eliminar { color: #e74c3c; }
 
         /* ============================================ */
-        /* FINANZAS - RESUMEN DE MOVIMIENTOS (3 COLUMNAS) */
+        /* FINANZAS - RESUMEN DE MOVIMIENTOS */
         /* ============================================ */
         .menu-inferior-finanzas { background: #1a2634; color: white; padding: 10px 12px; border-radius: 10px; margin-top: 8px; flex-shrink: 0; }
         .menu-inferior-finanzas .titulo { text-align: center; font-weight: bold; font-size: 15px; color: #fff; margin-bottom: 6px; }
@@ -312,6 +312,19 @@
         #resumenPeriodo strong { font-size: 14px; }
 
         .historial-monto-azul { color: #2563EB; font-weight: bold; font-size: 16px; }
+
+        .btn-descargar {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 18px;
+            padding: 2px 6px;
+            border-radius: 4px;
+            transition: background 0.2s;
+        }
+        .btn-descargar:hover {
+            background: #e9ecef;
+        }
 
         /* ============================================ */
         /* RESPONSIVE */
@@ -527,7 +540,7 @@
             <div class="card-title">📊 Resumen del periodo</div>
             <div id="resumenPeriodo" class="resumen-periodo"></div>
             <button class="btn btn-danger" onclick="cerrarPeriodo()" style="width:100%; font-size:13px; padding:10px 12px; margin-top:10px; border-radius:8px; display:block; box-sizing:border-box;">🔒 CERRAR PERIODO</button>
-            <p style="font-size:11px; color:#666; margin-top:6px; text-align:center;">⚠️ Se guardará el resumen y se creará uno nuevo en blanco.</p>
+            <p style="font-size:11px; color:#666; margin-top:6px; text-align:center;">⚠️ Se guardará el resumen en CSV y se limpiarán los datos.</p>
         </div>
         <div class="card">
             <div class="card-title">📂 Períodos anteriores</div>
@@ -588,13 +601,31 @@
 
     <script>
         // ============================================
-        // FORMATO DE MONEDA
+        // CONFIGURACIÓN
         // ============================================
-        function formatearMoneda(valor) {
-            if (!valor) return '';
-            const numero = parseFloat(valor.replace(/[^0-9.]/g, ''));
-            if (isNaN(numero)) return '';
-            return '$' + numero.toFixed(2);
+        const API_URL = 'https://script.google.com/macros/s/AKfycbxWn_Y1v2wsW-EkuTk1Uht-hoHtUux-ZXnMNTgdbdCs1Lc0y8N2-JV1y2cSQ5_sMJPc/exec';
+
+        let data = null;
+        let filtroFinanzasActual = 'todos';
+        let filtroCobrosConcepto = null;
+        let filtroCobrosEstado = null;
+        let participanteEditando = null;
+        let movimientoEditando = null;
+        let cargando = false;
+
+        // ============================================
+        // TOAST
+        // ============================================
+        function showToast(message, type = 'success') {
+            const toast = document.getElementById('toast');
+            toast.textContent = message;
+            toast.className = 'toast ' + type;
+            void toast.offsetWidth;
+            toast.classList.add('show');
+            clearTimeout(toast._timeout);
+            toast._timeout = setTimeout(() => {
+                toast.classList.remove('show');
+            }, 3000);
         }
 
         // ============================================
@@ -619,33 +650,29 @@
             display.classList.add('placeholder');
         }
 
-        // ============================================
-        // TOAST
-        // ============================================
-        function showToast(message, type = 'success') {
-            const toast = document.getElementById('toast');
-            toast.textContent = message;
-            toast.className = 'toast ' + type;
-            void toast.offsetWidth;
-            toast.classList.add('show');
-            clearTimeout(toast._timeout);
-            toast._timeout = setTimeout(() => {
-                toast.classList.remove('show');
-            }, 1500);
+        function obtenerFechaISO() {
+            return new Date().toISOString().split('T')[0];
+        }
+
+        function formatearFechaCorto(fecha) {
+            if (!fecha) return 'Sin fecha';
+            try {
+                const d = new Date(fecha);
+                if (isNaN(d.getTime())) return fecha;
+                const meses = ['ene','feb','mar','abr','may','jun','jul','ago','sep','oct','nov','dic'];
+                const dia = String(d.getDate()).padStart(2,'0');
+                const mes = meses[d.getMonth()];
+                const anio = String(d.getFullYear()).slice(-2);
+                return `${dia}-${mes}-${anio}`;
+            } catch(e) { return fecha; }
         }
 
         // ============================================
-        // CONFIGURACIÓN
+        // LOADING
         // ============================================
-        const API_URL = 'https://script.google.com/macros/s/AKfycbyqy6bF784Bc-qCrOnkqm8lZzNGxf5hqLi4V4vEtR1WHwienqcQH0fOs4M-1FrvYqyf/exec';
-
-        let data = null;
-        let filtroFinanzasActual = 'todos';
-        let filtroCobrosConcepto = null;
-        let filtroCobrosEstado = null;
-        let participanteEditando = null;
-        let movimientoEditando = null;
-        let cargando = false;
+        function mostrarLoading(show) {
+            document.getElementById('loadingOverlay').classList.toggle('active', show);
+        }
 
         // ============================================
         // API
@@ -662,7 +689,7 @@
 
         async function sendData(action, data) {
             try {
-                await fetch(API_URL, {
+                const response = await fetch(API_URL, {
                     method: 'POST',
                     mode: 'no-cors',
                     headers: { 'Content-Type': 'application/json' },
@@ -701,10 +728,6 @@
         async function recargarDatos() {
             await cargarDatos();
             renderizarTodo();
-        }
-
-        function mostrarLoading(show) {
-            document.getElementById('loadingOverlay').classList.toggle('active', show);
         }
 
         function renderizarTodo() {
@@ -820,6 +843,9 @@
             `;
         }
 
+        // ============================================
+        // FILTROS - COBROS
+        // ============================================
         function toggleDropdownFiltro(event, concepto) {
             event.stopPropagation();
             document.querySelectorAll('.dropdown-filtro').forEach(d => d.classList.remove('visible'));
@@ -966,9 +992,6 @@
             }).join('');
         }
 
-        // ============================================
-        // RENDERIZAR RESUMEN FINANZAS
-        // ============================================
         function renderizarResumenFinanzas() {
             const activos = data.participantes.filter(p => p.activo);
             const inactivos = data.participantes.filter(p => !p.activo);
@@ -1071,6 +1094,9 @@
             const ingresosDisponibles = totalInscInactivos + totalCompendios + totalCrucifijos + ingresos;
             const disponible = ingresosDisponibles - gastos;
 
+            // Calcular total de participantes para el resumen
+            const totalParticipantes = data.participantes.length;
+
             document.getElementById('resumenPeriodo').innerHTML = `
                 <div style="font-size:14px; line-height:1.4;">
                     <div style="background:#f0f2f5; padding:6px 10px; border-radius:8px; margin-bottom:8px; font-weight:bold; text-align:center;">
@@ -1131,6 +1157,7 @@
                 </div>
             `;
 
+            // Historial de periodos anteriores
             const historial = data.historial || [];
             const list = document.getElementById('historialPeriodos');
             if (historial.length === 0) {
@@ -1143,9 +1170,113 @@
                         <strong style="font-size:14px;">${h.nombre}</strong>
                         <div style="color:#999; font-size:12px;">${formatearFechaCorto(h.fechaCierre)}</div>
                     </div>
-                    <span class="total">$${h.total.toFixed(2)}</span>
+                    <div style="display:flex; align-items:center; gap:8px;">
+                        <span class="total">$${h.total.toFixed(2)}</span>
+                        ${h.urlCSV ? `<button class="btn-descargar" onclick="descargarCSV('${h.urlCSV}')" title="Descargar CSV">⬇️</button>` : ''}
+                    </div>
                 </div>`
             ).join('');
+        }
+
+        // ============================================
+        // DESCARGAR CSV
+        // ============================================
+        function descargarCSV(url) {
+            if (url) {
+                window.open(url, '_blank');
+            } else {
+                showToast('❌ No hay archivo disponible', 'error');
+            }
+        }
+
+        // ============================================
+        // CERRAR PERIODO
+        // ============================================
+        async function cerrarPeriodo() {
+            if (!confirm('⚠️ ¿Cerrar el periodo actual?\n\nSe guardará un CSV con todos los datos y se limpiará el periodo.')) return;
+
+            mostrarLoading(true);
+
+            try {
+                // 1. Calcular resumen
+                const activos = data.participantes.filter(p => p.activo);
+                const inactivos = data.participantes.filter(p => !p.activo);
+                const totalParticipantes = data.participantes.length;
+
+                const pagadosInscAct = activos.filter(p => p.pagos.inscripcion.pagado).length;
+                const pagadosCompAct = activos.filter(p => p.pagos.compendio.pagado).length;
+                const pagadosCrucAct = activos.filter(p => p.pagos.crucifijo.pagado).length;
+
+                const pagadosInscInact = inactivos.filter(p => p.pagos.inscripcion.pagado).length;
+                const pagadosCompInact = inactivos.filter(p => p.pagos.compendio.pagado).length;
+                const pagadosCrucInact = inactivos.filter(p => p.pagos.crucifijo.pagado).length;
+
+                const montoInsc = data.config.montoInscripcion || 50;
+                const montoComp = data.config.montoCompendio || 80;
+                const montoCruc = data.config.montoCrucifijo || 50;
+
+                const totalInsc = (pagadosInscAct + pagadosInscInact) * montoInsc;
+                const totalComp = (pagadosCompAct + pagadosCompInact) * montoComp;
+                const totalCruc = (pagadosCrucAct + pagadosCrucInact) * montoCruc;
+
+                const finanzas = data.finanzas || [];
+                const ingresosManuales = finanzas.filter(m => m.tipo === 'ingreso').reduce((sum, m) => sum + m.monto, 0);
+                const gastosManuales = finanzas.filter(m => m.tipo === 'gasto').reduce((sum, m) => sum + m.monto, 0);
+
+                const inscInactivos = pagadosInscInact * montoInsc;
+                const totalIngresos = inscInactivos + totalComp + totalCruc + ingresosManuales;
+                const totalGastos = gastosManuales;
+                const disponible = totalIngresos - totalGastos;
+                const inscActivos = pagadosInscAct * montoInsc;
+
+                const periodoNombre = `Periodo ${new Date().toLocaleDateString()}`;
+                const fechaCierre = obtenerFechaISO();
+
+                const resumen = {
+                    participantes: totalParticipantes,
+                    activos: activos.length,
+                    inactivos: inactivos.length,
+                    inscripcion: {
+                        total: totalInsc,
+                        activos: inscActivos,
+                        inactivos: inscInactivos
+                    },
+                    compendio: totalComp,
+                    crucifijo: totalCruc,
+                    ingresosManuales: ingresosManuales,
+                    gastos: gastosManuales,
+                    totalIngresos: totalIngresos,
+                    disponible: disponible,
+                    parroquia: inscActivos
+                };
+
+                // 2. Enviar a la API
+                const payload = {
+                    periodoNombre: periodoNombre,
+                    fechaCierre: fechaCierre,
+                    resumen: resumen,
+                    participantes: data.participantes,
+                    finanzas: data.finanzas,
+                    config: data.config
+                };
+
+                const result = await sendData('closePeriodWithCSV', payload);
+
+                mostrarLoading(false);
+
+                if (result && result.success) {
+                    showToast('✅ Periodo cerrado. CSV guardado.');
+                    // Recargar datos (el Excel ya está limpio)
+                    await recargarDatos();
+                } else {
+                    showToast('❌ Error al cerrar el periodo', 'error');
+                }
+
+            } catch (error) {
+                mostrarLoading(false);
+                showToast('❌ Error: ' + error.message, 'error');
+                console.error(error);
+            }
         }
 
         // ============================================
@@ -1380,37 +1511,6 @@
         }
 
         // ============================================
-        // ADMIN - CERRAR PERIODO
-        // ============================================
-        async function cerrarPeriodo() {
-            if (!confirm('¿Cerrar el periodo actual?')) return;
-            const activos = data.participantes.filter(p => p.activo);
-            const total = activos.length;
-            const pagadosInsc = activos.filter(p => p.pagos.inscripcion.pagado).length;
-            const pagadosComp = activos.filter(p => p.pagos.compendio.pagado).length;
-            const pagadosCruc = activos.filter(p => p.pagos.crucifijo.pagado).length;
-            const totalInsc = pagadosInsc * data.config.montoInscripcion;
-            const totalComp = pagadosComp * data.config.montoCompendio;
-            const totalCruc = pagadosCruc * data.config.montoCrucifijo;
-            const totalGeneral = totalInsc + totalComp + totalCruc;
-            const finanzas = data.finanzas || [];
-            const totalIngresosManual = finanzas.filter(m => m.tipo === 'ingreso').reduce((sum, m) => sum + m.monto, 0);
-            const totalGastosManual = finanzas.filter(m => m.tipo === 'gasto').reduce((sum, m) => sum + m.monto, 0);
-            const totalFinal = totalGeneral + totalIngresosManual - totalGastosManual;
-            const periodoNombre = `Periodo ${new Date().toLocaleDateString()}`;
-            const fechaCierre = obtenerFechaISO();
-            mostrarLoading(true);
-            const result = await sendData('closePeriod', { nombre: periodoNombre, fechaCierre, total: totalFinal });
-            mostrarLoading(false);
-            if (result && result.success) {
-                await recargarDatos();
-                showToast('✅ Guardado');
-            } else {
-                showToast('❌ Error', 'error');
-            }
-        }
-
-        // ============================================
         // CONFIGURACIÓN - MONTOS
         // ============================================
         function abrirModalMontos() {
@@ -1442,23 +1542,8 @@
         }
 
         // ============================================
-        // UTILIDADES
+        // INICIALIZACIÓN
         // ============================================
-        function obtenerFechaISO() { return new Date().toISOString().split('T')[0]; }
-
-        function formatearFechaCorto(fecha) {
-            if (!fecha) return 'Sin fecha';
-            try {
-                const d = new Date(fecha);
-                if (isNaN(d.getTime())) return fecha;
-                const meses = ['ene','feb','mar','abr','may','jun','jul','ago','sep','oct','nov','dic'];
-                const dia = String(d.getDate()).padStart(2,'0');
-                const mes = meses[d.getMonth()];
-                const anio = String(d.getFullYear()).slice(-2);
-                return `${dia}-${mes}-${anio}`;
-            } catch(e) { return fecha; }
-        }
-
         document.addEventListener('DOMContentLoaded', function() {
             const montoInput = document.getElementById('finMonto');
             if (montoInput) {
@@ -1484,9 +1569,8 @@
                     }
                 });
             }
-        });
 
-        function configurarTabs() {
+            // Configurar tabs
             document.querySelectorAll('.tab').forEach(tab => {
                 tab.addEventListener('click', function() {
                     document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
@@ -1500,18 +1584,18 @@
                     }
                 });
             });
-        }
 
-        function configurarBusqueda() {
+            // Buscador
             document.getElementById('searchInput').addEventListener('input', renderizarParticipantes);
-        }
+
+            // Inicializar
+            init();
+        });
 
         async function init() {
             const success = await cargarDatos();
             if (success) {
                 renderizarTodo();
-                configurarTabs();
-                configurarBusqueda();
                 const fechaInput = document.getElementById('finFechaInput');
                 if (fechaInput) {
                     fechaInput.value = obtenerFechaISO();
@@ -1520,8 +1604,9 @@
             }
         }
 
-        document.addEventListener('DOMContentLoaded', init);
-
+        // ============================================
+        // SERVICE WORKER (PWA)
+        // ============================================
         if ('serviceWorker' in navigator) {
             navigator.serviceWorker.register('sw.js')
                 .then(registration => { console.log('✅ Service Worker registrado:', registration); })
