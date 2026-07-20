@@ -38,7 +38,7 @@
         /* TABS */
         /* ============================================ */
         .tabs { display: flex; background: #2c3e50; flex-shrink: 0; z-index: 99; }
-        .tab { flex: 1; padding: 10px; text-align: center; color: #bdc3c7; background: transparent; border: none; font-size: 14px; font-weight: 600; cursor: pointer; border-bottom: 3px solid transparent; }
+        .tab { flex: 1; padding: 10px; text-align: center; color: #bdc3c7; background: transparent; border: none; font-size: 13px; font-weight: 600; cursor: pointer; border-bottom: 3px solid transparent; }
         .tab.active { color: white; border-bottom-color: #3498db; }
 
         /* ============================================ */
@@ -70,7 +70,7 @@
         /* LISTA DE PARTICIPANTES */
         /* ============================================ */
         .participant-list-container { flex: 1; overflow-y: auto; min-height: 100px; max-height: 400px; }
-        .participant-item { display: flex; align-items: center; padding: 8px 6px; border-bottom: 1px solid #f0f0f0; cursor: pointer; }
+        .participant-item { display: flex; align-items: center; padding: 6px 4px; border-bottom: 1px solid #f0f0f0; cursor: pointer; }
         .participant-item:hover { background: #f8f9fa; }
         .participant-item.inactive { opacity: 0.7; background: #f5f5f5; }
         .participant-name { flex: 1; font-size: 13px; font-weight: 500; }
@@ -78,12 +78,12 @@
         /* ============================================ */
         /* STATUS ICONS */
         /* ============================================ */
-        .participant-status { display: flex; gap: 6px; margin-left: 6px; align-items: center; }
-        .status-icon { width: 22px; height: 22px; display: flex; align-items: center; justify-content: center; border-radius: 50%; font-size: 11px; font-weight: bold; color: white; flex-shrink: 0; }
+        .participant-status { display: flex; gap: 4px; margin-left: 6px; align-items: center; }
+        .status-icon { width: 20px; height: 20px; display: flex; align-items: center; justify-content: center; border-radius: 50%; font-size: 10px; font-weight: bold; color: white; flex-shrink: 0; }
         .status-icon.pagado { background: #27ae60; }
         .status-icon.pendiente { background: #e74c3c; }
-        .status-icon.activo-icon { font-size: 16px; color: #22aa44 !important; background: none !important; width: 22px; height: 22px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-weight: bold; }
-        .status-icon.inactivo-icon { font-size: 16px; color: #cc2222 !important; background: none !important; width: 22px; height: 22px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-weight: bold; }
+        .status-icon.activo-icon { font-size: 14px; color: #22aa44 !important; background: none !important; width: 20px; height: 20px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-weight: bold; }
+        .status-icon.inactivo-icon { font-size: 14px; color: #cc2222 !important; background: none !important; width: 20px; height: 20px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-weight: bold; }
 
         /* ============================================ */
         /* CABECERA PARTICIPANTES (FILTROS) */
@@ -91,7 +91,7 @@
         .cabecera-participantes { display: flex; align-items: center; padding: 4px 6px 6px 6px; border-bottom: 2px solid #e0e0e0; margin-bottom: 4px; font-weight: 600; font-size: 13px; color: #555; flex-shrink: 0; }
         .cabecera-participantes .col-nombre { flex: 1; font-size: 14px; }
         .cabecera-participantes .col-iconos { display: flex; gap: 4px; align-items: center; }
-        .cabecera-participantes .col-iconos .filtro-icono-cabecera { font-size: 17px; cursor: pointer; padding: 2px 3px; border-radius: 4px; border: 2px solid transparent; transition: all 0.2s; background: none; line-height: 1; width: 26px; text-align: center; }
+        .cabecera-participantes .col-iconos .filtro-icono-cabecera { font-size: 16px; cursor: pointer; padding: 2px 3px; border-radius: 4px; border: 2px solid transparent; transition: all 0.2s; background: none; line-height: 1; width: 24px; text-align: center; }
         .cabecera-participantes .col-iconos .filtro-icono-cabecera:hover { background: #e9ecef; }
         .cabecera-participantes .col-iconos .filtro-icono-cabecera.active { border-color: #3498db; background: #e9ecef; }
 
@@ -333,6 +333,28 @@
         }
 
         /* ============================================ */
+        /* HISTORIAL - CONTENEDOR CON SCROLL */
+        /* ============================================ */
+        .historial-periodos {
+            max-height: 250px;
+            overflow-y: auto;
+            padding-right: 4px;
+        }
+
+        .historial-periodos::-webkit-scrollbar {
+            width: 4px;
+        }
+
+        .historial-periodos::-webkit-scrollbar-thumb {
+            background: #c1c7cd;
+            border-radius: 10px;
+        }
+
+        .historial-periodos::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        /* ============================================ */
         /* RESPONSIVE */
         /* ============================================ */
         @media (max-width: 480px) {
@@ -371,6 +393,7 @@
             .periodo-item strong { font-size: 13px; }
             .periodo-item .total { font-size: 15px; }
             #resumenPeriodo strong { font-size: 13px; }
+            .historial-periodos { max-height: 180px; }
         }
     </style>
 </head>
@@ -387,7 +410,8 @@
     <div class="tabs">
         <button class="tab active" data-tab="cobros">👥 Cobros</button>
         <button class="tab" data-tab="finanzas">💰 Finanzas</button>
-        <button class="tab" data-tab="admin">📜 Historial</button>
+        <button class="tab" data-tab="admin">📊 Resumen</button>
+        <button class="tab" data-tab="historialTab">📚 Historial</button>
     </div>
 
     <!-- ============================================================ -->
@@ -539,7 +563,7 @@
     </div>
 
     <!-- ============================================================ -->
-    <!-- HISTORIAL -->
+    <!-- RESULTADO / RESUMEN DEL PERIODO -->
     <!-- ============================================================ -->
     <div id="admin" class="content">
         <div class="card">
@@ -548,6 +572,12 @@
             <button class="btn btn-danger" onclick="cerrarPeriodo()" style="width:100%; font-size:13px; padding:10px 12px; margin-top:10px; border-radius:8px; display:block; box-sizing:border-box;">🔒 CERRAR PERIODO</button>
             <p style="font-size:11px; color:#666; margin-top:6px; text-align:center;">⚠️ Se descargará un CSV con el resumen y se limpiarán los datos.</p>
         </div>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- HISTORIAL (PESTAÑA SEPARADA) -->
+    <!-- ============================================================ -->
+    <div id="historialTab" class="content">
         <div class="card">
             <div class="card-title">📂 Periodos anteriores</div>
             <div id="historialPeriodos" class="historial-periodos"></div>
@@ -737,6 +767,7 @@
             renderizarFinanzas();
             renderizarResumenFinanzas();
             renderizarAdmin();
+            renderizarHistorial();
         }
 
         // ============================================================
@@ -1044,7 +1075,7 @@
         }
 
         // ============================================================
-        // RENDERIZAR - HISTORIAL
+        // RENDERIZAR - RESUMEN DEL PERIODO (ADMIN)
         // ============================================================
         function renderizarAdmin() {
             const activos = data.participantes.filter(p => p.activo);
@@ -1147,29 +1178,55 @@
                     </div>
                 </div>
             `;
+        }
 
-            // Historial de periodos anteriores
+        // ============================================================
+        // RENDERIZAR - HISTORIAL (PESTAÑA SEPARADA)
+        // ============================================================
+        function renderizarHistorial() {
             const historial = data.historial || [];
             const list = document.getElementById('historialPeriodos');
+
             if (historial.length === 0) {
                 list.innerHTML = '<div class="empty-state">No hay periodos cerrados aún.</div>';
                 return;
             }
-            list.innerHTML = historial.slice().reverse().map(h =>
-                `<div class="periodo-item">
-                    <div>
-                        <div style="font-weight:bold; font-size:14px;">
-                            📅 ${h.fecha || 'Sin fecha'} - ${h.periodo || 'Periodo'}
+
+            list.innerHTML = historial.slice().reverse().map(h => {
+                // Formatear fecha corta (DD/MM/YYYY)
+                let fechaMostrada = '';
+                if (h.fecha) {
+                    try {
+                        const d = new Date(h.fecha);
+                        if (!isNaN(d.getTime())) {
+                            const dia = String(d.getDate()).padStart(2, '0');
+                            const mes = String(d.getMonth() + 1).padStart(2, '0');
+                            const anio = d.getFullYear();
+                            fechaMostrada = `${dia}/${mes}/${anio}`;
+                        }
+                    } catch (e) {
+                        fechaMostrada = h.fecha;
+                    }
+                }
+                
+                const totalColor = (h.total || 0) >= 0 ? '#27ae60' : '#e74c3c';
+                
+                return `
+                    <div class="periodo-item" style="display:block; padding:8px 0; border-bottom:1px solid #eee;">
+                        <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap;">
+                            <span style="font-weight:bold; font-size:14px;">
+                                📅 ${fechaMostrada ? fechaMostrada + ' - ' : ''}${h.periodo || 'Periodo'}
+                            </span>
+                            <span style="font-weight:bold; font-size:15px; color:${totalColor};">
+                                💰 $${(h.total || 0).toFixed(2)}
+                            </span>
                         </div>
-                        <div style="color:#27ae60; font-weight:bold; font-size:15px;">
-                            💰 Total: $${(h.total || 0).toFixed(2)}
-                        </div>
-                        <div class="historial-comentario">
+                        <div class="historial-comentario" style="font-size:12px; color:#999; margin-top:2px;">
                             📱 ${h.comentario || 'Descargado localmente'}
                         </div>
                     </div>
-                </div>`
-            ).join('');
+                `;
+            }).join('');
         }
 
         // ============================================================
@@ -1663,6 +1720,9 @@
                         filtroFinanzasActual = 'todos';
                         renderizarFinanzas();
                         renderizarResumenFinanzas();
+                    }
+                    if (this.dataset.tab === 'historialTab') {
+                        renderizarHistorial();
                     }
                 });
             });
