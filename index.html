@@ -51,14 +51,50 @@
         /* ============================================ */
         /* CONTENT */
         /* ============================================ */
-        .content { display: none; padding: 12px; max-width: 600px; margin: 0 auto; flex: 1; overflow: hidden; padding-bottom: 12px; min-height: 0; }
-        .content.active { display: flex; flex-direction: column; }
+        .content {
+            display: none;
+            padding: 12px;
+            max-width: 600px;
+            margin: 0 auto;
+            flex: 1;
+            overflow: hidden;
+            padding-bottom: 12px;
+            min-height: 0;
+            height: 100%;
+        }
+        .content.active {
+            display: flex;
+            flex-direction: column;
+        }
 
         /* ============================================ */
         /* CARDS */
         /* ============================================ */
-        .card { background: white; border-radius: 10px; padding: 12px; margin-bottom: 12px; box-shadow: 0 1px 4px rgba(0,0,0,0.08); flex-shrink: 0; }
-        .card-title { font-size: 15px; font-weight: 600; margin-bottom: 8px; color: #2c3e50; display: flex; align-items: center; justify-content: space-between; }
+        .card {
+            background: white;
+            border-radius: 10px;
+            padding: 12px;
+            margin-bottom: 12px;
+            box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+            flex-shrink: 0;
+        }
+        .card:last-child {
+            flex-shrink: 1;
+            flex: 1;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            min-height: 0;
+        }
+        .card-title {
+            font-size: 15px;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #2c3e50;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
 
         /* ============================================ */
         /* BUSCADOR */
@@ -69,7 +105,12 @@
         /* ============================================ */
         /* LISTA DE PARTICIPANTES */
         /* ============================================ */
-        .participant-list-container { flex: 1; overflow-y: auto; min-height: 100px; max-height: 400px; }
+        .participant-list-container {
+            flex: 1;
+            overflow-y: auto;
+            min-height: 100px;
+            max-height: none;
+        }
         .participant-item { display: flex; align-items: center; padding: 6px 4px; border-bottom: 1px solid #f0f0f0; cursor: pointer; }
         .participant-item:hover { background: #f8f9fa; }
         .participant-item.inactive { opacity: 0.7; background: #f5f5f5; }
@@ -108,7 +149,14 @@
         /* ============================================ */
         /* SUMMARY (COBROS) */
         /* ============================================ */
-        .summary { background: #1a2634; color: white; padding: 10px 12px; border-radius: 10px; margin-top: 8px; flex-shrink: 0; }
+        .summary {
+            background: #1a2634;
+            color: white;
+            padding: 10px 12px;
+            border-radius: 10px;
+            margin-top: 8px;
+            flex-shrink: 0;
+        }
         .summary .fila-superior { display: flex; justify-content: space-between; align-items: center; font-size: 14px; font-weight: bold; flex-wrap: wrap; gap: 4px; }
         .summary .fila-superior .titulo { font-weight: bold; color: #fff; font-size: 15px; }
         .summary .fila-superior .activos { color: #22aa44; }
@@ -333,25 +381,25 @@
         }
 
         /* ============================================ */
+        /* HISTORIAL - CARD */
+        /* ============================================ */
+        #historialTab .card {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            min-height: 0;
+            overflow: hidden;
+        }
+
+        /* ============================================ */
         /* HISTORIAL - CONTENEDOR CON SCROLL */
         /* ============================================ */
         .historial-periodos {
-            max-height: 250px;
+            max-height: none;
+            height: 100%;
             overflow-y: auto;
             padding-right: 4px;
-        }
-
-        .historial-periodos::-webkit-scrollbar {
-            width: 4px;
-        }
-
-        .historial-periodos::-webkit-scrollbar-thumb {
-            background: #c1c7cd;
-            border-radius: 10px;
-        }
-
-        .historial-periodos::-webkit-scrollbar-track {
-            background: transparent;
+            flex: 1;
         }
 
         /* ============================================ */
@@ -393,7 +441,7 @@
             .periodo-item strong { font-size: 13px; }
             .periodo-item .total { font-size: 15px; }
             #resumenPeriodo strong { font-size: 13px; }
-            .historial-periodos { max-height: 180px; }
+            .historial-periodos { max-height: none; }
         }
     </style>
 </head>
@@ -1192,8 +1240,9 @@
                 return;
             }
 
-            list.innerHTML = historial.slice().reverse().map(h => {
-                // Formatear fecha corta (DD/MM/YYYY)
+            list.innerHTML = historial.slice().reverse().map((h, index) => {
+                const realIndex = historial.length - 1 - index;
+                
                 let fechaMostrada = '';
                 if (h.fecha) {
                     try {
@@ -1212,14 +1261,26 @@
                 const totalColor = (h.total || 0) >= 0 ? '#27ae60' : '#e74c3c';
                 
                 return `
-                    <div class="periodo-item" style="display:block; padding:8px 0; border-bottom:1px solid #eee;">
+                    <div class="periodo-item" style="display:block; padding:8px 0; border-bottom:1px solid #eee;" id="periodo-${realIndex}">
                         <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap;">
                             <span style="font-weight:bold; font-size:14px;">
-                                📅 ${fechaMostrada ? fechaMostrada + ' - ' : ''}${h.periodo || 'Periodo'}
+                                📅 ${fechaMostrada || 'Sin fecha'}
                             </span>
-                            <span style="font-weight:bold; font-size:15px; color:${totalColor};">
-                                💰 $${(h.total || 0).toFixed(2)}
-                            </span>
+                            <div style="display:flex; align-items:center; gap:6px;">
+                                <span style="font-weight:bold; font-size:15px; color:${totalColor};">
+                                    💰 $${(h.total || 0).toFixed(2)}
+                                </span>
+                                <button onclick="editarHistorial(${realIndex})" 
+                                        style="background:none; border:none; cursor:pointer; font-size:14px; padding:2px 4px; border-radius:4px; transition:background 0.2s; color:#3498db;"
+                                        onmouseover="this.style.background='#e9ecef'" 
+                                        onmouseout="this.style.background='none'"
+                                        title="Editar periodo">✏️</button>
+                                <button onclick="eliminarHistorial(${realIndex})" 
+                                        style="background:none; border:none; cursor:pointer; font-size:14px; padding:2px 4px; border-radius:4px; transition:background 0.2s; color:#e74c3c;"
+                                        onmouseover="this.style.background='#fde8e8'" 
+                                        onmouseout="this.style.background='none'"
+                                        title="Eliminar periodo">✕</button>
+                            </div>
                         </div>
                         <div class="historial-comentario" style="font-size:12px; color:#999; margin-top:2px;">
                             📱 ${h.comentario || 'Descargado localmente'}
@@ -1417,6 +1478,141 @@
                 mostrarLoading(false);
                 showToast('❌ Error: ' + error.message, 'error');
             }
+        }
+
+        // ============================================================
+        // FUNCIONES PARA EDITAR Y ELIMINAR HISTORIAL
+        // ============================================================
+
+        // ============================================================
+        // EDITAR HISTORIAL (MANUAL)
+        // ============================================================
+        function editarHistorial(index) {
+            const historial = data.historial || [];
+            const periodo = historial[index];
+            
+            if (!periodo) {
+                showToast('❌ Periodo no encontrado', 'error');
+                return;
+            }
+            
+            const modal = document.createElement('div');
+            modal.style.cssText = `
+                position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+                background: rgba(0,0,0,0.5); z-index: 2000;
+                display: flex; align-items: center; justify-content: center;
+                padding: 20px;
+            `;
+            
+            modal.innerHTML = `
+                <div style="background:white; border-radius:14px; padding:24px; max-width:400px; width:100%;">
+                    <h2 style="font-size:17px; margin-bottom:12px; color:#2c3e50;">✏️ Editar periodo</h2>
+                    <div style="margin-bottom:12px;">
+                        <label style="display:block; font-size:12px; font-weight:600; color:#555; margin-bottom:4px;">📅 Fecha</label>
+                        <input type="date" id="editFecha" value="${periodo.fecha || ''}" style="width:100%; padding:8px; border:1px solid #ddd; border-radius:6px; font-size:14px;">
+                    </div>
+                    <div style="margin-bottom:12px;">
+                        <label style="display:block; font-size:12px; font-weight:600; color:#555; margin-bottom:4px;">💰 Total</label>
+                        <input type="number" id="editTotal" value="${periodo.total || 0}" step="0.01" style="width:100%; padding:8px; border:1px solid #ddd; border-radius:6px; font-size:14px;">
+                    </div>
+                    <div style="margin-bottom:12px;">
+                        <label style="display:block; font-size:12px; font-weight:600; color:#555; margin-bottom:4px;">📱 Comentario</label>
+                        <input type="text" id="editComentario" value="${periodo.comentario || 'Descargado localmente'}" style="width:100%; padding:8px; border:1px solid #ddd; border-radius:6px; font-size:14px;">
+                    </div>
+                    <div style="display:flex; gap:8px; margin-top:12px;">
+                        <button onclick="guardarEdicionHistorial(${index})" style="flex:2; padding:10px; background:#27ae60; color:white; border:none; border-radius:6px; font-size:14px; font-weight:600; cursor:pointer;">💾 Guardar</button>
+                        <button onclick="cerrarModalEdicion()" style="flex:1; padding:10px; background:#95a5a6; color:white; border:none; border-radius:6px; font-size:14px; font-weight:600; cursor:pointer;">❌ Cancelar</button>
+                    </div>
+                </div>
+            `;
+            
+            document.body.appendChild(modal);
+        }
+
+        // ============================================================
+        // CERRAR MODAL DE EDICIÓN
+        // ============================================================
+        function cerrarModalEdicion() {
+            const modal = document.querySelector('div[style*="position: fixed;"]');
+            if (modal) modal.remove();
+        }
+
+        // ============================================================
+        // GUARDAR EDICIÓN DEL HISTORIAL
+        // ============================================================
+        async function guardarEdicionHistorial(index) {
+            const fecha = document.getElementById('editFecha').value;
+            const total = parseFloat(document.getElementById('editTotal').value);
+            const comentario = document.getElementById('editComentario').value.trim();
+            
+            if (isNaN(total)) {
+                showToast('⚠️ Ingresa un monto válido', 'error');
+                return;
+            }
+            
+            const historial = data.historial || [];
+            const periodo = historial[index];
+            
+            if (!periodo) {
+                showToast('❌ Periodo no encontrado', 'error');
+                return;
+            }
+            
+            periodo.fecha = fecha || periodo.fecha;
+            periodo.total = total;
+            periodo.comentario = comentario || 'Descargado localmente';
+            
+            mostrarLoading(true);
+            const result = await sendData('actualizarHistorial', {
+                index: index,
+                fecha: fecha || periodo.fecha,
+                total: total,
+                comentario: comentario || 'Descargado localmente'
+            });
+            mostrarLoading(false);
+            
+            if (result && result.success) {
+                cerrarModalEdicion();
+                renderizarHistorial();
+                showToast('✅ Periodo actualizado');
+            } else {
+                showToast('❌ Error al actualizar', 'error');
+            }
+        }
+
+        // ============================================================
+        // ELIMINAR REGISTRO DEL HISTORIAL
+        // ============================================================
+        function eliminarHistorial(index) {
+            const historial = data.historial || [];
+            const periodo = historial[index];
+            
+            if (!periodo) {
+                showToast('❌ Periodo no encontrado', 'error');
+                return;
+            }
+            
+            if (!confirm(`¿Eliminar el periodo "${periodo.periodo || 'Sin nombre'}" del ${periodo.fecha || 'sin fecha'}?\n\nEsta acción no se puede deshacer.`)) {
+                return;
+            }
+            
+            mostrarLoading(true);
+            
+            sendData('eliminarHistorial', { index: index })
+                .then(result => {
+                    mostrarLoading(false);
+                    if (result && result.success) {
+                        data.historial.splice(index, 1);
+                        renderizarHistorial();
+                        showToast('✅ Periodo eliminado');
+                    } else {
+                        showToast('❌ Error al eliminar', 'error');
+                    }
+                })
+                .catch(error => {
+                    mostrarLoading(false);
+                    showToast('❌ Error: ' + error.message, 'error');
+                });
         }
 
         // ============================================================
