@@ -1233,7 +1233,7 @@
         }
 
         // ============================================================
-        // RENDERIZAR - HISTORIAL (PESTAÑA SEPARADA)
+        // RENDERIZAR - HISTORIAL (PESTAÑA SEPARADA) - FECHA CORREGIDA
         // ============================================================
         function renderizarHistorial() {
             const historial = data.historial || [];
@@ -1247,7 +1247,23 @@
             list.innerHTML = historial.slice().reverse().map((h, index) => {
                 const realIndex = historial.length - 1 - index;
                 
-                const fechaMostrada = h.periodo || 'Sin fecha';
+                // ✅ Formatear fecha como "21-jul-26" (día-mes abreviado-año 2 dígitos)
+                let fechaMostrada = 'Sin fecha';
+                if (h.periodo) {
+                    try {
+                        const d = new Date(h.periodo);
+                        if (!isNaN(d.getTime())) {
+                            const meses = ['ene', 'feb', 'mar', 'abr', 'may', 'jun', 'jul', 'ago', 'sep', 'oct', 'nov', 'dic'];
+                            const dia = String(d.getDate()).padStart(2, '0');
+                            const mes = meses[d.getMonth()];
+                            const anio = String(d.getFullYear()).slice(-2);
+                            fechaMostrada = `${dia}-${mes}-${anio}`;
+                        }
+                    } catch (e) {
+                        fechaMostrada = h.periodo;
+                    }
+                }
+                
                 const totalColor = (h.total || 0) >= 0 ? '#27ae60' : '#e74c3c';
                 
                 return `
