@@ -49,7 +49,7 @@
         ::-webkit-scrollbar-thumb { background: #c1c7cd; border-radius: 10px; }
 
         /* ============================================ */
-        /* CONTENT */
+        /* CONTENT - OCUPA TODO EL ESPACIO */
         /* ============================================ */
         .content {
             display: none;
@@ -61,6 +61,7 @@
             padding-bottom: 12px;
             min-height: 0;
             height: 100%;
+            width: 100%;
         }
         .content.active {
             display: flex;
@@ -68,7 +69,7 @@
         }
 
         /* ============================================ */
-        /* CARDS */
+        /* CARDS - OCUPAN TODO EL ANCHO */
         /* ============================================ */
         .card {
             background: white;
@@ -77,6 +78,7 @@
             margin-bottom: 12px;
             box-shadow: 0 1px 4px rgba(0,0,0,0.08);
             flex-shrink: 0;
+            width: 100%;
         }
         .card:last-child {
             flex-shrink: 1;
@@ -85,6 +87,7 @@
             display: flex;
             flex-direction: column;
             min-height: 0;
+            width: 100%;
         }
         .card-title {
             font-size: 15px;
@@ -389,6 +392,7 @@
             flex-direction: column;
             min-height: 0;
             overflow: hidden;
+            width: 100%;
         }
 
         /* ============================================ */
@@ -687,7 +691,7 @@
         // ============================================================
         // CONFIGURACIÓN
         // ============================================================
-        const API_URL = 'https://script.google.com/macros/s/AKfycbypYHwFNmjKSnW3WRHjl_eyExCL7SLFO_wxNmfE1K1J3gkWwAqsfkWdCN95-svbWiXc/exec';
+        const API_URL = 'https://script.google.com/macros/s/AKfycbxHdcABVySJcMEscNR52lLwQM2NN7PNXXUGFEXR1W_CKedRyoIhb0QJ75inFLk3f0YV/exec';
 
         let data = null;
         let filtroFinanzasActual = 'todos';
@@ -1243,28 +1247,14 @@
             list.innerHTML = historial.slice().reverse().map((h, index) => {
                 const realIndex = historial.length - 1 - index;
                 
-                let fechaMostrada = '';
-                if (h.fecha) {
-                    try {
-                        const d = new Date(h.fecha);
-                        if (!isNaN(d.getTime())) {
-                            const dia = String(d.getDate()).padStart(2, '0');
-                            const mes = String(d.getMonth() + 1).padStart(2, '0');
-                            const anio = d.getFullYear();
-                            fechaMostrada = `${dia}/${mes}/${anio}`;
-                        }
-                    } catch (e) {
-                        fechaMostrada = h.fecha;
-                    }
-                }
-                
+                const fechaMostrada = h.periodo || 'Sin fecha';
                 const totalColor = (h.total || 0) >= 0 ? '#27ae60' : '#e74c3c';
                 
                 return `
                     <div class="periodo-item" style="display:block; padding:8px 0; border-bottom:1px solid #eee;" id="periodo-${realIndex}">
                         <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap;">
                             <span style="font-weight:bold; font-size:14px;">
-                                📅 ${fechaMostrada || 'Sin fecha'}
+                                📅 ${fechaMostrada}
                             </span>
                             <div style="display:flex; align-items:center; gap:6px;">
                                 <span style="font-weight:bold; font-size:15px; color:${totalColor};">
@@ -1509,7 +1499,7 @@
                     <h2 style="font-size:17px; margin-bottom:12px; color:#2c3e50;">✏️ Editar periodo</h2>
                     <div style="margin-bottom:12px;">
                         <label style="display:block; font-size:12px; font-weight:600; color:#555; margin-bottom:4px;">📅 Fecha</label>
-                        <input type="date" id="editFecha" value="${periodo.fecha || ''}" style="width:100%; padding:8px; border:1px solid #ddd; border-radius:6px; font-size:14px;">
+                        <input type="text" id="editPeriodo" value="${periodo.periodo || ''}" style="width:100%; padding:8px; border:1px solid #ddd; border-radius:6px; font-size:14px;" placeholder="YYYY-MM-DD">
                     </div>
                     <div style="margin-bottom:12px;">
                         <label style="display:block; font-size:12px; font-weight:600; color:#555; margin-bottom:4px;">💰 Total</label>
@@ -1541,7 +1531,7 @@
         // GUARDAR EDICIÓN DEL HISTORIAL
         // ============================================================
         async function guardarEdicionHistorial(index) {
-            const fecha = document.getElementById('editFecha').value;
+            const periodo = document.getElementById('editPeriodo').value.trim();
             const total = parseFloat(document.getElementById('editTotal').value);
             const comentario = document.getElementById('editComentario').value.trim();
             
@@ -1551,21 +1541,21 @@
             }
             
             const historial = data.historial || [];
-            const periodo = historial[index];
+            const h = historial[index];
             
-            if (!periodo) {
+            if (!h) {
                 showToast('❌ Periodo no encontrado', 'error');
                 return;
             }
             
-            periodo.fecha = fecha || periodo.fecha;
-            periodo.total = total;
-            periodo.comentario = comentario || 'Descargado localmente';
+            h.periodo = periodo || h.periodo;
+            h.total = total;
+            h.comentario = comentario || 'Descargado localmente';
             
             mostrarLoading(true);
             const result = await sendData('actualizarHistorial', {
                 index: index,
-                fecha: fecha || periodo.fecha,
+                periodo: periodo || h.periodo,
                 total: total,
                 comentario: comentario || 'Descargado localmente'
             });
@@ -1592,7 +1582,7 @@
                 return;
             }
             
-            if (!confirm(`¿Eliminar el periodo "${periodo.periodo || 'Sin nombre'}" del ${periodo.fecha || 'sin fecha'}?\n\nEsta acción no se puede deshacer.`)) {
+            if (!confirm(`¿Eliminar el periodo "${periodo.periodo || 'Sin fecha'}"?\n\nEsta acción no se puede deshacer.`)) {
                 return;
             }
             
