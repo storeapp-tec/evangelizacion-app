@@ -6,12 +6,12 @@
     <title>Gestión Evangelización</title>
 
     <!-- ============================================================ -->
-    <!-- PWA CONFIGURACIÓN - RUTAS ABSOLUTAS -->
+    <!-- PWA CONFIGURACIÓN - RUTAS CORREGIDAS -->
     <!-- ============================================================ -->
-    <link rel="manifest" href="/evank/manifest.json">
-    <link rel="apple-touch-icon" sizes="512x512" href="/evank/icon-512.png">
-    <link rel="icon" type="image/png" sizes="512x512" href="/evank/icon-512.png">
-    <link rel="icon" type="image/png" sizes="192x192" href="/evank/icon-192.png">
+    <link rel="manifest" href="/evangelizacion-app/manifest.json">
+    <link rel="apple-touch-icon" sizes="512x512" href="/evangelizacion-app/icon-512.png">
+    <link rel="icon" type="image/png" sizes="512x512" href="/evangelizacion-app/icon-512.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="/evangelizacion-app/icon-192.png">
     <meta name="theme-color" content="#1a2634">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -19,6 +19,15 @@
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="x5-fullscreen" content="true">
     <meta name="x5-page-mode" content="app">
+
+    <!-- ===== REGISTRO DEL SERVICE WORKER ===== -->
+    <script>
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('/evangelizacion-app/sw.js')
+                .then(reg => console.log('✅ Service Worker registrado:', reg))
+                .catch(err => console.log('❌ Error al registrar SW:', err));
+        }
+    </script>
 
     <style>
         /* ============================================ */
@@ -448,11 +457,6 @@
             .historial-periodos { max-height: none; }
         }
     </style>
-<script>
-  if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.register('/evangelizacion-app/sw.js');
-  }
-</script>
 </head>
 <body>
 
@@ -1941,7 +1945,7 @@
         // SERVICE WORKER (PWA) - RUTAS CORREGIDAS
         // ============================================================
         if ('serviceWorker' in navigator) {
-            navigator.serviceWorker.register('/evank/sw.js')
+            navigator.serviceWorker.register('/evangelizacion-app/sw.js')
                 .then(registration => { console.log('✅ Service Worker registrado:', registration); })
                 .catch(error => { console.log('❌ Error al registrar Service Worker:', error); });
         }
