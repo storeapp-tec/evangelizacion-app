@@ -2,12 +2,12 @@
   "name": "Gestión Evangelización",
   "short_name": "E-vank",
   "description": "App para gestionar cobros y finanzas del grupo de evangelización",
-  "start_url": "index.html",
+  "start_url": "/evank/?source=pwa",
   "display": "standalone",
   "orientation": "portrait",
   "background_color": "#1a2634",
   "theme_color": "#1a2634",
-  "scope": "/",
+  "scope": "/evank/",
   "icons": [
     {
       "src": "icon-512.png",
@@ -27,14 +27,14 @@
       "name": "Cobros",
       "short_name": "Cobros",
       "description": "Ver lista de cobros",
-      "url": "index.html?tab=cobros",
+      "url": "/evank/?tab=cobros",
       "icons": [{ "src": "icon-192.png", "sizes": "192x192" }]
     },
     {
       "name": "Finanzas",
       "short_name": "Finanzas",
       "description": "Ver resumen de finanzas",
-      "url": "index.html?tab=finanzas",
+      "url": "/evank/?tab=finanzas",
       "icons": [{ "src": "icon-192.png", "sizes": "192x192" }]
     }
   ],
