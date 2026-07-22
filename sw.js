@@ -1,10 +1,10 @@
-const CACHE_NAME = 'evank-v1';
+const CACHE_NAME = 'evank-v2';
 const urlsToCache = [
-  '/evank/',
-  '/evank/index.html',
-  '/evank/manifest.json',
-  '/evank/icon-192.png',
-  '/evank/icon-512.png'
+  '/',
+  '/index.html',
+  '/manifest.json',
+  '/icon-192.png',
+  '/icon-512.png'
 ];
 
 self.addEventListener('install', event => {
@@ -43,7 +43,6 @@ self.addEventListener('fetch', event => {
           return response;
         }
         return fetch(event.request).catch(() => {
-          // Si falla la red y no está en caché, mostrar página offline
           return new Response('⚠️ Sin conexión a internet', {
             status: 503,
             statusText: 'Service Unavailable'
