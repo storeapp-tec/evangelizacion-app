@@ -448,6 +448,11 @@
             .historial-periodos { max-height: none; }
         }
     </style>
+<script>
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('/evangelizacion-app/sw.js');
+  }
+</script>
 </head>
 <body>
 
