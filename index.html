@@ -197,15 +197,19 @@
         /* ============================================ */
         .modal-overlay { display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.5); z-index: 1000; align-items: center; justify-content: center; padding: 20px; }
         .modal-overlay.active { display: flex; }
-        .modal { background: white; border-radius: 14px; padding: 20px; max-width: 400px; width: 100%; max-height: 90vh; overflow-y: auto; }
-        .modal h2 { font-size: 17px; margin-bottom: 12px; color: #2c3e50; }
+        .modal { background: white; border-radius: 14px; padding: 24px; max-width: 450px; width: 100%; max-height: 90vh; overflow-y: auto; }
+        .modal h2 { font-size: 19px; margin-bottom: 14px; color: #2c3e50; }
         .modal-close { float: right; background: none; border: none; font-size: 24px; cursor: pointer; color: #999; }
         .modal-close:hover { color: #333; }
 
-        .pago-item { display: flex; align-items: center; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid #eee; }
+        #modalConfirmacion {
+            z-index: 3000 !important;
+        }
+
+        .pago-item { display: flex; align-items: center; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid #eee; }
         .pago-item:last-child { border-bottom: none; }
-        .pago-label { font-weight: 500; flex: 1; font-size: 14px; }
-        .pago-fecha { font-size: 12px; color: #666; margin: 0 6px; }
+        .pago-label { font-weight: 500; flex: 1; font-size: 15px; }
+        .pago-fecha { font-size: 13px; color: #666; margin: 0 8px; }
 
         .switch { position: relative; display: inline-block; width: 44px; height: 24px; flex-shrink: 0; }
         .switch input { opacity: 0; width: 0; height: 0; }
@@ -268,6 +272,12 @@
         .menu-inferior-finanzas .fila-totales .item {
             font-size: 14px;
             cursor: pointer;
+            padding: 3px 2px;
+            border-radius: 4px;
+            transition: all 0.2s;
+        }
+        .menu-inferior-finanzas .fila-totales .item:hover {
+            background: rgba(255,255,255,0.08);
         }
         .menu-inferior-finanzas .fila-totales .item .label {
             opacity: 0.7;
@@ -278,6 +288,10 @@
             font-weight: bold;
             font-size: 16px;
             display: block;
+        }
+        .menu-inferior-finanzas .fila-totales .item.active {
+            background: rgba(52,152,219,0.2);
+            border-left: 3px solid #3498db;
         }
 
         .menu-inferior-finanzas .fila-conceptos {
@@ -466,6 +480,18 @@
         <div class="loading-text">Cargando datos...</div>
     </div>
 
+    <!-- MODAL DE CONFIRMACIÓN VISUAL -->
+    <div id="modalConfirmacion" class="modal-overlay">
+        <div class="modal" style="max-width:320px; text-align:center;">
+            <h2 id="modalConfirmTitle" style="font-size:16px; margin-bottom:8px; color:#e74c3c;">⚠️ Confirmar acción</h2>
+            <p id="modalConfirmText" style="font-size:14px; color:#555; margin-bottom:16px;"></p>
+            <div style="display:flex; gap:8px;">
+                <button id="btnConfirmSi" class="btn btn-danger" style="flex:1;">Sí, eliminar</button>
+                <button onclick="cerrarModalConfirmacion()" class="btn btn-secondary" style="flex:1;">Cancelar</button>
+            </div>
+        </div>
+    </div>
+
     <div class="header"><h1>📋 Gestión Evangelización</h1></div>
 
     <div class="tabs">
@@ -568,6 +594,7 @@
                         <select id="finTipo" class="form-control tipo-input">
                             <option value="ingreso">Ingreso</option>
                             <option value="gasto">Gasto</option>
+                            <option value="ajuste">Ajuste</option>
                         </select>
                     </div>
                     <div class="form-group concepto">
@@ -592,11 +619,11 @@
             <div class="menu-inferior-finanzas" id="menuInferiorFinanzas">
                 <div class="titulo">📊 Resumen de movimientos</div>
                 <div class="fila-totales">
-                    <div class="item" onclick="filtrarFinanzas('ingreso')">
+                    <div class="item" data-filtro="ingreso" onclick="filtrarFinanzas('ingreso')">
                         <span class="label">💰 Ingresos</span>
                         <span class="valor" id="menuIngresos">$0</span>
                     </div>
-                    <div class="item" onclick="filtrarFinanzas('gasto')">
+                    <div class="item" data-filtro="gasto" onclick="filtrarFinanzas('gasto')">
                         <span class="label">💸 Gastos</span>
                         <span class="valor" id="menuGastos">$0</span>
                     </div>
@@ -656,15 +683,16 @@
         </div>
     </div>
 
+    <!-- MODAL AGREGAR PARTICIPANTE -->
     <div id="modalAgregar" class="modal-overlay">
-        <div class="modal">
+        <div class="modal" style="max-width: 450px;">
             <button class="modal-close" onclick="cerrarModalAgregar()">✕</button>
-            <h2>➕ Agregar participante</h2>
-            <div class="form-group">
-                <label>Nombre completo</label>
-                <input type="text" id="nuevoNombre" class="form-control" placeholder="Ej: Juan Pérez">
+            <h2 style="font-size: 19px; margin-bottom: 14px;">➕ Agregar participante</h2>
+            <div class="form-group" style="margin-bottom: 16px;">
+                <label style="font-size: 14px; font-weight: 700; color: #2c3e50; margin-bottom: 6px;">Nombre completo</label>
+                <input type="text" id="nuevoNombre" class="form-control" placeholder="Ej: Juan Pérez González" style="font-size: 16px; padding: 12px; font-weight: 500; width: 100%;">
             </div>
-            <button class="btn btn-success" onclick="agregarParticipante()" style="width:100%;">✅ Agregar</button>
+            <button class="btn btn-success" onclick="agregarParticipante()" style="width: 100%; font-size: 15px; padding: 10px;">✅ Agregar</button>
         </div>
     </div>
 
@@ -698,9 +726,9 @@
 
     <script>
         // ============================================================
-        // CONFIGURACIÓN
+        // CONFIGURACIÓN (URL ACTUALIZADA)
         // ============================================================
-        const API_URL = 'https://script.google.com/macros/s/AKfycbxHdcABVySJcMEscNR52lLwQM2NN7PNXXUGFEXR1W_CKedRyoIhb0QJ75inFLk3f0YV/exec';
+        const API_URL = 'https://script.google.com/macros/s/AKfycbwQEXJGX9Jlzx1q9H8z5t4Yi3osG3WExMrmWCTKsDR10SDNiigRIeynWTUCR_icAkVY/exec';
 
         let data = null;
         let filtroFinanzasActual = 'todos';
@@ -711,8 +739,30 @@
         let cargando = false;
 
         // ============================================================
-        // FUNCIONES DE UTILIDAD
+        // FUNCIONES DE UTILIDAD Y MODAL DE CONFIRMACIÓN VISUAL
         // ============================================================
+        function mostrarConfirmacion(texto, callbackSi) {
+            const modal = document.getElementById('modalConfirmacion');
+            const textoEl = document.getElementById('modalConfirmText');
+            const btnSi = document.getElementById('btnConfirmSi');
+            
+            document.querySelectorAll('.modal-overlay').forEach(m => {
+                if(m.id !== 'modalConfirmacion') m.classList.remove('active');
+            });
+
+            textoEl.textContent = texto;
+            modal.classList.add('active');
+            
+            btnSi.onclick = function() {
+                cerrarModalConfirmacion();
+                if (callbackSi) callbackSi();
+            };
+        }
+
+        function cerrarModalConfirmacion() {
+            document.getElementById('modalConfirmacion').classList.remove('active');
+        }
+
         function showToast(message, type = 'success') {
             const toast = document.getElementById('toast');
             toast.textContent = message;
@@ -725,8 +775,13 @@
             }, 3000);
         }
 
+        // Zona horaria local exacta
         function obtenerFechaISO() {
-            return new Date().toISOString().split('T')[0];
+            const d = new Date();
+            const year = d.getFullYear();
+            const month = String(d.getMonth() + 1).padStart(2, '0');
+            const day = String(d.getDate()).padStart(2, '0');
+            return `${year}-${month}-${day}`;
         }
 
         function formatearFechaCorto(fecha) {
@@ -981,86 +1036,50 @@
         });
 
         // ============================================================
-        // RENDERIZAR - FINANZAS
+        // RENDERIZAR - FINANZAS (Lee directo de la tabla de Finanzas en TODOS los filtros)
         // ============================================================
         function renderizarFinanzas() {
             const list = document.getElementById('finanzasList');
             let movimientos = [];
 
+            const finanzasData = data.finanzas || [];
+
             if (filtroFinanzasActual === 'todos') {
-                movimientos = (data.finanzas || []).map(m => ({
+                movimientos = finanzasData.filter(m => m.tipo === 'ingreso' || m.tipo === 'gasto' || m.tipo === 'ajuste').map(m => ({
                     id: m.id,
                     fecha: m.fecha,
                     tipo: m.tipo,
                     concepto: m.concepto,
-                    monto: m.monto,
-                    esPago: false
+                    monto: m.monto
                 }));
             } else if (filtroFinanzasActual === 'ingreso') {
-                movimientos = (data.finanzas || []).filter(m => m.tipo === 'ingreso').map(m => ({
+                movimientos = finanzasData.filter(m => m.tipo === 'ingreso').map(m => ({
                     id: m.id,
                     fecha: m.fecha,
                     tipo: 'ingreso',
                     concepto: m.concepto,
-                    monto: m.monto,
-                    esPago: false
+                    monto: m.monto
                 }));
             } else if (filtroFinanzasActual === 'gasto') {
-                movimientos = (data.finanzas || []).filter(m => m.tipo === 'gasto').map(m => ({
+                movimientos = finanzasData.filter(m => m.tipo === 'gasto' || m.tipo === 'ajuste').map(m => ({
                     id: m.id,
                     fecha: m.fecha,
                     tipo: 'gasto',
                     concepto: m.concepto,
-                    monto: m.monto,
-                    esPago: false
+                    monto: m.monto
                 }));
-            } else if (filtroFinanzasActual === 'inscripcion') {
-                data.participantes.forEach(p => {
-                    if (!p.activo) return;
-                    const pago = p.pagos.inscripcion;
-                    if (pago && pago.pagado && pago.fecha) {
-                        movimientos.push({
-                            id: `pago_${p.id}_inscripcion`,
-                            fecha: pago.fecha,
-                            tipo: 'ingreso',
-                            concepto: p.nombre,
-                            monto: data.config.montoInscripcion || 0,
-                            esPago: true
-                        });
-                    }
-                });
-            } else if (filtroFinanzasActual === 'compendio') {
-                data.participantes.forEach(p => {
-                    if (!p.activo) return;
-                    const pago = p.pagos.compendio;
-                    if (pago && pago.pagado && pago.fecha) {
-                        movimientos.push({
-                            id: `pago_${p.id}_compendio`,
-                            fecha: pago.fecha,
-                            tipo: 'ingreso',
-                            concepto: p.nombre,
-                            monto: data.config.montoCompendio || 0,
-                            esPago: true
-                        });
-                    }
-                });
-            } else if (filtroFinanzasActual === 'crucifijo') {
-                data.participantes.forEach(p => {
-                    if (!p.activo) return;
-                    const pago = p.pagos.crucifijo;
-                    if (pago && pago.pagado && pago.fecha) {
-                        movimientos.push({
-                            id: `pago_${p.id}_crucifijo`,
-                            fecha: pago.fecha,
-                            tipo: 'ingreso',
-                            concepto: p.nombre,
-                            monto: data.config.montoCrucifijo || 0,
-                            esPago: true
-                        });
-                    }
-                });
+            } else if (filtroFinanzasActual === 'inscripcion' || filtroFinanzasActual === 'compendio' || filtroFinanzasActual === 'crucifijo') {
+                const tipoFiltro = filtroFinanzasActual;
+                movimientos = finanzasData.filter(m => m.tipo === tipoFiltro).map(m => ({
+                    id: m.id,
+                    fecha: m.fecha,
+                    tipo: m.tipo,
+                    concepto: m.concepto,
+                    monto: m.monto
+                }));
             }
 
+            // Orden cronológico: el más viejo arriba, el más nuevo abajo
             movimientos.sort((a, b) => a.fecha.localeCompare(b.fecha));
 
             if (movimientos.length === 0) {
@@ -1069,12 +1088,15 @@
             }
 
             list.innerHTML = movimientos.map(m => {
-                const signo = m.tipo === 'ingreso' ? '+' : '-';
-                const clase = m.tipo === 'ingreso' ? 'ingreso' : 'gasto';
-                const acciones = m.esPago ? '' : `
-                    <button class="btn-accion btn-editar" onclick="abrirModalEditarMovimiento('${m.id}')">✏️</button>
-                    <button class="btn-accion btn-eliminar" onclick="eliminarMovimiento('${m.id}')">🗑️</button>
+                const signo = (m.tipo === 'gasto' || m.tipo === 'ajuste') ? '-' : '+';
+                const clase = (m.tipo === 'gasto' || m.tipo === 'ajuste') ? 'gasto' : 'ingreso';
+                
+                // Todos los elementos muestran el lápiz y el bote de basura abriendo Editar Movimiento
+                const acciones = `
+                    <button class="btn-accion btn-editar" onclick="abrirModalEditarMovimiento('${m.id}')" title="Editar movimiento">✏️</button>
+                    <button class="btn-accion btn-eliminar" onclick="eliminarMovimiento('${m.id}')" title="Eliminar movimiento">🗑️</button>
                 `;
+                
                 return `<div class="movimiento-item">
                     <span class="fecha">${formatearFechaCorto(m.fecha)}</span>
                     <span class="concepto">${m.concepto}</span>
@@ -1087,8 +1109,7 @@
         function renderizarResumenFinanzas() {
             const activos = data.participantes.filter(p => p.activo);
             const inactivos = data.participantes.filter(p => !p.activo);
-            const todos = data.participantes;
-            const total = todos.length;
+            const total = data.participantes.length;
 
             const pagadosInscAct = activos.filter(p => p.pagos.inscripcion.pagado).length;
             const pagadosCompAct = activos.filter(p => p.pagos.compendio.pagado).length;
@@ -1102,16 +1123,16 @@
             const montoComp = data.config.montoCompendio || 80;
             const montoCruc = data.config.montoCrucifijo || 50;
 
-            const totalInsc = (pagadosInscAct + pagadosInscInact) * montoInsc;
+            const totalInscInactivos = pagadosInscInact * montoInsc;
             const totalComp = (pagadosCompAct + pagadosCompInact) * montoComp;
             const totalCruc = (pagadosCrucAct + pagadosCrucInact) * montoCruc;
+            const totalInscTotal = (pagadosInscAct + pagadosInscInact) * montoInsc;
 
             const finanzas = data.finanzas || [];
             const ingresosManuales = finanzas.filter(m => m.tipo === 'ingreso').reduce((sum, m) => sum + m.monto, 0);
-            const gastosManuales = finanzas.filter(m => m.tipo === 'gasto').reduce((sum, m) => sum + m.monto, 0);
+            const gastosManuales = finanzas.filter(m => m.tipo === 'gasto' || m.tipo === 'ajuste').reduce((sum, m) => sum + m.monto, 0);
 
-            const inscInactivos = pagadosInscInact * montoInsc;
-            const totalIngresos = inscInactivos + totalComp + totalCruc + ingresosManuales;
+            const totalIngresos = totalInscInactivos + totalComp + totalCruc + ingresosManuales;
             const totalGastos = gastosManuales;
             const disponible = totalIngresos - totalGastos;
 
@@ -1119,11 +1140,11 @@
             document.getElementById('menuGastos').innerHTML = `<span style="color:#d35400; font-weight:bold;">$${totalGastos.toFixed(2)}</span>`;
             document.getElementById('menuDisponible').innerHTML = `<span style="color:#2ecc71; font-weight:bold;">$${disponible.toFixed(2)}</span>`;
 
-            document.getElementById('menuInscripcion').innerHTML = `${pagadosInscAct + pagadosInscInact}/${total} <span style="color:#2563EB; font-weight:bold;">$${totalInsc.toFixed(0)}</span>`;
+            document.getElementById('menuInscripcion').innerHTML = `${pagadosInscAct + pagadosInscInact}/${total} <span style="color:#2563EB; font-weight:bold;">$${totalInscTotal.toFixed(0)}</span>`;
             document.getElementById('menuCompendio').innerHTML = `${pagadosCompAct + pagadosCompInact}/${total} <span style="color:#FFFF00; font-weight:bold; text-shadow: 0 0 4px rgba(255,255,0,0.3);">$${totalComp.toFixed(0)}</span>`;
             document.getElementById('menuCrucifijo').innerHTML = `${pagadosCrucAct + pagadosCrucInact}/${total} <span style="color:#EC4899; font-weight:bold;">$${totalCruc.toFixed(0)}</span>`;
 
-            document.querySelectorAll('.fila-conceptos .item').forEach(item => {
+            document.querySelectorAll('.menu-inferior-finanzas .item').forEach(item => {
                 const filtro = item.dataset.filtro;
                 item.classList.toggle('active', filtro === filtroFinanzasActual);
             });
@@ -1171,7 +1192,7 @@
                 .reduce((sum, m) => sum + m.monto, 0);
 
             const gastos = finanzas
-                .filter(m => m.tipo === 'gasto')
+                .filter(m => m.tipo === 'gasto' || m.tipo === 'ajuste')
                 .reduce((sum, m) => sum + m.monto, 0);
 
             const totalInscInactivos = inscInactivos;
@@ -1230,7 +1251,7 @@
                     </div>
 
                     <div class="historial-line" style="margin-bottom:4px;">
-                        <span class="label">💸 Gastos:</span>
+                        <span class="label">💸 Gastos/Ajustes:</span>
                         <span class="monto" style="color:#e74c3c;">-$${gastos.toFixed(2)}</span>
                     </div>
 
@@ -1289,7 +1310,7 @@
                                         onmouseover="this.style.background='#e9ecef'" 
                                         onmouseout="this.style.background='none'"
                                         title="Editar periodo">✏️</button>
-                                <button onclick="eliminarHistorial(${realIndex})" 
+                                <button onclick="eliminarHistorialConConfirmacion(${realIndex})" 
                                         style="background:none; border:none; cursor:pointer; font-size:14px; padding:2px 4px; border-radius:4px; transition:background 0.2s; color:#e74c3c;"
                                         onmouseover="this.style.background='#fde8e8'" 
                                         onmouseout="this.style.background='none'"
@@ -1304,8 +1325,29 @@
             }).join('');
         }
 
+        function eliminarHistorialConConfirmacion(index) {
+            const historial = data.historial || [];
+            const periodo = historial[index];
+            mostrarConfirmacion(`¿Eliminar el periodo "${periodo.periodo || 'Sin fecha'}"?`, () => {
+                ejecutarEliminarHistorial(index);
+            });
+        }
+
+        async function ejecutarEliminarHistorial(index) {
+            mostrarLoading(true);
+            const result = await sendData('eliminarHistorial', { index: index });
+            mostrarLoading(false);
+            if (result && result.success) {
+                data.historial.splice(index, 1);
+                renderizarHistorial();
+                showToast('✅ Periodo eliminado');
+            } else {
+                showToast('❌ Error al eliminar', 'error');
+            }
+        }
+
         // ============================================================
-        // FUNCIÓN PARA DESCARGAR CSV (CON BOM PARA ACENTOS)
+        // FUNCIÓN PARA DESCARGAR CSV
         // ============================================================
         function descargarCSV(csvContent, nombreArchivo) {
             const BOM = '\uFEFF';
@@ -1331,298 +1373,104 @@
                 return;
             }
 
-            if (!confirm('⚠️ ¿Cerrar el periodo actual?\n\nSe descargará un CSV con el resumen y se limpiarán los datos.')) {
-                return;
-            }
+            mostrarConfirmacion('⚠️ ¿Cerrar el periodo actual?\n\nSe descargará un CSV y se limpiarán los datos.', async () => {
+                mostrarLoading(true);
 
-            mostrarLoading(true);
+                try {
+                    const activos = data.participantes.filter(p => p.activo);
+                    const inactivos = data.participantes.filter(p => !p.activo);
+                    const totalParticipantes = data.participantes.length;
 
-            try {
-                // ============================================================
-                // 1. CALCULAR RESUMEN
-                // ============================================================
-                const activos = data.participantes.filter(p => p.activo);
-                const inactivos = data.participantes.filter(p => !p.activo);
-                const totalParticipantes = data.participantes.length;
+                    const finanzas = data.finanzas || [];
+                    const ingresosManuales = finanzas.filter(m => m.tipo === 'ingreso').reduce((sum, m) => sum + m.monto, 0);
+                    const gastosManuales = finanzas.filter(m => m.tipo === 'gasto' || m.tipo === 'ajuste').reduce((sum, m) => sum + m.monto, 0);
 
-                const pagadosInscAct = activos.filter(p => p.pagos.inscripcion.pagado).length;
-                const pagadosCompAct = activos.filter(p => p.pagos.compendio.pagado).length;
-                const pagadosCrucAct = activos.filter(p => p.pagos.crucifijo.pagado).length;
+                    const pagadosInscInact = inactivos.filter(p => p.pagos.inscripcion.pagado).length;
+                    const pagadosCompAct = activos.filter(p => p.pagos.compendio.pagado).length;
+                    const pagadosCompInact = inactivos.filter(p => p.pagos.compendio.pagado).length;
+                    const pagadosCrucAct = activos.filter(p => p.pagos.crucifijo.pagado).length;
+                    const pagadosCrucInact = inactivos.filter(p => p.pagos.crucifijo.pagado).length;
 
-                const pagadosInscInact = inactivos.filter(p => p.pagos.inscripcion.pagado).length;
-                const pagadosCompInact = inactivos.filter(p => p.pagos.compendio.pagado).length;
-                const pagadosCrucInact = inactivos.filter(p => p.pagos.crucifijo.pagado).length;
+                    const montoInsc = data.config.montoInscripcion || 50;
+                    const montoComp = data.config.montoCompendio || 80;
+                    const montoCruc = data.config.montoCrucifijo || 50;
 
-                const montoInsc = data.config.montoInscripcion || 50;
-                const montoComp = data.config.montoCompendio || 80;
-                const montoCruc = data.config.montoCrucifijo || 50;
+                    const totalComp = (pagadosCompAct + pagadosCompInact) * montoComp;
+                    const totalCruc = (pagadosCrucAct + pagadosCrucInact) * montoCruc;
+                    const inscInactivos = pagadosInscInact * montoInsc;
 
-                const totalInsc = (pagadosInscAct + pagadosInscInact) * montoInsc;
-                const totalComp = (pagadosCompAct + pagadosCompInact) * montoComp;
-                const totalCruc = (pagadosCrucAct + pagadosCrucInact) * montoCruc;
+                    const totalIngresos = inscInactivos + totalComp + totalCruc + ingresosManuales;
+                    const totalGastos = gastosManuales;
+                    const disponible = totalIngresos - totalGastos;
 
-                const finanzas = data.finanzas || [];
-                const ingresosManuales = finanzas.filter(m => m.tipo === 'ingreso').reduce((sum, m) => sum + m.monto, 0);
-                const gastosManuales = finanzas.filter(m => m.tipo === 'gasto').reduce((sum, m) => sum + m.monto, 0);
+                    const periodoNombre = `Periodo ${new Date().toLocaleDateString()}`;
+                    const fechaCierre = obtenerFechaISO();
 
-                const inscInactivos = pagadosInscInact * montoInsc;
-                const totalIngresos = inscInactivos + totalComp + totalCruc + ingresosManuales;
-                const totalGastos = gastosManuales;
-                const disponible = totalIngresos - totalGastos;
-                const inscActivos = pagadosInscAct * montoInsc;
+                    let csvContent = '';
+                    csvContent += '=== RESUMEN DEL PERIODO ===\n';
+                    csvContent += `Nombre del periodo,${periodoNombre}\n`;
+                    csvContent += `Fecha de cierre,${fechaCierre}\n`;
+                    csvContent += `Total participantes,${totalParticipantes}\n`;
+                    csvContent += `Activos,${activos.length}\n`;
+                    csvContent += `Inactivos,${inactivos.length}\n`;
+                    csvContent += `Disponible final,${disponible}\n\n`;
 
-                const periodoNombre = `Periodo ${new Date().toLocaleDateString()}`;
-                const fechaCierre = obtenerFechaISO();
+                    const nombreArchivo = `Evangelizacion_${fechaCierre}.csv`;
+                    descargarCSV(csvContent, nombreArchivo);
 
-                const resumen = {
-                    participantes: totalParticipantes,
-                    activos: activos.length,
-                    inactivos: inactivos.length,
-                    inscripcion: {
-                        total: totalInsc,
-                        activos: inscActivos,
-                        inactivos: inscInactivos
-                    },
-                    compendio: totalComp,
-                    crucifijo: totalCruc,
-                    ingresosManuales: ingresosManuales,
-                    gastos: gastosManuales,
-                    totalIngresos: totalIngresos,
-                    disponible: disponible,
-                    parroquia: inscActivos
-                };
+                    await sendData('guardarHistorial', {
+                        periodoNombre: periodoNombre,
+                        fechaCierre: fechaCierre,
+                        total: disponible
+                    });
 
-                // ============================================================
-                // 2. GENERAR CSV
-                // ============================================================
-                let csvContent = '';
+                    await sendData('eliminarTodosParticipantes', {});
+                    await sendData('eliminarTodosFinanzas', {});
 
-                csvContent += '=== RESUMEN DEL PERIODO ===\n';
-                csvContent += `Nombre del periodo,${periodoNombre}\n`;
-                csvContent += `Fecha de cierre,${fechaCierre}\n`;
-                csvContent += `Total participantes,${resumen.participantes}\n`;
-                csvContent += `Activos,${resumen.activos}\n`;
-                csvContent += `Inactivos,${resumen.inactivos}\n`;
-                csvContent += `Inscripción (total),${resumen.inscripcion.total}\n`;
-                csvContent += `  Activos (a parroquia),${resumen.inscripcion.activos}\n`;
-                csvContent += `  Inactivos (fondo),${resumen.inscripcion.inactivos}\n`;
-                csvContent += `Compendios,${resumen.compendio}\n`;
-                csvContent += `Crucifijos,${resumen.crucifijo}\n`;
-                csvContent += `Ingresos manuales,${resumen.ingresosManuales}\n`;
-                csvContent += `TOTAL INGRESOS,${resumen.totalIngresos}\n`;
-                csvContent += `Gastos manuales,${resumen.gastos}\n`;
-                csvContent += `Disponible final,${resumen.disponible}\n`;
-                csvContent += `Inscripción de activos (parroquia),${resumen.parroquia}\n\n`;
+                    await sendData('addFinanza', {
+                        fecha: fechaCierre,
+                        tipo: 'ingreso',
+                        concepto: 'Fondo de entrada (cierre periodo anterior)',
+                        monto: disponible
+                    });
 
-                csvContent += '=== PARTICIPANTES ===\n';
-                csvContent += 'Nombre,Activo,Ins_Pagado,Ins_Fecha,Comp_Pagado,Comp_Fecha,Cru_Pagado,Cru_Fecha\n';
-                data.participantes.forEach(p => {
-                    const nombre = p.nombre.includes(',') ? `"${p.nombre}"` : p.nombre;
-                    csvContent += [
-                        nombre,
-                        p.activo ? 'True' : 'False',
-                        p.pagos.inscripcion.pagado ? 'True' : 'False',
-                        p.pagos.inscripcion.fecha || '',
-                        p.pagos.compendio.pagado ? 'True' : 'False',
-                        p.pagos.compendio.fecha || '',
-                        p.pagos.crucifijo.pagado ? 'True' : 'False',
-                        p.pagos.crucifijo.fecha || ''
-                    ].join(',') + '\n';
-                });
-                csvContent += '\n';
-
-                csvContent += '=== FINANZAS ===\n';
-                csvContent += 'Fecha,Tipo,Concepto,Monto\n';
-                data.finanzas.forEach(m => {
-                    const concepto = m.concepto.includes(',') ? `"${m.concepto}"` : m.concepto;
-                    csvContent += `${m.fecha},${m.tipo},${concepto},${m.monto}\n`;
-                });
-                csvContent += '\n';
-
-                csvContent += '=== CONFIGURACIÓN ===\n';
-                csvContent += 'Concepto,Monto\n';
-                csvContent += `Inscripción,${data.config?.montoInscripcion || 50}\n`;
-                csvContent += `Compendio,${data.config?.montoCompendio || 80}\n`;
-                csvContent += `Crucifijo,${data.config?.montoCrucifijo || 50}\n`;
-
-                // ============================================================
-                // 3. DESCARGAR CSV
-                // ============================================================
-                const nombreArchivo = `Evangelizacion_${fechaCierre}.csv`;
-                descargarCSV(csvContent, nombreArchivo);
-
-                // ============================================================
-                // 4. GUARDAR HISTORIAL EN GOOGLE SHEETS
-                // ============================================================
-                await sendData('guardarHistorial', {
-                    periodoNombre: periodoNombre,
-                    fechaCierre: fechaCierre,
-                    total: disponible
-                });
-
-                // ============================================================
-                // 5. ELIMINAR TODOS LOS PARTICIPANTES
-                // ============================================================
-                await sendData('eliminarTodosParticipantes', {});
-
-                // ============================================================
-                // 6. ELIMINAR TODOS LOS MOVIMIENTOS DE FINANZAS
-                // ============================================================
-                await sendData('eliminarTodosFinanzas', {});
-
-                // ============================================================
-                // 7. AGREGAR EL FONDO DE ENTRADA
-                // ============================================================
-                await sendData('addFinanza', {
-                    fecha: fechaCierre,
-                    tipo: 'ingreso',
-                    concepto: 'Fondo de entrada (cierre periodo anterior)',
-                    monto: disponible
-                });
-
-                // ============================================================
-                // 8. RECARGAR DATOS Y MOSTRAR MENSAJE
-                // ============================================================
-                await recargarDatos();
-                mostrarLoading(false);
-                showToast(`✅ Periodo cerrado. CSV descargado: ${nombreArchivo}`);
-
-            } catch (error) {
-                console.error('❌ Error en cerrarPeriodo:', error);
-                mostrarLoading(false);
-                showToast('❌ Error: ' + error.message, 'error');
-            }
-        }
-
-        // ============================================================
-        // FUNCIONES PARA EDITAR Y ELIMINAR HISTORIAL
-        // ============================================================
-
-        function editarHistorial(index) {
-            const historial = data.historial || [];
-            const periodo = historial[index];
-            
-            if (!periodo) {
-                showToast('❌ Periodo no encontrado', 'error');
-                return;
-            }
-            
-            const modal = document.createElement('div');
-            modal.style.cssText = `
-                position: fixed; top: 0; left: 0; right: 0; bottom: 0;
-                background: rgba(0,0,0,0.5); z-index: 2000;
-                display: flex; align-items: center; justify-content: center;
-                padding: 20px;
-            `;
-            
-            modal.innerHTML = `
-                <div style="background:white; border-radius:14px; padding:24px; max-width:400px; width:100%;">
-                    <h2 style="font-size:17px; margin-bottom:12px; color:#2c3e50;">✏️ Editar periodo</h2>
-                    <div style="margin-bottom:12px;">
-                        <label style="display:block; font-size:12px; font-weight:600; color:#555; margin-bottom:4px;">📅 Fecha</label>
-                        <input type="text" id="editPeriodo" value="${periodo.periodo || ''}" style="width:100%; padding:8px; border:1px solid #ddd; border-radius:6px; font-size:14px;" placeholder="YYYY-MM-DD">
-                    </div>
-                    <div style="margin-bottom:12px;">
-                        <label style="display:block; font-size:12px; font-weight:600; color:#555; margin-bottom:4px;">💰 Total</label>
-                        <input type="number" id="editTotal" value="${periodo.total || 0}" step="0.01" style="width:100%; padding:8px; border:1px solid #ddd; border-radius:6px; font-size:14px;">
-                    </div>
-                    <div style="margin-bottom:12px;">
-                        <label style="display:block; font-size:12px; font-weight:600; color:#555; margin-bottom:4px;">📱 Comentario</label>
-                        <input type="text" id="editComentario" value="${periodo.comentario || 'Descargado localmente'}" style="width:100%; padding:8px; border:1px solid #ddd; border-radius:6px; font-size:14px;">
-                    </div>
-                    <div style="display:flex; gap:8px; margin-top:12px;">
-                        <button onclick="guardarEdicionHistorial(${index})" style="flex:2; padding:10px; background:#27ae60; color:white; border:none; border-radius:6px; font-size:14px; font-weight:600; cursor:pointer;">💾 Guardar</button>
-                        <button onclick="cerrarModalEdicion()" style="flex:1; padding:10px; background:#95a5a6; color:white; border:none; border-radius:6px; font-size:14px; font-weight:600; cursor:pointer;">❌ Cancelar</button>
-                    </div>
-                </div>
-            `;
-            
-            document.body.appendChild(modal);
-        }
-
-        function cerrarModalEdicion() {
-            const modal = document.querySelector('div[style*="position: fixed;"]');
-            if (modal) modal.remove();
-        }
-
-        async function guardarEdicionHistorial(index) {
-            const periodo = document.getElementById('editPeriodo').value.trim();
-            const total = parseFloat(document.getElementById('editTotal').value);
-            const comentario = document.getElementById('editComentario').value.trim();
-            
-            if (isNaN(total)) {
-                showToast('⚠️ Ingresa un monto válido', 'error');
-                return;
-            }
-            
-            const historial = data.historial || [];
-            const h = historial[index];
-            
-            if (!h) {
-                showToast('❌ Periodo no encontrado', 'error');
-                return;
-            }
-            
-            h.periodo = periodo || h.periodo;
-            h.total = total;
-            h.comentario = comentario || 'Descargado localmente';
-            
-            mostrarLoading(true);
-            const result = await sendData('actualizarHistorial', {
-                index: index,
-                periodo: periodo || h.periodo,
-                total: total,
-                comentario: comentario || 'Descargado localmente'
-            });
-            mostrarLoading(false);
-            
-            if (result && result.success) {
-                cerrarModalEdicion();
-                renderizarHistorial();
-                showToast('✅ Periodo actualizado');
-            } else {
-                showToast('❌ Error al actualizar', 'error');
-            }
-        }
-
-        function eliminarHistorial(index) {
-            const historial = data.historial || [];
-            const periodo = historial[index];
-            
-            if (!periodo) {
-                showToast('❌ Periodo no encontrado', 'error');
-                return;
-            }
-            
-            if (!confirm(`¿Eliminar el periodo "${periodo.periodo || 'Sin fecha'}"?\n\nEsta acción no se puede deshacer.`)) {
-                return;
-            }
-            
-            mostrarLoading(true);
-            
-            sendData('eliminarHistorial', { index: index })
-                .then(result => {
+                    await recargarDatos();
                     mostrarLoading(false);
-                    if (result && result.success) {
-                        data.historial.splice(index, 1);
-                        renderizarHistorial();
-                        showToast('✅ Periodo eliminado');
-                    } else {
-                        showToast('❌ Error al eliminar', 'error');
-                    }
-                })
-                .catch(error => {
+                    showToast(`✅ Periodo cerrado. CSV descargado: ${nombreArchivo}`);
+
+                } catch (error) {
+                    console.error('❌ Error en cerrarPeriodo:', error);
                     mostrarLoading(false);
                     showToast('❌ Error: ' + error.message, 'error');
-                });
+                }
+            });
         }
 
         // ============================================================
         // ACCIONES - PARTICIPANTES
         // ============================================================
-        async function guardarCambiosParticipante(nombre) {
-            const participante = data.participantes.find(p => p.nombre === nombre);
+        async function guardarCambiosParticipante(nombreOriginal) {
+            const nuevoNombreInput = document.getElementById('editNombreParticipante');
+            const nuevoNombre = nuevoNombreInput ? nuevoNombreInput.value.trim() : nombreOriginal;
+
+            if (!nuevoNombre) {
+                showToast('⚠️ El nombre no puede estar vacío', 'error');
+                return;
+            }
+
+            const participante = data.participantes.find(p => p.nombre === nombreOriginal);
             if (!participante) return;
+
+            if (nuevoNombre !== nombreOriginal) {
+                mostrarLoading(true);
+                const resNombre = await sendData('updateParticipante', { nombreOriginal: nombreOriginal, nuevoNombre: nuevoNombre });
+                mostrarLoading(false);
+                if (!resNombre || !resNombre.success) {
+                    showToast('❌ Error al actualizar nombre', 'error');
+                    return;
+                }
+                participante.nombre = nuevoNombre;
+            }
 
             const cambios = [];
             const conceptos = ['inscripcion', 'compendio', 'crucifijo'];
@@ -1648,7 +1496,7 @@
                 const estadoOriginal = participante.activo;
                 if (estadoActual !== estadoOriginal) {
                     mostrarLoading(true);
-                    const result = await sendData('updateActivo', { nombre: nombre, activo: estadoActual });
+                    const result = await sendData('updateActivo', { nombre: nuevoNombre, activo: estadoActual });
                     mostrarLoading(false);
                     if (!result || !result.success) {
                         showToast('❌ Error', 'error');
@@ -1658,29 +1506,44 @@
                 }
             }
 
-            if (cambios.length === 0) {
-                showToast('⚠️ Sin cambios');
-                return;
+            if (cambios.length > 0) {
+                mostrarLoading(true);
+                const result = await sendData('updateMultiplePagos', { nombreOriginal: nuevoNombre, nombre: nuevoNombre, cambios: cambios });
+                mostrarLoading(false);
+
+                if (result && result.success) {
+                    conceptos.forEach(concepto => {
+                        const checkbox = document.getElementById(`chk_${concepto}`);
+                        if (checkbox) {
+                            participante.pagos[concepto].pagado = checkbox.checked;
+                            participante.pagos[concepto].fecha = checkbox.checked ? obtenerFechaISO() : null;
+                        }
+                    });
+                } else {
+                    showToast('❌ Error al actualizar pagos', 'error');
+                    return;
+                }
             }
 
-            mostrarLoading(true);
-            const result = await sendData('updateMultiplePagos', { nombre: nombre, cambios: cambios });
-            mostrarLoading(false);
+            await recargarDatos();
+            cerrarModal();
+            showToast('✅ Cambios guardados');
+        }
 
-            if (result && result.success) {
-                conceptos.forEach(concepto => {
-                    const checkbox = document.getElementById(`chk_${concepto}`);
-                    if (checkbox) {
-                        participante.pagos[concepto].pagado = checkbox.checked;
-                        participante.pagos[concepto].fecha = checkbox.checked ? obtenerFechaISO() : null;
-                    }
-                });
-                await recargarDatos();
-                cerrarModal();
-                showToast('✅ Guardado');
-            } else {
-                showToast('❌ Error', 'error');
-            }
+        function eliminarParticipante(nombre) {
+            mostrarConfirmacion(`¿Estás seguro de eliminar a "${nombre}"?\nEsto borrará al participante y sus pagos registrados en Finanzas.`, async () => {
+                mostrarLoading(true);
+                const result = await sendData('deleteParticipante', { nombre: nombre });
+                mostrarLoading(false);
+
+                if (result && result.success) {
+                    await recargarDatos();
+                    cerrarModal();
+                    showToast('✅ Participante eliminado');
+                } else {
+                    showToast('❌ Error al eliminar participante', 'error');
+                }
+            });
         }
 
         async function agregarParticipante() {
@@ -1705,45 +1568,49 @@
             const modal = document.getElementById('modalParticipante');
             const content = document.getElementById('modalContent');
 
-            document.getElementById('modalTitle').textContent = `✏️ Editar: ${participante.nombre}`;
+            document.getElementById('modalTitle').textContent = `✏️ Editar participante`;
 
             content.innerHTML = `
-                <div class="pago-item">
-                    <span class="pago-label">📝 Inscripción ($${data.config.montoInscripcion})</span>
-                    <span class="pago-fecha">${participante.pagos.inscripcion.fecha ? formatearFechaCorto(participante.pagos.inscripcion.fecha) : 'Sin fecha'}</span>
+                <div class="form-group" style="margin-bottom:16px;">
+                    <label style="font-size:14px; font-weight:700; color:#2c3e50; margin-bottom:6px;">Nombre completo</label>
+                    <input type="text" id="editNombreParticipante" class="form-control" value="${participante.nombre}" style="font-size:16px; padding:12px; font-weight:500; width:100%;">
+                </div>
+                <div class="pago-item" style="padding:10px 0;">
+                    <span class="pago-label" style="font-size:15px;">📝 Inscripción ($${data.config.montoInscripcion})</span>
+                    <span class="pago-fecha" style="font-size:13px;">${participante.pagos.inscripcion.fecha ? formatearFechaCorto(participante.pagos.inscripcion.fecha) : 'Sin fecha'}</span>
                     <label class="switch">
                         <input type="checkbox" id="chk_inscripcion" ${participante.pagos.inscripcion.pagado ? 'checked' : ''}>
                         <span class="slider"></span>
                     </label>
                 </div>
-                <div class="pago-item">
-                    <span class="pago-label">📚 Compendio ($${data.config.montoCompendio})</span>
-                    <span class="pago-fecha">${participante.pagos.compendio.fecha ? formatearFechaCorto(participante.pagos.compendio.fecha) : 'Sin fecha'}</span>
+                <div class="pago-item" style="padding:10px 0;">
+                    <span class="pago-label" style="font-size:15px;">📚 Compendio ($${data.config.montoCompendio})</span>
+                    <span class="pago-fecha" style="font-size:13px;">${participante.pagos.compendio.fecha ? formatearFechaCorto(participante.pagos.compendio.fecha) : 'Sin fecha'}</span>
                     <label class="switch">
                         <input type="checkbox" id="chk_compendio" ${participante.pagos.compendio.pagado ? 'checked' : ''}>
                         <span class="slider"></span>
                     </label>
                 </div>
-                <div class="pago-item">
-                    <span class="pago-label">✝️ Crucifijo ($${data.config.montoCrucifijo})</span>
-                    <span class="pago-fecha">${participante.pagos.crucifijo.fecha ? formatearFechaCorto(participante.pagos.crucifijo.fecha) : 'Sin fecha'}</span>
+                <div class="pago-item" style="padding:10px 0;">
+                    <span class="pago-label" style="font-size:15px;">✝️ Crucifijo ($${data.config.montoCrucifijo})</span>
+                    <span class="pago-fecha" style="font-size:13px;">${participante.pagos.crucifijo.fecha ? formatearFechaCorto(participante.pagos.crucifijo.fecha) : 'Sin fecha'}</span>
                     <label class="switch">
                         <input type="checkbox" id="chk_crucifijo" ${participante.pagos.crucifijo.pagado ? 'checked' : ''}>
                         <span class="slider"></span>
                     </label>
                 </div>
-                <hr style="margin:8px 0;">
-                <div class="pago-item">
-                    <span class="pago-label">👤 Estado</span>
+                <hr style="margin:12px 0;">
+                <div class="pago-item" style="padding:10px 0;">
+                    <span class="pago-label" style="font-size:15px; font-weight:600;">👤 Estado Activo</span>
                     <label class="switch">
                         <input type="checkbox" id="chk_activo" ${participante.activo ? 'checked' : ''}>
                         <span class="slider"></span>
                     </label>
                 </div>
-                <hr style="margin:8px 0;">
-                <div style="display:flex; gap:8px; margin-top:10px;">
-                    <button class="btn btn-success" onclick="guardarCambiosParticipante('${participante.nombre}')" style="flex:2;">💾 Guardar cambios</button>
-                    <button class="btn btn-secondary" onclick="cerrarModal()" style="flex:1;">❌ Cancelar</button>
+                <hr style="margin:12px 0;">
+                <div style="display:flex; gap:10px; margin-top:14px;">
+                    <button class="btn btn-success" onclick="guardarCambiosParticipante('${participante.nombre}')" style="flex:2; font-size:15px; padding:10px;">💾 Guardar</button>
+                    <button class="btn btn-danger" onclick="eliminarParticipante('${participante.nombre}')" style="flex:1; font-size:15px; padding:10px;">🗑️ Eliminar</button>
                 </div>
             `;
 
@@ -1766,7 +1633,7 @@
         }
 
         // ============================================================
-        // ACCIONES - FINANZAS
+        // ACCIONES - FINANZAS (Montos 0 o mayores)
         // ============================================================
         async function agregarMovimiento() {
             const tipo = document.getElementById('finTipo').value;
@@ -1777,7 +1644,7 @@
             const fecha = fechaInput.value || obtenerFechaISO();
 
             if (!concepto) { showToast('⚠️ Escribe un concepto', 'error'); return; }
-            if (!monto || monto <= 0) { showToast('⚠️ Ingresa un monto válido', 'error'); return; }
+            if (isNaN(monto) || monto < 0) { showToast('⚠️ Ingresa un monto válido (puede ser 0)', 'error'); return; }
             if (!fecha) { showToast('⚠️ Selecciona una fecha', 'error'); return; }
 
             mostrarLoading(true);
@@ -1795,17 +1662,18 @@
             }
         }
 
-        async function eliminarMovimiento(id) {
-            if (!confirm('¿Eliminar este movimiento?')) return;
-            mostrarLoading(true);
-            const result = await sendData('deleteFinanza', { id: parseInt(id) });
-            mostrarLoading(false);
-            if (result && result.success) {
-                await recargarDatos();
-                showToast('✅ Guardado');
-            } else {
-                showToast('❌ Error', 'error');
-            }
+        function eliminarMovimiento(id) {
+            mostrarConfirmacion('¿Estás seguro de eliminar este movimiento?\nSi está asociado a un pago, el estatus volverá a pendiente.', async () => {
+                mostrarLoading(true);
+                const result = await sendData('deleteFinanza', { id: parseInt(id) });
+                mostrarLoading(false);
+                if (result && result.success) {
+                    await recargarDatos();
+                    showToast('✅ Movimiento eliminado');
+                } else {
+                    showToast('❌ Error', 'error');
+                }
+            });
         }
 
         function abrirModalEditarMovimiento(id) {
@@ -1815,10 +1683,32 @@
             const modal = document.getElementById('modalEditarMovimiento');
             const content = document.getElementById('modalEditarMovimientoContent');
             content.innerHTML = `
-                <div class="form-group"><label>Tipo</label><select id="editFinTipo" class="form-control"><option value="ingreso" ${movimiento.tipo === 'ingreso' ? 'selected' : ''}>Ingreso</option><option value="gasto" ${movimiento.tipo === 'gasto' ? 'selected' : ''}>Gasto</option></select></div>
-                <div class="form-group"><label>Concepto</label><input type="text" id="editFinConcepto" class="form-control" value="${movimiento.concepto}"></div>
-                <div class="form-row"><div class="form-group"><label>Monto ($)</label><input type="number" id="editFinMonto" class="form-control" value="${movimiento.monto}" step="0.01"></div><div class="form-group"><label>Fecha</label><input type="date" id="editFinFecha" class="form-control" value="${movimiento.fecha}"></div></div>
-                <button class="btn btn-primary" onclick="guardarEdicionMovimiento()" style="width:100%;">💾 Guardar</button>
+                <div class="form-group" style="margin-bottom:12px;">
+                    <label style="font-weight:600; color:#2c3e50;">Tipo</label>
+                    <select id="editFinTipo" class="form-control" style="font-size:15px; padding:10px;">
+                        <option value="ingreso" ${movimiento.tipo === 'ingreso' ? 'selected' : ''}>Ingreso</option>
+                        <option value="gasto" ${movimiento.tipo === 'gasto' ? 'selected' : ''}>Gasto</option>
+                        <option value="ajuste" ${movimiento.tipo === 'ajuste' ? 'selected' : ''}>Ajuste</option>
+                        <option value="inscripcion" ${movimiento.tipo === 'inscripcion' ? 'selected' : ''}>Inscripción</option>
+                        <option value="compendio" ${movimiento.tipo === 'compendio' ? 'selected' : ''}>Compendio</option>
+                        <option value="crucifijo" ${movimiento.tipo === 'crucifijo' ? 'selected' : ''}>Crucifijo</option>
+                    </select>
+                </div>
+                <div class="form-group" style="margin-bottom:12px;">
+                    <label style="font-weight:600; color:#2c3e50;">Concepto</label>
+                    <input type="text" id="editFinConcepto" class="form-control" value="${movimiento.concepto}" style="font-size:15px; padding:10px; width:100%;">
+                </div>
+                <div style="display:flex; gap:10px; margin-bottom:16px;">
+                    <div class="form-group" style="flex:1;">
+                        <label style="font-weight:600; color:#2c3e50;">Monto ($)</label>
+                        <input type="number" id="editFinMonto" class="form-control" value="${movimiento.monto}" step="0.01" min="0" style="font-size:15px; padding:10px; width:100%;">
+                    </div>
+                    <div class="form-group" style="flex:1;">
+                        <label style="font-weight:600; color:#2c3e50;">Fecha</label>
+                        <input type="date" id="editFinFecha" class="form-control" value="${movimiento.fecha}" style="font-size:15px; padding:10px; width:100%;">
+                    </div>
+                </div>
+                <button class="btn btn-primary" onclick="guardarEdicionMovimiento()" style="width:100%; font-size:15px; padding:12px;">💾 Guardar cambios</button>
             `;
             modal.classList.add('active');
         }
@@ -1829,7 +1719,7 @@
             const monto = parseFloat(document.getElementById('editFinMonto').value);
             const fecha = document.getElementById('editFinFecha').value;
             if (!concepto) { showToast('⚠️ Escribe un concepto', 'error'); return; }
-            if (!monto || monto <= 0) { showToast('⚠️ Ingresa un monto válido', 'error'); return; }
+            if (isNaN(monto) || monto < 0) { showToast('⚠️ Ingresa un monto válido (puede ser 0)', 'error'); return; }
             if (!fecha) { showToast('⚠️ Selecciona una fecha', 'error'); return; }
             mostrarLoading(true);
             const result = await sendData('updateFinanza', { id: parseInt(movimientoEditando), tipo, concepto, monto, fecha });
@@ -1942,7 +1832,7 @@
         }
 
         // ============================================================
-        // SERVICE WORKER (PWA) - RUTAS CORREGIDAS
+        // SERVICE WORKER (PWA)
         // ============================================================
         if ('serviceWorker' in navigator) {
             navigator.serviceWorker.register('/evangelizacion-app/sw.js')
