@@ -477,7 +477,7 @@
     <div id="toast" class="toast"></div>
     <div id="loadingOverlay" class="loading-overlay">
         <div class="loading-spinner"></div>
-        <div class="loading-text" id="loadingText">Cargando datos...</div>
+        <div class="loading-text">Cargando datos...</div>
     </div>
 
     <!-- MODAL DE CONFIRMACIÓN VISUAL -->
@@ -816,64 +816,31 @@
             display.classList.add('placeholder');
         }
 
-        function mostrarLoading(show, textoCustom = 'Cargando datos...') {
-            const overlay = document.getElementById('loadingOverlay');
-            const textoEl = document.getElementById('loadingText');
-            if (textoEl) textoEl.textContent = textoCustom;
-            overlay.classList.toggle('active', show);
+        function mostrarLoading(show) {
+            document.getElementById('loadingOverlay').classList.toggle('active', show);
         }
 
         // ============================================================
-        // API CON SISTEMA DE REINTENTOS Y TIMEOUT EXTENDIDO
+        // API
         // ============================================================
-        async function fetchConReintentos(url, opciones = {}, reintentos = 3, demora = 2000) {
-            for (let i = 0; i < reintentos; i++) {
-                try {
-                    // Timeout de 12 segundos por intento para soportar el arranque en frío en red móvil
-                    const controlador = new AbortController();
-                    const idTimeout = setTimeout(() => controlador.abort(), 12000);
-
-                    const respuesta = await fetch(url, {
-                        ...opciones,
-                        signal: controlador.signal
-                    });
-                    
-                    clearTimeout(idTimeout);
-
-                    if (!respuesta.ok) throw new Error(`Error HTTP: ${respuesta.status}`);
-                    return await respuesta.json();
-
-                } catch (error) {
-                    console.warn(`Intento ${i + 1} de conexión fallido:`, error.message);
-                    
-                    if (i === reintentos - 1) {
-                        throw new Error("No se pudo conectar con el servidor. Revisa tu señal o reintenta.");
-                    }
-                    
-                    // Actualizamos texto de carga indicando reintento
-                    mostrarLoading(true, `Reconectando (intento ${i + 2})...`);
-                    await new Promise(resolve => setTimeout(resolve, demora));
-                }
-            }
-        }
-
         async function fetchData() {
             try {
-                return await fetchConReintentos(API_URL + '?action=getData', { method: 'GET' });
+                const response = await fetch(API_URL + '?action=getData');
+                return await response.json();
             } catch (e) {
                 console.error(e);
                 return null;
             }
         }
 
-        async function sendData(action, dataPayload) {
+        async function sendData(action, data) {
             try {
-                await fetchConReintentos(API_URL, {
+                const response = await fetch(API_URL, {
                     method: 'POST',
                     mode: 'no-cors',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ action: action, data: dataPayload })
-                }, 3, 2000);
+                    body: JSON.stringify({ action: action, data: data })
+                });
                 return { success: true };
             } catch (error) {
                 console.error('Error en sendData:', error);
@@ -887,7 +854,7 @@
         async function cargarDatos() {
             if (cargando) return;
             cargando = true;
-            mostrarLoading(true, 'Conectando con el servidor...');
+            mostrarLoading(true);
 
             const result = await fetchData();
             mostrarLoading(false);
@@ -1069,7 +1036,7 @@
         });
 
         // ============================================================
-        // RENDERIZAR - FINANZAS
+        // RENDERIZAR - FINANZAS (Lee directo de la tabla de Finanzas en TODOS los filtros)
         // ============================================================
         function renderizarFinanzas() {
             const list = document.getElementById('finanzasList');
@@ -1112,6 +1079,7 @@
                 }));
             }
 
+            // Orden cronológico: el más viejo arriba, el más nuevo abajo
             movimientos.sort((a, b) => a.fecha.localeCompare(b.fecha));
 
             if (movimientos.length === 0) {
@@ -1123,6 +1091,7 @@
                 const signo = (m.tipo === 'gasto' || m.tipo === 'ajuste') ? '-' : '+';
                 const clase = (m.tipo === 'gasto' || m.tipo === 'ajuste') ? 'gasto' : 'ingreso';
                 
+                // Todos los elementos muestran el lápiz y el bote de basura abriendo Editar Movimiento
                 const acciones = `
                     <button class="btn-accion btn-editar" onclick="abrirModalEditarMovimiento('${m.id}')" title="Editar movimiento">✏️</button>
                     <button class="btn-accion btn-eliminar" onclick="eliminarMovimiento('${m.id}')" title="Eliminar movimiento">🗑️</button>
@@ -1294,7 +1263,7 @@
         }
 
         // ============================================================
-        // RENDERIZAR - HISTORIAL
+        // RENDERIZAR - HISTORIAL (PESTAÑA SEPARADA)
         // ============================================================
         function renderizarHistorial() {
             const historial = data.historial || [];
@@ -1365,7 +1334,7 @@
         }
 
         async function ejecutarEliminarHistorial(index) {
-            mostrarLoading(true, 'Eliminando...');
+            mostrarLoading(true);
             const result = await sendData('eliminarHistorial', { index: index });
             mostrarLoading(false);
             if (result && result.success) {
@@ -1405,7 +1374,7 @@
             }
 
             mostrarConfirmacion('⚠️ ¿Cerrar el periodo actual?\n\nSe descargará un CSV y se limpiarán los datos.', async () => {
-                mostrarLoading(true, 'Cerrando periodo...');
+                mostrarLoading(true);
 
                 try {
                     const activos = data.participantes.filter(p => p.activo);
@@ -1493,7 +1462,7 @@
             if (!participante) return;
 
             if (nuevoNombre !== nombreOriginal) {
-                mostrarLoading(true, 'Guardando...');
+                mostrarLoading(true);
                 const resNombre = await sendData('updateParticipante', { nombreOriginal: nombreOriginal, nuevoNombre: nuevoNombre });
                 mostrarLoading(false);
                 if (!resNombre || !resNombre.success) {
@@ -1526,7 +1495,7 @@
                 const estadoActual = activoCheckbox.checked;
                 const estadoOriginal = participante.activo;
                 if (estadoActual !== estadoOriginal) {
-                    mostrarLoading(true, 'Guardando...');
+                    mostrarLoading(true);
                     const result = await sendData('updateActivo', { nombre: nuevoNombre, activo: estadoActual });
                     mostrarLoading(false);
                     if (!result || !result.success) {
@@ -1538,7 +1507,7 @@
             }
 
             if (cambios.length > 0) {
-                mostrarLoading(true, 'Guardando...');
+                mostrarLoading(true);
                 const result = await sendData('updateMultiplePagos', { nombreOriginal: nuevoNombre, nombre: nuevoNombre, cambios: cambios });
                 mostrarLoading(false);
 
@@ -1563,7 +1532,7 @@
 
         function eliminarParticipante(nombre) {
             mostrarConfirmacion(`¿Estás seguro de eliminar a "${nombre}"?\nEsto borrará al participante y sus pagos registrados en Finanzas.`, async () => {
-                mostrarLoading(true, 'Eliminando...');
+                mostrarLoading(true);
                 const result = await sendData('deleteParticipante', { nombre: nombre });
                 mostrarLoading(false);
 
@@ -1580,7 +1549,7 @@
         async function agregarParticipante() {
             const nombre = document.getElementById('nuevoNombre').value.trim();
             if (!nombre) { showToast('⚠️ Escribe un nombre', 'error'); return; }
-            mostrarLoading(true, 'Agregando...');
+            mostrarLoading(true);
             const result = await sendData('addParticipante', { nombre });
             mostrarLoading(false);
             if (result && result.success) {
@@ -1664,7 +1633,7 @@
         }
 
         // ============================================================
-        // ACCIONES - FINANZAS
+        // ACCIONES - FINANZAS (Montos 0 o mayores)
         // ============================================================
         async function agregarMovimiento() {
             const tipo = document.getElementById('finTipo').value;
@@ -1678,7 +1647,7 @@
             if (isNaN(monto) || monto < 0) { showToast('⚠️ Ingresa un monto válido (puede ser 0)', 'error'); return; }
             if (!fecha) { showToast('⚠️ Selecciona una fecha', 'error'); return; }
 
-            mostrarLoading(true, 'Guardando...');
+            mostrarLoading(true);
             const result = await sendData('addFinanza', { tipo, concepto, monto, fecha });
             mostrarLoading(false);
             if (result && result.success) {
@@ -1695,7 +1664,7 @@
 
         function eliminarMovimiento(id) {
             mostrarConfirmacion('¿Estás seguro de eliminar este movimiento?\nSi está asociado a un pago, el estatus volverá a pendiente.', async () => {
-                mostrarLoading(true, 'Eliminando...');
+                mostrarLoading(true);
                 const result = await sendData('deleteFinanza', { id: parseInt(id) });
                 mostrarLoading(false);
                 if (result && result.success) {
@@ -1752,7 +1721,7 @@
             if (!concepto) { showToast('⚠️ Escribe un concepto', 'error'); return; }
             if (isNaN(monto) || monto < 0) { showToast('⚠️ Ingresa un monto válido (puede ser 0)', 'error'); return; }
             if (!fecha) { showToast('⚠️ Selecciona una fecha', 'error'); return; }
-            mostrarLoading(true, 'Guardando...');
+            mostrarLoading(true);
             const result = await sendData('updateFinanza', { id: parseInt(movimientoEditando), tipo, concepto, monto, fecha });
             mostrarLoading(false);
             if (result && result.success) {
@@ -1788,7 +1757,7 @@
             const comp = parseFloat(document.getElementById('montoCompendio').value);
             const cruc = parseFloat(document.getElementById('montoCrucifijo').value);
             if (isNaN(insc) || isNaN(comp) || isNaN(cruc)) { showToast('⚠️ Ingresa montos válidos', 'error'); return; }
-            mostrarLoading(true, 'Guardando...');
+            mostrarLoading(true);
             const result = await sendData('updateMontos', { montoInscripcion: insc, montoCompendio: comp, montoCrucifijo: cruc });
             mostrarLoading(false);
             if (result && result.success) {
