@@ -2,24 +2,24 @@
   "name": "Gestión Evangelización",
   "short_name": "E-vank",
   "description": "App para gestionar cobros y finanzas del grupo de evangelización",
-  "start_url": "/evangelizacion-app/",
+  "start_url": "./",
+  "scope": "./",
   "display": "standalone",
   "orientation": "portrait",
   "background_color": "#1a2634",
   "theme_color": "#1a2634",
-  "scope": "/evangelizacion-app/",
   "icons": [
     {
-      "src": "/evangelizacion-app/icon-512.png",
+      "src": "./icon-512.png",
       "sizes": "512x512",
       "type": "image/png",
-      "purpose": "any"
+      "purpose": "any maskable"
     },
     {
-      "src": "/evangelizacion-app/icon-192.png",
+      "src": "./icon-192.png",
       "sizes": "192x192",
       "type": "image/png",
-      "purpose": "any"
+      "purpose": "any maskable"
     }
   ],
   "shortcuts": [
@@ -27,25 +27,25 @@
       "name": "Cobros",
       "short_name": "Cobros",
       "description": "Ver lista de cobros",
-      "url": "/evangelizacion-app/?tab=cobros",
-      "icons": [{ "src": "/evangelizacion-app/icon-192.png", "sizes": "192x192" }]
+      "url": "./?tab=cobros",
+      "icons": [{ "src": "./icon-192.png", "sizes": "192x192" }]
     },
     {
       "name": "Finanzas",
       "short_name": "Finanzas",
       "description": "Ver resumen de finanzas",
-      "url": "/evangelizacion-app/?tab=finanzas",
-      "icons": [{ "src": "/evangelizacion-app/icon-192.png", "sizes": "192x192" }]
+      "url": "./?tab=finanzas",
+      "icons": [{ "src": "./icon-192.png", "sizes": "192x192" }]
     }
   ],
   "screenshots": [
     {
-      "src": "/evangelizacion-app/screenshot-cobros.png",
+      "src": "./screenshot-cobros.png",
       "sizes": "1080x1920",
       "type": "image/png"
     },
     {
-      "src": "/evangelizacion-app/screenshot-finanzas.png",
+      "src": "./screenshot-finanzas.png",
       "sizes": "1080x1920",
       "type": "image/png"
     }
