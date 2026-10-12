@@ -6,12 +6,12 @@
     <title>Gestión Evangelización</title>
 
     <!-- ============================================================ -->
-    <!-- PWA CONFIGURACIÓN - RUTAS CORREGIDAS -->
+    <!-- PWA CONFIGURACIÓN - RUTAS RELATIVAS (COMPATIBLE CON VERCEL) -->
     <!-- ============================================================ -->
-    <link rel="manifest" href="/evangelizacion-app/manifest.json">
-    <link rel="apple-touch-icon" sizes="512x512" href="/evangelizacion-app/icon-512.png">
-    <link rel="icon" type="image/png" sizes="512x512" href="/evangelizacion-app/icon-512.png">
-    <link rel="icon" type="image/png" sizes="192x192" href="/evangelizacion-app/icon-192.png">
+    <link rel="manifest" href="./manifest.json">
+    <link rel="apple-touch-icon" sizes="512x512" href="https://cdn-icons-png.flaticon.com/512/3233/3233508.png">
+    <link rel="icon" type="image/png" sizes="512x512" href="https://cdn-icons-png.flaticon.com/512/3233/3233508.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="https://cdn-icons-png.flaticon.com/192/3233/3233508.png">
     <meta name="theme-color" content="#1a2634">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -23,9 +23,11 @@
     <!-- ===== REGISTRO DEL SERVICE WORKER ===== -->
     <script>
         if ('serviceWorker' in navigator) {
-            navigator.serviceWorker.register('/evangelizacion-app/sw.js')
-                .then(reg => console.log('✅ Service Worker registrado:', reg))
-                .catch(err => console.log('❌ Error al registrar SW:', err));
+            window.addEventListener('load', function() {
+                navigator.serviceWorker.register('./sw.js')
+                    .then(reg => console.log('✅ Service Worker registrado:', reg))
+                    .catch(err => console.log('❌ Error al registrar SW:', err));
+            });
         }
     </script>
 
@@ -1829,15 +1831,6 @@
                     actualizarFechaDisplay();
                 }
             }
-        }
-
-        // ============================================================
-        // SERVICE WORKER (PWA)
-        // ============================================================
-        if ('serviceWorker' in navigator) {
-            navigator.serviceWorker.register('/evangelizacion-app/sw.js')
-                .then(registration => { console.log('✅ Service Worker registrado:', registration); })
-                .catch(error => { console.log('❌ Error al registrar Service Worker:', error); });
         }
     </script>
 
